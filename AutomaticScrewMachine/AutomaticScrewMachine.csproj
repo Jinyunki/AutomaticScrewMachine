@@ -123,5 +123,11 @@
   <ItemGroup>
     <Resource Include="MousePointer.cur" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\icDriver.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\icScrewDriver.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

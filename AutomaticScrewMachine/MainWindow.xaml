@@ -16,6 +16,9 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="DesignGUI.xaml"/>
             </ResourceDictionary.MergedDictionaries>
+
+            
+            
         </ResourceDictionary>
     </Window.Resources>
     <Grid>
@@ -67,22 +70,49 @@
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
 
-                <Border Grid.Column="0" Margin="25" CornerRadius="280" 
+                
+                <Border Grid.Column="0" Margin="25" CornerRadius="100" 
                         HorizontalAlignment="Left" 
                         VerticalAlignment="Bottom"
-                        Background="White" Height="100" Width="100">
-                    <Canvas x:Name="canvas" Width="Auto" Height="Auto" HorizontalAlignment="Center" VerticalAlignment="Center" Background="Black">
-                        <Ellipse x:Name="myButton" 
-                                 Fill="DarkGray" Width="80" Height="80" 
-                                 Canvas.Left="-40" Canvas.Top="-40"
-                                 MouseMove="Canvas_MouseMove"/>
+                        Background="#FF5F6063" Height="100" Width="100">
+                    <Canvas x:Name="MotionControllerAground" Width="Auto" Height="Auto"
+                            HorizontalAlignment="Center" VerticalAlignment="Center" Background="Black">
+                        <Ellipse  
+                            Fill="DarkGray" Width="80" Height="80" 
+                            Canvas.Left="-40" Canvas.Top="-40"
+                            MouseMove="MotionController_MouseMove"/>
 
-                        <Ellipse x:Name="mouseTracker" 
+                        <Ellipse x:Name="ControllerMotion" 
                                  Fill="#FF565656" Width="20" Height="20" 
-                                 Canvas.Left="0" Canvas.Top="0" 
-                                 Visibility="Collapsed" />
+                                 Canvas.Left="-10" Canvas.Top="-10" 
+                                 Visibility="Visible" />
                     </Canvas>
                 </Border>
+                <!--<ImageBrush ImageSource="/Assets/icDriver.png"/>-->
+                <Border Grid.Column="0" Margin="150 0 0 25" 
+                        HorizontalAlignment="Left" 
+                        VerticalAlignment="Bottom"
+                        Background="DarkGray" Height="100" Width="20">
+                    <Canvas x:Name="ScrewDriverControllerAground" Width="Auto" Height="Auto" 
+                            HorizontalAlignment="Center" VerticalAlignment="Center" Background="Black">
+                        
+                        <Rectangle Fill="#FFD7D8E8"
+                                   Width="20" Height="90" 
+                                   Canvas.Left="-10" Canvas.Top="-45"
+                                   MouseMove="ScrewDriverController_MouseMove"/>
+
+                        <Rectangle x:Name="ControllerScrewDriver" 
+                                 Width="20" Height="50" 
+                                 Canvas.Left="-10" Canvas.Top="-45" 
+                                 Visibility="Visible" >
+                            <Rectangle.Fill>
+                                <ImageBrush ImageSource="/Assets/icScrewDriver.png"/>
+                            </Rectangle.Fill>
+                        </Rectangle>
+                    </Canvas>
+                </Border>
+                
+                
             </Grid>
         </Border>
         
