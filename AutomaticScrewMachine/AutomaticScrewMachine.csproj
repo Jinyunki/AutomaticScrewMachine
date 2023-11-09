@@ -70,9 +70,14 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Model\JogController.cs" />
     <Compile Include="Model\WindowStyle.cs" />
+    <Compile Include="ViewModel\JogControllerViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />
+    <Compile Include="View\JogController.xaml.cs">
+      <DependentUpon>JogController.xaml</DependentUpon>
+    </Compile>
     <Page Include="DesignGUI.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -89,6 +94,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="View\JogController.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -108,6 +117,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <Resource Include="Fonts\Cafe24OhsquareAir-v2.0.ttf" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -118,16 +128,35 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="View\" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="MousePointer.cur" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Assets\icDriver.png" />
+    <Resource Include="Assets\btn_jog_down.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Assets\icScrewDriver.png" />
+    <Resource Include="Assets\btn_jog_left.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\btn_jog_right.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\btn_jog_up.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="icDriver.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="icScrewDriver.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\btn_jog_stop.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\btn_screw_down.png" />
+    <Resource Include="Assets\btn_screw_up.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\btn_screw_return.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

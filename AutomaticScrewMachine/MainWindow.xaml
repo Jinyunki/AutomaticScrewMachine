@@ -1,125 +1,117 @@
-﻿<Window x:Class="AutomaticScrewMachine.MainWindow"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:AutomaticScrewMachine"
-        mc:Ignorable="d" Background="Transparent"
-        WindowStyle="None" AllowsTransparency="True"
-        MouseDown="Window_MouseDown"
-        MouseMove="Window_MouseMove"
-        WindowState="{Binding WindowState}"
-        DataContext="{Binding Main, Source={StaticResource Locator}}"
-        Title="MainWindow" Height="900" Width="1600">
+﻿<Window
+    x:Class="AutomaticScrewMachine.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:view="clr-namespace:AutomaticScrewMachine.View"
+    xmlns:vm="clr-namespace:AutomaticScrewMachine.ViewModel"
+    Title="MainWindow"
+    Width="1600"
+    Height="900"
+    AllowsTransparency="True"
+    Background="Transparent"
+    DataContext="{Binding Main, Source={StaticResource Locator}}"
+    MouseDown="Window_MouseDown"
+    MouseMove="Window_MouseMove"
+    WindowState="{Binding WindowState}"
+    WindowStyle="None"
+    mc:Ignorable="d">
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="DesignGUI.xaml"/>
+                <ResourceDictionary Source="DesignGUI.xaml" />
             </ResourceDictionary.MergedDictionaries>
-
-            
-            
+            <DataTemplate DataType="{x:Type vm:JogControllerViewModel}">
+                <view:JogController />
+            </DataTemplate>
         </ResourceDictionary>
     </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="40"/>
-            <RowDefinition Height="1*"/>
+            <RowDefinition Height="40" />
+            <RowDefinition Height="1*" />
         </Grid.RowDefinitions>
 
-        <!--Header - Top WindowBtn-->
+        <!--  Header - Top WindowBtn  -->
 
-        <Border Background="#FF000C1D" CornerRadius="5" Grid.Row="0" >
-            <Grid >
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="200"/>
-                    <ColumnDefinition />
-                    <ColumnDefinition Width="30"/>
-                    <ColumnDefinition Width="30"/>
-                    <ColumnDefinition Width="30"/>
-                    <ColumnDefinition Width="30"/>
-                </Grid.ColumnDefinitions>
-
-
-                <Slider x:Name="volumeSlider" VerticalAlignment="Center"
-                        Margin="15 0 0 0"
-                        Style="{StaticResource CustomSliderStyle}"
-                        Minimum="{Binding MinTransparent}" 
-                        Maximum="{Binding MaxTransparent}"
-                        Value="{Binding TransparentValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-
-                <Button Grid.Column="2" Content="ㅡ" FontSize="12" 
-                        Background="DarkGreen" Height="25" Width="25"
-                        Style="{StaticResource RoundedButtonStyle}" Command="{Binding BtnMinmize}"/>
-                
-                <Button Grid.Column="3" Content="O" FontSize="12"  
-                        Background="Yellow" Height="25" Width="25"
-                        Style="{StaticResource RoundedButtonStyle}" Command="{Binding BtnMaxsize}"/>
-                
-                <Button Grid.Column="4" Content="X" FontSize="12"  
-                        Background="DarkRed" Height="25" Width="25"
-                        Style="{StaticResource RoundedButtonStyle}" Command="{Binding BtnClose}"/>
-            </Grid>
-        </Border>
-        
-        <Border Background="#FF000C1D" CornerRadius="5" Grid.Row="1"
-                Opacity="{Binding RealTransparentValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" >
+        <Border
+            Grid.Row="0"
+            Background="#FF000C1D"
+            CornerRadius="5">
             <Grid>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
+                    <ColumnDefinition Width="200" />
+                    <ColumnDefinition />
+                    <ColumnDefinition Width="30" />
+                    <ColumnDefinition Width="30" />
+                    <ColumnDefinition Width="30" />
+                    <ColumnDefinition Width="30" />
                 </Grid.ColumnDefinitions>
 
-                
-                <Border Grid.Column="0" Margin="25" CornerRadius="100" 
-                        HorizontalAlignment="Left" 
-                        VerticalAlignment="Bottom"
-                        Background="#FF5F6063" Height="100" Width="100">
-                    <Canvas x:Name="MotionControllerAground" Width="Auto" Height="Auto"
-                            HorizontalAlignment="Center" VerticalAlignment="Center" Background="Black">
-                        <Ellipse  
-                            Fill="DarkGray" Width="80" Height="80" 
-                            Canvas.Left="-40" Canvas.Top="-40"
-                            MouseMove="MotionController_MouseMove"/>
 
-                        <Ellipse x:Name="ControllerMotion" 
-                                 Fill="#FF565656" Width="20" Height="20" 
-                                 Canvas.Left="-10" Canvas.Top="-10" 
-                                 Visibility="Visible" />
-                    </Canvas>
-                </Border>
-                <!--<ImageBrush ImageSource="/Assets/icDriver.png"/>-->
-                <Border Grid.Column="0" Margin="150 0 0 25" 
-                        HorizontalAlignment="Left" 
-                        VerticalAlignment="Bottom"
-                        Background="DarkGray" Height="100" Width="20">
-                    <Canvas x:Name="ScrewDriverControllerAground" Width="Auto" Height="Auto" 
-                            HorizontalAlignment="Center" VerticalAlignment="Center" Background="Black">
-                        
-                        <Rectangle Fill="#FFD7D8E8"
-                                   Width="20" Height="90" 
-                                   Canvas.Left="-10" Canvas.Top="-45"
-                                   MouseMove="ScrewDriverController_MouseMove"/>
+                <Slider
+                    x:Name="volumeSlider"
+                    Margin="15,0,0,0"
+                    VerticalAlignment="Center"
+                    Maximum="{Binding MaxTransparent}"
+                    Minimum="{Binding MinTransparent}"
+                    Style="{StaticResource CustomSliderStyle}"
+                    Value="{Binding TransparentValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
-                        <Rectangle x:Name="ControllerScrewDriver" 
-                                 Width="20" Height="50" 
-                                 Canvas.Left="-10" Canvas.Top="-45" 
-                                 Visibility="Visible" >
-                            <Rectangle.Fill>
-                                <ImageBrush ImageSource="/Assets/icScrewDriver.png"/>
-                            </Rectangle.Fill>
-                        </Rectangle>
-                    </Canvas>
-                </Border>
-                
-                
+                <Button
+                    Grid.Column="2"
+                    Width="25"
+                    Height="25"
+                    Background="DarkGreen"
+                    Command="{Binding BtnMinmize}"
+                    Content="ㅡ"
+                    FontSize="12"
+                    Style="{StaticResource RoundedButtonStyle}" />
+
+                <Button
+                    Grid.Column="3"
+                    Width="25"
+                    Height="25"
+                    Background="Yellow"
+                    Command="{Binding BtnMaxsize}"
+                    Content="O"
+                    FontSize="12"
+                    Style="{StaticResource RoundedButtonStyle}" />
+
+                <Button
+                    Grid.Column="4"
+                    Width="25"
+                    Height="25"
+                    Background="DarkRed"
+                    Command="{Binding BtnClose}"
+                    Content="X"
+                    FontSize="12"
+                    Style="{StaticResource RoundedButtonStyle}" />
             </Grid>
         </Border>
-        
 
-        <Grid Grid.Row="0" Height="1" Margin="5 0 5 0" Background="Silver"
-                  VerticalAlignment="Bottom"/>
-        <Grid Grid.Row="1" Height="1" Margin="5 3 5 0" Background="Silver"
-                  VerticalAlignment="Top"/>
+        <Border
+            Grid.Row="1"
+            Background="#FF000C1D"
+            CornerRadius="5"
+            Opacity="{Binding RealTransparentValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+        <Grid Grid.Row="1" Opacity="{Binding RealTransparentValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+            <ContentControl Content="{Binding CurrentViewModel, UpdateSourceTrigger=PropertyChanged}" />
+        </Grid>
+
+        <Grid
+            Grid.Row="0"
+            Height="1"
+            Margin="5,0,5,0"
+            VerticalAlignment="Bottom"
+            Background="Silver" />
+        <Grid
+            Grid.Row="1"
+            Height="1"
+            Margin="5,3,5,0"
+            VerticalAlignment="Top"
+            Background="Silver" />
     </Grid>
 </Window>

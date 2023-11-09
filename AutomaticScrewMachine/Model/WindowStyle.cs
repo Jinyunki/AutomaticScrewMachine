@@ -4,11 +4,31 @@ using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight;
 using System;
 using System.ComponentModel;
+using System.Diagnostics;
+using System.Reflection;
+using AutomaticScrewMachine.ViewModel;
 
 namespace AutomaticScrewMachine.Model
 {
     public class WindowStyle : ViewModelBase
     {
+
+        public ViewModelLocator _locator = new ViewModelLocator();
+        private ViewModelBase _currentViewModel;
+        public ViewModelBase CurrentViewModel
+        {
+            get
+            {
+                return _currentViewModel;
+            }
+            set
+            {
+                _currentViewModel = value;
+                RaisePropertyChanged("CurrentViewModel");
+            }
+        }
+
+
         private WindowState _windowState;
         public WindowState WindowState
         {
@@ -62,7 +82,6 @@ namespace AutomaticScrewMachine.Model
                 }
             }
         }
-
         private double _winBtnOpacity = 0.8;
         public double WindowBtnOpacity
         {
@@ -76,7 +95,7 @@ namespace AutomaticScrewMachine.Model
                 }
             }
         }
-        
+
         private double _realTransparentValue = 0.8;
         public double RealTransparentValue
         {
@@ -98,7 +117,7 @@ namespace AutomaticScrewMachine.Model
                 if (args.PropertyName == "RealTransparentValue")
                 {
                     RaisePropertyChanged("RealTransparentValue");
-                    Console.WriteLine(RealTransparentValue);
+
                 }
             };
         }
@@ -108,31 +127,78 @@ namespace AutomaticScrewMachine.Model
             TPropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
+        #region Window Viewing Btn
         public ICommand BtnMinmize { get; private set; }
         public ICommand BtnMaxsize { get; private set; }
         public ICommand BtnClose { get; private set; }
+        #endregion
+
+
 
         public void WinBtnEvent()
         {
-            BtnMinmize = new RelayCommand(WinMinmize);
-            BtnMaxsize = new RelayCommand(WinMaxSize);
-            BtnClose = new RelayCommand(WindowClose);
-            WindowBtnOpacity = 0.5;
+
+            Trace.WriteLine("==========   Start   ==========\nMethodName : " + (MethodBase.GetCurrentMethod().Name) + "\n");
+            try
+            {
+                BtnMinmize = new RelayCommand(WinMinmize);
+                BtnMaxsize = new RelayCommand(WinMaxSize);
+                BtnClose = new RelayCommand(WindowClose);
+                WindowBtnOpacity = 0.5;
+            }
+            catch (Exception ex)
+            {
+                Trace.WriteLine("========== Exception ==========\nMethodName : " + (MethodBase.GetCurrentMethod().Name) + "\nException : " + ex);
+                throw;
+            }
+
         }
         // Window Minimize
         private void WinMinmize()
         {
-            WindowState = WindowState.Minimized;
+            Trace.WriteLine("==========   Start   ==========\nMethodName : " + (MethodBase.GetCurrentMethod().Name) + "\n");
+            try
+            {
+                WindowState = WindowState.Minimized;
+            }
+            catch (Exception ex)
+            {
+                Trace.WriteLine("========== Exception ==========\nMethodName : " + (MethodBase.GetCurrentMethod().Name) + "\nException : " + ex);
+                throw;
+            }
         }
 
         // Window Size
         private void WinMaxSize()
         {
-            WindowState = (WindowState == WindowState.Normal) ? WindowState.Maximized : WindowState.Normal;
+
+            Trace.WriteLine("==========   Start   ==========\nMethodName : " + (MethodBase.GetCurrentMethod().Name) + "\n");
+            try
+            {
+                WindowState = (WindowState == WindowState.Normal) ? WindowState.Maximized : WindowState.Normal;
+            }
+            catch (Exception ex)
+            {
+                Trace.WriteLine("========== Exception ==========\nMethodName : " + (MethodBase.GetCurrentMethod().Name) + "\nException : " + ex);
+                throw;
+            }
+
         }
         private void WindowClose()
         {
-            Application.Current.Shutdown();
+
+            Trace.WriteLine("==========   Start   ==========\nMethodName : " + (MethodBase.GetCurrentMethod().Name) + "\n");
+            try
+            {
+                Application.Current.Shutdown();
+
+            }
+            catch (Exception ex)
+            {
+                Trace.WriteLine("========== Exception ==========\nMethodName : " + (MethodBase.GetCurrentMethod().Name) + "\nException : " + ex);
+                throw;
+            }
+
         }
     }
 }

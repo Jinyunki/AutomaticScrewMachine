@@ -1,20 +1,23 @@
-<Application x:Class="AutomaticScrewMachine.App" 
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
-             xmlns:local="clr-namespace:AutomaticScrewMachine" 
-             StartupUri="MainWindow.xaml" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             d1p1:Ignorable="d" 
-             xmlns:d1p1="http://schemas.openxmlformats.org/markup-compatibility/2006">
-  <Application.Resources>
-    <ResourceDictionary>
+<Application
+    x:Class="AutomaticScrewMachine.App"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:d1p1="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:local="clr-namespace:AutomaticScrewMachine"
+    d1p1:Ignorable="d"
+    StartupUri="MainWindow.xaml">
+    <Application.Resources>
+        <ResourceDictionary>
             <Style TargetType="Button">
-                <Setter Property="Background" Value="Black"/>
-                <Setter Property="Foreground" Value="white"/>
+                <Setter Property="Background" Value="Black" />
+                <Setter Property="Foreground" Value="white" />
             </Style>
-        
-        
-            <vm:ViewModelLocator x:Key="Locator" d:IsDataSource="True" xmlns:vm="clr-namespace:AutomaticScrewMachine.ViewModel" />
-    </ResourceDictionary>
-  </Application.Resources>
+            <vm:ViewModelLocator
+                xmlns:vm="clr-namespace:AutomaticScrewMachine.ViewModel"
+                x:Key="Locator"
+                d:IsDataSource="True" />
+
+        </ResourceDictionary>
+    </Application.Resources>
 </Application>

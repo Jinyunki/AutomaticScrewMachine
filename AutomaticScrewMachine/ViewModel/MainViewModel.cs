@@ -7,9 +7,8 @@ namespace AutomaticScrewMachine.ViewModel
         public MainViewModel()
         {
             WinBtnEvent();
-
             RealTime();
-
+            CurrentViewModel = _locator.JogControllerViewModel;
         }
 
     }
