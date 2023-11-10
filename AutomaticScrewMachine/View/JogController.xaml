@@ -15,6 +15,7 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="../DesignGUI.xaml" />
             </ResourceDictionary.MergedDictionaries>
+
         </ResourceDictionary>
     </UserControl.Resources>
     <Grid>
@@ -101,14 +102,15 @@
                             VerticalAlignment="Center"
                             FontSize="20"
                             Foreground="White"
-                            Text="Value X Position" />
+                            Text="{Binding PositionValueX, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                         <Border
+                            x:Name="buzzerPositionX"
                             Grid.Column="2"
                             Width="50"
                             Height="50"
                             HorizontalAlignment="Center"
                             VerticalAlignment="Center"
-                            Background="{Binding X_SignalColor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                            Background="Gray"
                             CornerRadius="50" />
                     </Grid>
 
@@ -132,8 +134,9 @@
                             VerticalAlignment="Center"
                             FontSize="20"
                             Foreground="White"
-                            Text="Value Y Position" />
+                            Text="{Binding PositionValueY, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                         <Border
+                            x:Name="buzzerPositionY"
                             Grid.Column="2"
                             Width="50"
                             Height="50"
@@ -163,8 +166,9 @@
                             VerticalAlignment="Center"
                             FontSize="20"
                             Foreground="White"
-                            Text="Value Z Position" />
+                            Text="{Binding PositionValueZ, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                         <Border
+                            x:Name="buzzerPositionZ"
                             Grid.Column="2"
                             Width="50"
                             Height="50"
@@ -260,117 +264,139 @@
                 </Grid.ColumnDefinitions>
 
 
-                <Button
+                <!--  JOG STRAIGHT  -->
+                <Border
+                    x:Name="JogStraightBtn"
                     Grid.Row="0"
                     Grid.Column="1"
                     Margin="15"
-                    Command="{Binding BtnJogUp}"
-                    Style="{StaticResource RoundedButtonStyle}">
-                    <Button.Background>
+                    MouseDown="JogStop_MouseDown"
+                    MouseUp="JogStop_MouseUp"
+                    Style="{StaticResource RoundedBorderStyle}">
+                    <Border.Background>
                         <ImageBrush ImageSource="../Assets/btn_jog_up.png" />
-                    </Button.Background>
-                </Button>
+                    </Border.Background>
+                </Border>
 
-                <Button
+                <!--  JOG BACK  -->
+                <Border
+                    x:Name="JogBackBtn"
                     Grid.Row="2"
                     Grid.Column="1"
                     Margin="15"
-                    Command="{Binding BtnJogDown}"
-                    Style="{StaticResource RoundedButtonStyle}">
-                    <Button.Background>
+                    MouseDown="JogStop_MouseDown"
+                    MouseUp="JogStop_MouseUp"
+                    Style="{StaticResource RoundedBorderStyle}">
+                    <Border.Background>
                         <ImageBrush ImageSource="../Assets/btn_jog_down.png" />
-                    </Button.Background>
-                </Button>
+                    </Border.Background>
+                </Border>
 
-                <Button
+                <!--  JOG LEFT  -->
+                <Border
+                    x:Name="JogLeftBtn"
                     Grid.Row="1"
                     Grid.Column="0"
                     Margin="15"
-                    Command="{Binding BtnJogLeft}"
-                    Style="{StaticResource RoundedButtonStyle}">
-                    <Button.Background>
+                    MouseDown="JogStop_MouseDown"
+                    MouseUp="JogStop_MouseUp"
+                    Style="{StaticResource RoundedBorderStyle}">
+                    <Border.Background>
                         <ImageBrush ImageSource="../Assets/btn_jog_left.png" />
-                    </Button.Background>
-                </Button>
+                    </Border.Background>
+                </Border>
 
-                <Button
+                <!--  JOG RIGHT  -->
+                <Border
+                    x:Name="JogRightBtn"
                     Grid.Row="1"
                     Grid.Column="2"
                     Margin="15"
-                    Command="{Binding BtnJogRight}"
-                    Style="{StaticResource RoundedButtonStyle}">
-                    <Button.Background>
+                    MouseDown="JogStop_MouseDown"
+                    MouseUp="JogStop_MouseUp"
+                    Style="{StaticResource RoundedBorderStyle}">
+                    <Border.Background>
                         <ImageBrush ImageSource="../Assets/btn_jog_right.png" />
-                    </Button.Background>
-                </Button>
+                    </Border.Background>
+                </Border>
 
-
-                <Button
+                <!--  JOG STOP  -->
+                <Border
+                    x:Name="JogStopBtn"
                     Grid.Row="1"
                     Grid.Column="1"
                     Margin="15"
-                    Command="{Binding BtnJogStop}"
-                    Style="{StaticResource RoundedButtonStyle}">
-                    <Button.Background>
+                    MouseDown="JogStop_MouseDown"
+                    MouseUp="JogStop_MouseUp"
+                    Style="{StaticResource RoundedBorderStyle}">
+                    <Border.Background>
                         <ImageBrush ImageSource="../Assets/btn_jog_stop.png" />
-                    </Button.Background>
-                </Button>
+                    </Border.Background>
+                </Border>
 
-                <Button
+
+                <!--  JOG UP  -->
+                <Border
+                    x:Name="JogUpBtn"
                     Grid.Row="0"
                     Grid.Column="3"
                     Margin="15"
-                    Command="{Binding BtnScrewUp}"
-                    Style="{StaticResource RoundedButtonStyle}">
-                    <Button.Background>
+                    MouseDown="JogStop_MouseDown"
+                    MouseUp="JogStop_MouseUp"
+                    Style="{StaticResource RoundedBorderStyle}">
+                    <Border.Background>
                         <ImageBrush ImageSource="../Assets/btn_screw_up.png" />
-                    </Button.Background>
-                </Button>
+                    </Border.Background>
+                </Border>
 
-                <Button
+                <Border
+                    x:Name="JogReturnBtn"
                     Grid.Row="1"
                     Grid.Column="3"
                     Margin="15"
-                    Command="{Binding BtnScrewReturn}"
-                    Style="{StaticResource RoundedButtonStyle}">
-                    <Button.Background>
+                    MouseDown="JogStop_MouseDown"
+                    MouseUp="JogStop_MouseUp"
+                    Style="{StaticResource RoundedBorderStyle}">
+                    <Border.Background>
                         <ImageBrush ImageSource="../Assets/btn_screw_return.png" />
-                    </Button.Background>
-                </Button>
+                    </Border.Background>
+                </Border>
 
-                <Button
+                <Border
+                    x:Name="JogDownBtn"
                     Grid.Row="2"
                     Grid.Column="3"
                     Margin="15"
-                    Command="{Binding BtnScrewDown}"
-                    Style="{StaticResource RoundedButtonStyle}">
-                    <Button.Background>
+                    MouseDown="JogStop_MouseDown"
+                    MouseUp="JogStop_MouseUp"
+                    Style="{StaticResource RoundedBorderStyle}">
+                    <Border.Background>
                         <ImageBrush ImageSource="../Assets/btn_screw_down.png" />
-                    </Button.Background>
-                </Button>
+                    </Border.Background>
+                </Border>
 
 
                 <TextBlock
-                    Grid.Column="0"
                     Grid.Row="3"
+                    Grid.Column="0"
                     Margin="10,0,0,0"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Center"
                     FontSize="15"
                     Foreground="White"
                     Text="Move Speed" />
-                
+
                 <TextBox
-                    Grid.Column="1"
                     Grid.Row="3"
+                    Grid.Column="1"
                     Margin="10,0,0,0"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Center"
-                    FontSize="20"
+                    Background="Transparent"
                     BorderThickness="0"
-                    Text="00"
+                    FontSize="20"
                     Foreground="White"
-                    Background="Transparent"/>
+                    Text="00" />
             </Grid>
 
         </Grid>

@@ -54,8 +54,21 @@
         </Setter>
     </Style>
 
-    
-    <!--Slider Design-->
+    <Style x:Key="RoundedBorderStyle" TargetType="Border">
+        <Setter Property="CornerRadius" Value="30" />
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Opacity" Value="1.0" />
+            </Trigger>
+            <Trigger Property="IsMouseOver" Value="False">
+                <Setter Property="Opacity" Value="0.5" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+
+
+    <!--  Slider Design  -->
     <SolidColorBrush x:Key="CustomSliderBackgroundSolidColorBrush" Color="#1E211B" />
     <LinearGradientBrush x:Key="CustomSliderForegroundBrush" StartPoint="0,0" EndPoint="0,1">
         <GradientStop Offset="0.1" Color="#FF010A1F" />

@@ -72,6 +72,8 @@
     </ApplicationDefinition>
     <Compile Include="Model\JogController.cs" />
     <Compile Include="Model\WindowStyle.cs" />
+    <Compile Include="SignalMessage.cs" />
+    <Compile Include="StaticControllerSignal.cs" />
     <Compile Include="ViewModel\JogControllerViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />
@@ -158,5 +160,6 @@
   <ItemGroup>
     <Resource Include="Assets\btn_screw_return.png" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

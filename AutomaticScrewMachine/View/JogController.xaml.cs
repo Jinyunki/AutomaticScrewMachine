@@ -1,17 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+using System.Diagnostics;
+using System.Reflection;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace AutomaticScrewMachine.View
 {
@@ -20,9 +11,46 @@ namespace AutomaticScrewMachine.View
     /// </summary>
     public partial class JogController : UserControl
     {
+        private Border clickedBorder;
         public JogController()
         {
             InitializeComponent();
         }
+
+        private void JogStop_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            Debug.WriteLine("==========   Start   ==========\nMethodName : " + (MethodBase.GetCurrentMethod().Name) + "\n");
+            try
+            {
+                clickedBorder = sender as Border;
+                if (clickedBorder != null)
+                {
+                    StaticControllerSignal.ControllerSignalView(clickedBorder.Name,buzzerPositionX,buzzerPositionY,buzzerPositionZ);
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine("========== Exception ==========\nMethodName : " + (MethodBase.GetCurrentMethod().Name) + "\nException : " + ex);
+                throw;
+            }
+        }
+
+        private void JogStop_MouseUp(object sender, MouseButtonEventArgs e)
+        {
+            Trace.WriteLine("==========   Start   ==========\nMethodName : " + (MethodBase.GetCurrentMethod().Name) + "\n");
+            try
+            {
+                StaticControllerSignal.StopControllerSignalView();
+                StaticControllerSignal.BuzzerOff(clickedBorder.Name, buzzerPositionX, buzzerPositionY, buzzerPositionZ);
+                
+            }
+            catch (Exception ex)
+            {
+                Trace.WriteLine("========== Exception ==========\nMethodName : " + (MethodBase.GetCurrentMethod().Name) + "\nException : " + ex);
+                throw;
+            }
+
+        }
+
     }
 }
