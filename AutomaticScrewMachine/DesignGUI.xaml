@@ -4,6 +4,104 @@
     <SolidColorBrush x:Key="DarkBrush" Color="DarkSlateBlue" />
     <SolidColorBrush x:Key="DeepNaby" Color="#FF000C1D" />
 
+    <!--  ScrollView Thumb  -->
+
+    <Style x:Key="ScrollThumbs" TargetType="{x:Type Thumb}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Thumb}">
+                    <Grid x:Name="Grid">
+                        <Rectangle
+                            Width="Auto"
+                            Height="Auto"
+                            HorizontalAlignment="Stretch"
+                            VerticalAlignment="Stretch"
+                            Fill="Transparent" />
+                        <Border
+                            x:Name="ScrollBarRectangle"
+                            Width="Auto"
+                            Height="Auto"
+                            HorizontalAlignment="Stretch"
+                            VerticalAlignment="Stretch"
+                            Background="{TemplateBinding Background}"
+                            CornerRadius="5" />
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="Tag" Value="Horizontal">
+                            <Setter TargetName="ScrollBarRectangle" Property="Width" Value="Auto" />
+                            <Setter TargetName="ScrollBarRectangle" Property="Height" Value="7" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style TargetType="{x:Type ScrollBar}">
+        <Setter Property="Margin" Value="-5,0,0,0" />
+        <Setter Property="Stylus.IsFlicksEnabled" Value="false" />
+        <Setter Property="Foreground" Value="#FF8C8C8C" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="Width" Value="8" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ScrollBar}">
+                    <Grid
+                        x:Name="GridRoot"
+                        Width="8"
+                        Background="{TemplateBinding Background}">
+                        <Track
+                            x:Name="PART_Track"
+                            Focusable="false"
+                            IsDirectionReversed="true">
+                            <Track.Thumb>
+                                <Thumb
+                                    x:Name="ScrollBarThumb"
+                                    Background="{TemplateBinding Foreground}"
+                                    Style="{StaticResource ScrollThumbs}" />
+                            </Track.Thumb>
+                            <Track.IncreaseRepeatButton>
+                                <RepeatButton
+                                    x:Name="PageUp"
+                                    Command="ScrollBar.PageDownCommand"
+                                    Focusable="false"
+                                    Opacity="0" />
+                            </Track.IncreaseRepeatButton>
+                            <Track.DecreaseRepeatButton>
+                                <RepeatButton
+                                    x:Name="PageDown"
+                                    Command="ScrollBar.PageUpCommand"
+                                    Focusable="false"
+                                    Opacity="0" />
+                            </Track.DecreaseRepeatButton>
+                        </Track>
+                    </Grid>
+
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsEnabled" Value="false">
+                            <Setter TargetName="ScrollBarThumb" Property="Visibility" Value="Collapsed" />
+                        </Trigger>
+                        <Trigger Property="Orientation" Value="Horizontal">
+                            <Setter TargetName="GridRoot" Property="LayoutTransform">
+                                <Setter.Value>
+                                    <RotateTransform Angle="-90" />
+                                </Setter.Value>
+                            </Setter>
+                            <Setter TargetName="PART_Track" Property="LayoutTransform">
+                                <Setter.Value>
+                                    <RotateTransform Angle="-90" />
+                                </Setter.Value>
+                            </Setter>
+                            <Setter Property="Width" Value="Auto" />
+                            <Setter Property="Height" Value="8" />
+                            <Setter TargetName="ScrollBarThumb" Property="Tag" Value="Horizontal" />
+                            <Setter TargetName="PageDown" Property="Command" Value="ScrollBar.PageLeftCommand" />
+                            <Setter TargetName="PageUp" Property="Command" Value="ScrollBar.PageRightCommand" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
 
     <!--  // Window btn style //  -->
     <Style x:Key="CommonButtonStyle" TargetType="Button">
@@ -68,12 +166,19 @@
 
 
 
+    <LinearGradientBrush x:Key="SignalBrush" StartPoint="0,0" EndPoint="0,1">
+        <GradientStop Offset="0.1" Color="#FF007F24" />
+        <GradientStop Offset="0.5" Color="#FF143E21" />
+        <GradientStop Offset="0.8" Color="#FF007F24" />
+    </LinearGradientBrush>
+
+
     <!--  Slider Design  -->
     <SolidColorBrush x:Key="CustomSliderBackgroundSolidColorBrush" Color="#1E211B" />
     <LinearGradientBrush x:Key="CustomSliderForegroundBrush" StartPoint="0,0" EndPoint="0,1">
         <GradientStop Offset="0.1" Color="#FF010A1F" />
         <GradientStop Offset="0.5" Color="#FF111E40" />
-        <GradientStop Offset="0.8" Color="#FF020919" />
+        <GradientStop Offset="0.9" Color="#FF020919" />
     </LinearGradientBrush>
 
     <LinearGradientBrush x:Key="CustomSliderThumBrush" StartPoint="0,0" EndPoint="0,1">

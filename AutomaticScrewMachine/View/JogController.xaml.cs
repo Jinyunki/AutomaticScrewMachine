@@ -23,7 +23,7 @@ namespace AutomaticScrewMachine.View
             try
             {
                 clickedBorder = sender as Border;
-                if (clickedBorder != null)
+                if (clickedBorder != null && e.LeftButton == MouseButtonState.Pressed)
                 {
                     StaticControllerSignal.ControllerSignalView(clickedBorder.Name,buzzerPositionX,buzzerPositionY,buzzerPositionZ);
                 }
@@ -40,9 +40,11 @@ namespace AutomaticScrewMachine.View
             Trace.WriteLine("==========   Start   ==========\nMethodName : " + (MethodBase.GetCurrentMethod().Name) + "\n");
             try
             {
-                StaticControllerSignal.StopControllerSignalView();
-                StaticControllerSignal.BuzzerOff(clickedBorder.Name, buzzerPositionX, buzzerPositionY, buzzerPositionZ);
-                
+                if (clickedBorder != null)
+                {
+                    StaticControllerSignal.StopControllerSignalView();
+                    StaticControllerSignal.BuzzerOff(clickedBorder.Name, buzzerPositionX, buzzerPositionY, buzzerPositionZ);
+                } 
             }
             catch (Exception ex)
             {

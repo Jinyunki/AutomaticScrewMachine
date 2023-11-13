@@ -145,12 +145,6 @@
     <Resource Include="Assets\btn_jog_up.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="icDriver.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="icScrewDriver.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Assets\btn_jog_stop.png" />
   </ItemGroup>
   <ItemGroup>

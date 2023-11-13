@@ -3,18 +3,22 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:local="clr-namespace:AutomaticScrewMachine.View"
+    xmlns:local="clr-namespace:AutomaticScrewMachine"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     d:DesignHeight="800"
     d:DesignWidth="1600"
     Background="Transparent"
     DataContext="{Binding JogControllerViewModel, Source={StaticResource Locator}}"
+    MouseUp="JogStop_MouseUp"
     mc:Ignorable="d">
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="../DesignGUI.xaml" />
             </ResourceDictionary.MergedDictionaries>
+
+
+
 
         </ResourceDictionary>
     </UserControl.Resources>
@@ -32,221 +36,221 @@
 
             <Border
                 Grid.Row="0"
-                Background="{DynamicResource DeepNaby}"
-                CornerRadius="20">
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition />
-                        <RowDefinition />
-                        <RowDefinition />
-                        <RowDefinition />
-                        <RowDefinition />
-                        <RowDefinition />
-                    </Grid.RowDefinitions>
+                Background="{DynamicResource CustomSliderForegroundBrush}"
+                CornerRadius="15" />
+            <Grid Grid.Row="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
 
-                    <Border
-                        Grid.Row="0"
-                        Background="#FF0E3B61"
-                        CornerRadius="10"
-                        Opacity="0.3" />
-                    <Grid Grid.Row="0">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="10*" />
-                            <ColumnDefinition Width="20*" />
-                            <ColumnDefinition Width="8*" />
-                        </Grid.ColumnDefinitions>
-                        <TextBlock
-                            Grid.Column="0"
-                            Margin="10,0,0,0"
-                            HorizontalAlignment="Left"
-                            VerticalAlignment="Center"
-                            FontSize="20"
-                            Foreground="White"
-                            Text="Category" />
-                        <TextBlock
-                            Grid.Column="1"
-                            HorizontalAlignment="Left"
-                            VerticalAlignment="Center"
-                            FontSize="20"
-                            Foreground="White"
-                            Text="PositionValue" />
+                <Border
+                    Grid.Row="0"
+                    Background="{DynamicResource DeepNaby}"
+                    CornerRadius="10"
+                    Opacity="0.3" />
+                <Grid Grid.Row="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="10*" />
+                        <ColumnDefinition Width="20*" />
+                        <ColumnDefinition Width="8*" />
+                    </Grid.ColumnDefinitions>
+                    <TextBlock
+                        Grid.Column="0"
+                        Margin="10,0,0,0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        FontSize="20"
+                        Foreground="White"
+                        Text="Category" />
+                    <TextBlock
+                        Grid.Column="1"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        FontSize="20"
+                        Foreground="White"
+                        Text="PositionValue" />
 
-                        <TextBlock
-                            Grid.Column="2"
-                            HorizontalAlignment="Center"
-                            VerticalAlignment="Center"
-                            FontSize="20"
-                            Foreground="White"
-                            Text="SIGNAL" />
-                    </Grid>
-
-
-
-                    <Grid Grid.Row="1">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="10*" />
-                            <ColumnDefinition Width="20*" />
-                            <ColumnDefinition Width="8*" />
-                        </Grid.ColumnDefinitions>
-                        <TextBlock
-                            Grid.Column="0"
-                            Margin="10,0,0,0"
-                            HorizontalAlignment="Left"
-                            VerticalAlignment="Center"
-                            FontSize="20"
-                            Foreground="White"
-                            Text="Position X" />
-                        <TextBlock
-                            Grid.Column="1"
-                            HorizontalAlignment="Left"
-                            VerticalAlignment="Center"
-                            FontSize="20"
-                            Foreground="White"
-                            Text="{Binding PositionValueX, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                        <Border
-                            x:Name="buzzerPositionX"
-                            Grid.Column="2"
-                            Width="50"
-                            Height="50"
-                            HorizontalAlignment="Center"
-                            VerticalAlignment="Center"
-                            Background="Gray"
-                            CornerRadius="50" />
-                    </Grid>
-
-                    <Grid Grid.Row="2">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="10*" />
-                            <ColumnDefinition Width="20*" />
-                            <ColumnDefinition Width="8*" />
-                        </Grid.ColumnDefinitions>
-                        <TextBlock
-                            Grid.Column="0"
-                            Margin="10,0,0,0"
-                            HorizontalAlignment="Left"
-                            VerticalAlignment="Center"
-                            FontSize="20"
-                            Foreground="White"
-                            Text="Position Y" />
-                        <TextBlock
-                            Grid.Column="1"
-                            HorizontalAlignment="Left"
-                            VerticalAlignment="Center"
-                            FontSize="20"
-                            Foreground="White"
-                            Text="{Binding PositionValueY, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                        <Border
-                            x:Name="buzzerPositionY"
-                            Grid.Column="2"
-                            Width="50"
-                            Height="50"
-                            HorizontalAlignment="Center"
-                            VerticalAlignment="Center"
-                            Background="Gray"
-                            CornerRadius="50" />
-                    </Grid>
-
-                    <Grid Grid.Row="3">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="10*" />
-                            <ColumnDefinition Width="20*" />
-                            <ColumnDefinition Width="8*" />
-                        </Grid.ColumnDefinitions>
-                        <TextBlock
-                            Grid.Column="0"
-                            Margin="10,0,0,0"
-                            HorizontalAlignment="Left"
-                            VerticalAlignment="Center"
-                            FontSize="20"
-                            Foreground="White"
-                            Text="Position Z" />
-                        <TextBlock
-                            Grid.Column="1"
-                            HorizontalAlignment="Left"
-                            VerticalAlignment="Center"
-                            FontSize="20"
-                            Foreground="White"
-                            Text="{Binding PositionValueZ, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                        <Border
-                            x:Name="buzzerPositionZ"
-                            Grid.Column="2"
-                            Width="50"
-                            Height="50"
-                            HorizontalAlignment="Center"
-                            VerticalAlignment="Center"
-                            Background="Gray"
-                            CornerRadius="50" />
-                    </Grid>
-
-                    <Grid Grid.Row="4">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="10*" />
-                            <ColumnDefinition Width="20*" />
-                            <ColumnDefinition Width="8*" />
-                        </Grid.ColumnDefinitions>
-                        <TextBlock
-                            Grid.Column="0"
-                            Margin="10,0,0,0"
-                            HorizontalAlignment="Left"
-                            VerticalAlignment="Center"
-                            FontSize="20"
-                            Foreground="White"
-                            Text="Encoder" />
-                        <TextBlock
-                            Grid.Column="1"
-                            HorizontalAlignment="Left"
-                            VerticalAlignment="Center"
-                            FontSize="20"
-                            Foreground="White"
-                            Text="Value Encoder" />
-                        <Border
-                            Grid.Column="2"
-                            Width="50"
-                            Height="50"
-                            HorizontalAlignment="Center"
-                            VerticalAlignment="Center"
-                            Background="Gray"
-                            CornerRadius="50" />
-                    </Grid>
-
-                    <Grid Grid.Row="5">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="10*" />
-                            <ColumnDefinition Width="20*" />
-                            <ColumnDefinition Width="8*" />
-                        </Grid.ColumnDefinitions>
-                        <TextBlock
-                            Grid.Column="0"
-                            Margin="10,0,0,0"
-                            HorizontalAlignment="Left"
-                            VerticalAlignment="Center"
-                            FontSize="20"
-                            Foreground="White"
-                            Text="Encoder ll" />
-                        <TextBlock
-                            Grid.Column="1"
-                            HorizontalAlignment="Left"
-                            VerticalAlignment="Center"
-                            FontSize="20"
-                            Foreground="White"
-                            Text="Value Encoder ll" />
-                        <Border
-                            Grid.Column="2"
-                            Width="50"
-                            Height="50"
-                            HorizontalAlignment="Center"
-                            VerticalAlignment="Center"
-                            Background="Gray"
-                            CornerRadius="50" />
-                    </Grid>
-
+                    <TextBlock
+                        Grid.Column="2"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        FontSize="20"
+                        Foreground="White"
+                        Text="SIGNAL" />
                 </Grid>
-            </Border>
+
+
+
+                <Grid Grid.Row="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="10*" />
+                        <ColumnDefinition Width="20*" />
+                        <ColumnDefinition Width="8*" />
+                    </Grid.ColumnDefinitions>
+                    <TextBlock
+                        Grid.Column="0"
+                        Margin="10,0,0,0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        FontSize="20"
+                        Foreground="White"
+                        Text="Position X" />
+                    <TextBlock
+                        Grid.Column="1"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        FontSize="20"
+                        Foreground="White"
+                        Text="{Binding PositionValueX, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    <Border
+                        x:Name="buzzerPositionX"
+                        Grid.Column="2"
+                        Width="50"
+                        Height="50"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Background="Gray"
+                        CornerRadius="50" />
+                </Grid>
+
+                <Grid Grid.Row="2">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="10*" />
+                        <ColumnDefinition Width="20*" />
+                        <ColumnDefinition Width="8*" />
+                    </Grid.ColumnDefinitions>
+                    <TextBlock
+                        Grid.Column="0"
+                        Margin="10,0,0,0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        FontSize="20"
+                        Foreground="White"
+                        Text="Position Y" />
+                    <TextBlock
+                        Grid.Column="1"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        FontSize="20"
+                        Foreground="White"
+                        Text="{Binding PositionValueY, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    <Border
+                        x:Name="buzzerPositionY"
+                        Grid.Column="2"
+                        Width="50"
+                        Height="50"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Background="Gray"
+                        CornerRadius="50" />
+                </Grid>
+
+                <Grid Grid.Row="3">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="10*" />
+                        <ColumnDefinition Width="20*" />
+                        <ColumnDefinition Width="8*" />
+                    </Grid.ColumnDefinitions>
+                    <TextBlock
+                        Grid.Column="0"
+                        Margin="10,0,0,0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        FontSize="20"
+                        Foreground="White"
+                        Text="Position Z" />
+                    <TextBlock
+                        Grid.Column="1"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        FontSize="20"
+                        Foreground="White"
+                        Text="{Binding PositionValueZ, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    <Border
+                        x:Name="buzzerPositionZ"
+                        Grid.Column="2"
+                        Width="50"
+                        Height="50"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Background="Gray"
+                        CornerRadius="50" />
+                </Grid>
+
+                <Grid Grid.Row="4">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="10*" />
+                        <ColumnDefinition Width="20*" />
+                        <ColumnDefinition Width="8*" />
+                    </Grid.ColumnDefinitions>
+                    <TextBlock
+                        Grid.Column="0"
+                        Margin="10,0,0,0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        FontSize="20"
+                        Foreground="White"
+                        Text="Encoder" />
+                    <TextBlock
+                        Grid.Column="1"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        FontSize="20"
+                        Foreground="White"
+                        Text="Value Encoder" />
+                    <Border
+                        Grid.Column="2"
+                        Width="50"
+                        Height="50"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Background="Gray"
+                        CornerRadius="50" />
+                </Grid>
+
+                <Grid Grid.Row="5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="10*" />
+                        <ColumnDefinition Width="20*" />
+                        <ColumnDefinition Width="8*" />
+                    </Grid.ColumnDefinitions>
+                    <TextBlock
+                        Grid.Column="0"
+                        Margin="10,0,0,0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        FontSize="20"
+                        Foreground="White"
+                        Text="Encoder ll" />
+                    <TextBlock
+                        Grid.Column="1"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        FontSize="20"
+                        Foreground="White"
+                        Text="Value Encoder ll" />
+                    <Border
+                        Grid.Column="2"
+                        Width="50"
+                        Height="50"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Background="Gray"
+                        CornerRadius="50" />
+                </Grid>
+
+            </Grid>
+
 
             <Border
                 Grid.Row="1"
                 Background="{DynamicResource CustomSliderForegroundBrush}"
-                CornerRadius="20" />
+                CornerRadius="15" />
             <Grid Grid.Row="1">
                 <Grid.RowDefinitions>
                     <RowDefinition />
@@ -400,5 +404,129 @@
             </Grid>
 
         </Grid>
+
+        <Grid Grid.Column="1" Background="Transparent">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="0.9*" />
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="3*" />
+                <RowDefinition Height="5*" />
+                <RowDefinition Height="1*" />
+            </Grid.RowDefinitions>
+
+            <Border
+                Grid.Row="0"
+                Grid.RowSpan="2"
+                Background="{DynamicResource DeepNaby}"
+                CornerRadius="15" />
+            <Grid Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <TextBlock
+                    Grid.Column="0"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    FontSize="15"
+                    Foreground="White"
+                    Text="NAME" />
+                <TextBlock
+                    Grid.Column="1"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    FontSize="15"
+                    Foreground="White"
+                    Text="X-Value" />
+                <TextBlock
+                    Grid.Column="2"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    FontSize="15"
+                    Foreground="White"
+                    Text="Y-Value" />
+                <TextBlock
+                    Grid.Column="3"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    FontSize="15"
+                    Foreground="White"
+                    Text="Z-Value" />
+                <TextBlock
+                    Grid.Column="4"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    FontSize="15"
+                    Foreground="White"
+                    Text="AddBtn" />
+            </Grid>
+
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <TextBox
+                    Grid.Column="0"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Background="Black"
+                    BorderThickness="0"
+                    FontSize="15"
+                    Foreground="White"
+                    Text="{Binding TitleName}" />
+                <TextBlock
+                    Grid.Column="1"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    FontSize="15"
+                    Foreground="White"
+                    Text="{Binding PositionValueX}" />
+                <TextBlock
+                    Grid.Column="2"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    FontSize="15"
+                    Foreground="White"
+                    Text="{Binding PositionValueY}" />
+                <TextBlock
+                    Grid.Column="3"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    FontSize="15"
+                    Foreground="White"
+                    Text="{Binding PositionValueZ}" />
+
+                <Button
+                    Grid.Column="4"
+                    Margin="10"
+                    Command="{Binding AddPosition}"
+                    Content="ADD" />
+            </Grid>
+
+            <ListBox
+                Grid.Row="2"
+                Background="{DynamicResource DeepNaby}"
+                ItemsSource="{Binding JogDataList}"
+                DisplayMemberPath="Name"
+                Foreground="White"
+                FontSize="25"
+                SelectedItem="{Binding SelectedItem}"
+                >
+            </ListBox>
+
+            <Button
+                Grid.Row="3"
+                Margin="50"
+                Command="{Binding RemoveSelectedCommand}"
+                Content="DELETE" />
+        </Grid>
+
     </Grid>
 </UserControl>

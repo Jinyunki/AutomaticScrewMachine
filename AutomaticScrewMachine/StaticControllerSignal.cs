@@ -8,8 +8,8 @@ namespace AutomaticScrewMachine
 {
     public static class StaticControllerSignal
     {
-        
-        private static readonly DispatcherTimer _dispatcherTimer = new DispatcherTimer();
+        private static int ThreadSignalTimer = 100;
+        private static DispatcherTimer _dispatcherTimer  ;
 
         public static bool IsPress = false;
         public static bool BuzzerSignal_X = false;
@@ -37,10 +37,15 @@ namespace AutomaticScrewMachine
 
         public static void ControllerSignalView(string clickBorderName, Border xBuzzer, Border yBuzzer, Border zBuzzer)
         {
-            _dispatcherTimer.Interval = TimeSpan.FromMilliseconds(100); // 0.5초
+            _dispatcherTimer = new DispatcherTimer
+            {
+                Interval = TimeSpan.FromMilliseconds(ThreadSignalTimer) // 0.5초
+            };
             _dispatcherTimer.Tick += DispatcherTimer_Tick;
             IsPress = true;
             _dispatcherTimer.Start();
+
+
             switch (clickBorderName)
             {
                 case string n when n == JOG_STOP:

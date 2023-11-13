@@ -97,7 +97,10 @@
             CornerRadius="5"
             Opacity="{Binding RealTransparentValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
-        <Grid Grid.Row="1" Opacity="{Binding RealTransparentValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+        <Grid
+            Grid.Row="1"
+            Margin="10"
+            Opacity="{Binding RealTransparentValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
             <ContentControl Content="{Binding CurrentViewModel, UpdateSourceTrigger=PropertyChanged}" />
         </Grid>
 
