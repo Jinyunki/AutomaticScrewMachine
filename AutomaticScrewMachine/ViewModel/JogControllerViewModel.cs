@@ -4,10 +4,7 @@ using GalaSoft.MvvmLight.Messaging;
 using System;
 using System.Diagnostics;
 using System.Reflection;
-using System.Threading;
-using System.Windows;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 
 namespace AutomaticScrewMachine.ViewModel
@@ -17,11 +14,12 @@ namespace AutomaticScrewMachine.ViewModel
     {
         public JogControllerViewModel()
         {
-            // 이벤트 관장 핸들러 메신저
+            JogMoveSpeed = 1;
+            // 이벤트 관장 핸들러 메신저 Jog 컨트롤
             Messenger.Default.Register<SignalMessage>(this, HandleSignalMessage);
-
-            // MOVE SPEED CTR
-            SetMoveSpeed();
+            
+            // ServoMotor 제어 Thread Start
+            ServoMotorThread();
 
             //SEQ BTN
             AddPosition = new RelayCommand(AddPos);
@@ -32,67 +30,96 @@ namespace AutomaticScrewMachine.ViewModel
             HomeCommand = new RelayCommand(CmdHomeReturn);
             EmergencyStopCommand = new RelayCommand(EmergencyStop);
 
-            ServoCheckX = new RelayCommand(SetServoStateX);
-            ServoCheckY = new RelayCommand(SetServoStateY);
-            ServoCheckZ = new RelayCommand(SetServoStateZ);
+            // Servo
+            ServoCheckX = new RelayCommand(() => SetServoState(1, valueX));
+            ServoCheckY = new RelayCommand(() => SetServoState(0, valueY));
+            ServoCheckZ = new RelayCommand(() => SetServoState(2, valueZ));
+
+            // Sylinder AND Air
+            TorqIO = new RelayCommand(() => SetWriteOutport(8, torqS));
+            DepthIO = new RelayCommand(() => SetWriteOutport(9, depthS));
+
+        }
+        private void ServoMotorThread()
+        {
+            Trace.WriteLine("==========   Start   ==========\nMethodName : " + (MethodBase.GetCurrentMethod().Name) + "\n");
+            try
+            {
+                Motion_IO_Dispatcher = new DispatcherTimer
+                {
+                    Interval = TimeSpan.FromMilliseconds(100)
+                };
+                Motion_IO_Dispatcher.Tick += Motion_Timer_Tick;
+                Motion_IO_Dispatcher.Start();
+            }
+            catch (Exception ex)
+            {
+                Trace.WriteLine("========== Exception ==========\nMethodName : " + (MethodBase.GetCurrentMethod().Name) + "\nException : " + ex);
+                throw;
+            }
+
         }
 
-        private void SetServoStateX()
+        public void Motion_Timer_Tick(object sender, EventArgs e)
         {
-            uint ServoOn = 1;
-            uint ServoOff = 0;
-            uint value = 0;
-            CAXM.AxmSignalIsServoOn(1, ref value); // 서보 온오프 상태
-            Console.WriteLine(value);
-            if (value == 0)
-            {
-                CAXM.AxmSignalServoOn(1, ServoOn); // On
-                ServoX = Brushes.Green;
-            }
-            else
-            {
-                CAXM.AxmSignalServoOn(1, ServoOff); // Off
-                ServoX = Brushes.Gray;
-            }
+            GetServoData();
+            GetPositionData();
+            GetBuzzerData();
+            GetSylinderData();
         }
-        
-        private void SetServoStateY()
+
+        private void GetSylinderData()
         {
-            uint ServoOn = 1;
-            uint ServoOff = 0;
-            uint value = 0;
-            CAXM.AxmSignalIsServoOn(0, ref value); // 서보 온오프 상태
-            Console.WriteLine(value);
-            if (value == 0)
-            {
-                CAXM.AxmSignalServoOn(0, ServoOn); // On
-                ServoY = Brushes.Green;
-            }
-            else
-            {
-                CAXM.AxmSignalServoOn(0, ServoOff); // Off
-                ServoY = Brushes.Gray;
-            }
+            CAXD.AxdoReadOutport(8, ref torqS);
+            TorqSig = RecevieSignalColor(torqS);
+            CAXD.AxdoReadOutport(9, ref depthS);
+            DepthSig = RecevieSignalColor(depthS);
         }
-        
-        private void SetServoStateZ()
+        public void GetServoData()
         {
-            uint ServoOn = 1;
-            uint ServoOff = 0;
-            uint value = 0;
-            CAXM.AxmSignalIsServoOn(2, ref value); // 서보 온오프 상태
-            Console.WriteLine(value);
-            if (value == 0)
-            {
-                CAXM.AxmSignalServoOn(2, ServoOn); // On
-                ServoZ = Brushes.Green;
-            }
-            else
-            {
-                CAXM.AxmSignalServoOn(2, ServoOff); // Off
-                ServoZ = Brushes.Gray;
-            }
+            CAXM.AxmSignalIsServoOn(1, ref valueX);
+            CAXM.AxmSignalIsServoOn(0, ref valueY);
+            CAXM.AxmSignalIsServoOn(2, ref valueZ);
+            ServoX = RecevieSignalColor(valueX);
+            ServoY = RecevieSignalColor(valueY);
+            ServoZ = RecevieSignalColor(valueZ);
         }
+        public void GetPositionData()
+        {
+            double dpX = 9;
+            double dpY = 9;
+            double dpZ = 9;
+            CAXM.AxmStatusGetCmdPos(1, ref dpX);
+            CAXM.AxmStatusGetCmdPos(0, ref dpY);
+            CAXM.AxmStatusGetCmdPos(2, ref dpZ);
+            PositionValueX = dpX;
+            PositionValueY = dpY;
+            PositionValueZ = dpZ;
+        }
+        public void GetBuzzerData()
+        {
+            uint moveSigX = 9;
+            uint moveSigY = 9;
+            uint moveSigZ = 9;
+            CAXM.AxmStatusReadInMotion(1, ref moveSigX);
+            CAXM.AxmStatusReadInMotion(0, ref moveSigY);
+            CAXM.AxmStatusReadInMotion(2, ref moveSigZ);
+            BuzzerX = RecevieSignalColor(moveSigX);
+            BuzzerY = RecevieSignalColor(moveSigY);
+            BuzzerZ = RecevieSignalColor(moveSigZ);
+
+        }
+
+        private void SetServoState(int axis, uint value)
+        {
+            CAXM.AxmSignalServoOn(axis, (uint)(value == 0 ? 1 : 0));
+        }
+
+        private void SetWriteOutport(int axis, uint value)
+        {
+            CAXD.AxdoWriteOutport(axis, (uint)(value == 0 ? 1 : 0));
+        }
+
 
         private void HandleSignalMessage(SignalMessage message)
         {
@@ -106,32 +133,30 @@ namespace AutomaticScrewMachine.ViewModel
                     {
                         // y 전후방
                         case string n when n == StaticControllerSignal.JOG_STRAIGHT:
-                            PositionValueY = AxinMoveControll(0, -MC_JogSpeed);
-
+                            CAXM.AxmMoveVel(0, -MC_JogSpeed, MC_JogAcl, MC_JogDcl);
                             break;
                         case string n when n == StaticControllerSignal.JOG_BACK:
-                            PositionValueY = AxinMoveControll(0, MC_JogSpeed);
+                            CAXM.AxmMoveVel(0, MC_JogSpeed, MC_JogAcl, MC_JogDcl);
                             break;
 
 
                         // x 좌우
                         case string n when n == StaticControllerSignal.JOG_LEFT:
-                            PositionValueX = AxinMoveControll(1, -MC_JogSpeed);
+                            CAXM.AxmMoveVel(1, -MC_JogSpeed, MC_JogAcl, MC_JogDcl);
                             break;
                         case string n when n == StaticControllerSignal.JOG_RIGHT:
-                            PositionValueX = AxinMoveControll(1, MC_JogSpeed);
+                            CAXM.AxmMoveVel(1, MC_JogSpeed, MC_JogAcl, MC_JogDcl);
                             break;
 
 
                         // z 위아래
                         case string n when n == StaticControllerSignal.JOG_UP:
-                            PositionValueZ = AxinMoveControll(2, -MC_JogSpeed * 0.1);
+                            CAXM.AxmMoveVel(2, -MC_JogSpeed * 0.5, MC_JogAcl, MC_JogDcl);
                             break;
 
                         case string n when n == StaticControllerSignal.JOG_DOWN:
-                            PositionValueZ = AxinMoveControll(2, MC_JogSpeed * 0.1);
+                            CAXM.AxmMoveVel(2, MC_JogSpeed * 0.5, MC_JogAcl, MC_JogDcl);
                             break;
-
 
                         default:
                             break;
@@ -140,9 +165,6 @@ namespace AutomaticScrewMachine.ViewModel
 
                 else
                 {
-                    BuzzerX = Brushes.Gray;
-                    BuzzerY = Brushes.Gray;
-                    BuzzerZ = Brushes.Gray;
                     CAXM.AxmMoveSStop(0);
                     CAXM.AxmMoveSStop(1);
                     CAXM.AxmMoveSStop(2);
@@ -157,57 +179,39 @@ namespace AutomaticScrewMachine.ViewModel
 
         }
 
-        #region JogSpeedCtr
-        private void SetMoveSpeed()
-        {
-            JogMoveSpeed = 1;
-            JogSpeedUp = new RelayCommand(SpeedUp);
-            JogSpeedDown = new RelayCommand(SpeedDown);
-        }
-
-        private void SpeedUp()
-        {
-            JogMoveSpeed += 0.5;
-        }
-
-        private void SpeedDown()
-        {
-            if (JogMoveSpeed <= 0.101)
-            {
-                return;
-            }
-            if (JogMoveSpeed < 1.1)
-            {
-                JogMoveSpeed -= 0.1;
-            }
-            else
-            {
-                JogMoveSpeed -= 0.5;
-            }
-        }
-
-        #endregion
+        
 
         #region ListBoxConf
         private void AddPos()
         {
-            if (TitleName != "")
-            {
-                JogData jogData = new JogData()
-                {
-                    Name = TitleName,
-                    X = PositionValueX,
-                    Y = PositionValueY,
-                    Z = PositionValueZ,
-                };
 
-                JogDataList.Add(jogData);
-                TitleName = "";
-            }
-            else
+            Trace.WriteLine("==========   Start   ==========\nMethodName : " + (MethodBase.GetCurrentMethod().Name) + "\n");
+            try
             {
-                TitleName = "#" + JogDataList.Count.ToString();
+                if (TitleName != "")
+                {
+                    JogData jogData = new JogData()
+                    {
+                        Name = TitleName,
+                        X = PositionValueX,
+                        Y = PositionValueY,
+                        Z = PositionValueZ,
+                    };
+
+                    JogDataList.Add(jogData);
+                    TitleName = "";
+                }
+                else
+                {
+                    TitleName = "#" + JogDataList.Count.ToString();
+                }
             }
+            catch (Exception ex)
+            {
+                Trace.WriteLine("========== Exception ==========\nMethodName : " + (MethodBase.GetCurrentMethod().Name) + "\nException : " + ex);
+                throw;
+            }
+
         }
 
         private void RemoveSelected()
@@ -217,7 +221,6 @@ namespace AutomaticScrewMachine.ViewModel
                 JogDataList.Remove(SelectedItem);
             }
 
-            Console.WriteLine(JogDataList.Count.ToString());
         }
         private void CheckSelected()
         {
@@ -227,7 +230,7 @@ namespace AutomaticScrewMachine.ViewModel
             CAXM.AxmMovePos(0, SelectedItem.Y, MC_JogSpeed, MC_JogAcl, MC_JogDcl); //Y
             CAXM.AxmMovePos(1, SelectedItem.X, MC_JogSpeed, MC_JogAcl, MC_JogDcl); //X
 
-            CAXM.AxmMovePos(2, SelectedItem.Z, MC_JogSpeed * 0.1, MC_JogAcl, MC_JogDcl); //Z 축 부터
+            CAXM.AxmMovePos(2, SelectedItem.Z, MC_JogSpeed * 0.1, MC_JogAcl, MC_JogDcl); //Z
         }
         #endregion
 
@@ -238,22 +241,26 @@ namespace AutomaticScrewMachine.ViewModel
             CAXM.AxmMoveSStop(2);
         }
 
+
         private void CmdHomeReturn()
         {
-            CAXM.AxmMovePos(2, 0, MC_JogSpeed * 0.5, MC_JogAcl, MC_JogDcl);
+            CAXM.AxmMovePos(2, 0, MC_JogSpeed, MC_JogAcl, MC_JogDcl);
+            //Thread.Sleep(300);
 
+            CAXM.AxmMovePos(0, 0, MC_JogSpeed, MC_JogAcl, MC_JogDcl);
+            CAXM.AxmMovePos(1, 0, MC_JogSpeed, MC_JogAcl, MC_JogDcl);
 
             CAXM.AxmHomeSetStart(2); // Z
             CAXM.AxmHomeSetStart(0); // Y
             CAXM.AxmHomeSetStart(1); // X
             if (zPosStateValue != 1 || yPosStateValue != 1 || xPosStateValue != 1)
             {
-                VMdispatcherTimer = new DispatcherTimer
+                _positionDipatcher = new DispatcherTimer
                 {
                     Interval = TimeSpan.FromMilliseconds(100)
                 };
-                VMdispatcherTimer.Tick += Pos_Timer_Tick;
-                VMdispatcherTimer.Start();
+                _positionDipatcher.Tick += Pos_Timer_Tick;
+                _positionDipatcher.Start();
             }
         }
 
@@ -263,13 +270,25 @@ namespace AutomaticScrewMachine.ViewModel
             yPosStateValue = AxinStateControll(0);// PositionValueY
             xPosStateValue = AxinStateControll(1);// PositionValueX
 
-            Console.WriteLine("zPosStateValue : " + zPosStateValue);
-            if (zPosStateValue == 1 && PositionValueY < 100 && PositionValueX < 100)
+            if (zPosStateValue == 1)
             {
-                VMdispatcherTimer.Stop();
                 BuzzerZ = Brushes.Gray;
+            }
+
+            if (yPosStateValue == 1)
+            {
+
                 BuzzerY = Brushes.Gray;
+            }
+
+            if (xPosStateValue == 1)
+            {
                 BuzzerX = Brushes.Gray;
+            }
+
+            if (zPosStateValue == 1 && yPosStateValue == 1 && xPosStateValue == 1)
+            {
+                _positionDipatcher.Stop();
                 zPosStateValue = 9;
                 yPosStateValue = 9;
                 xPosStateValue = 9;
@@ -278,61 +297,9 @@ namespace AutomaticScrewMachine.ViewModel
 
         public uint AxinStateControll(int MotionIndexNum)
         {
-
             uint posStateValue = 9;
-            double value = 0;
-            CAXM.AxmStatusGetCmdPos(MotionIndexNum, ref value);
             CAXM.AxmHomeGetResult(MotionIndexNum, ref posStateValue);
-
-            switch (MotionIndexNum)
-            {
-                case 0:
-                    BuzzerY = Brushes.Green;
-                    PositionValueY = value;
-                    break;
-                case 1:
-                    BuzzerX = Brushes.Green;
-                    PositionValueX = value;
-                    break;
-                case 2:
-                    BuzzerZ = Brushes.Green;
-                    PositionValueZ = value;
-                    break;
-            }
-
-
             return posStateValue;
-        }
-
-        private DispatcherTimer VMdispatcherTimer;
-        public uint xPosStateValue = 9;
-        public uint yPosStateValue = 9;
-        public uint zPosStateValue = 9;
-
-
-        public double AxinMoveControll(int MotionIndexNum, double jogSpeed)
-        {
-            switch (MotionIndexNum)
-            {
-                case 0:
-                    BuzzerY = Brushes.Green;
-                    break;
-                case 1:
-                    BuzzerX = Brushes.Green;
-                    break;
-                case 2:
-                    BuzzerZ = Brushes.Green;
-                    break;
-
-                default:
-                    Console.WriteLine("미존재 예외처리");
-                    break;
-
-            }
-            double Dp = 0;
-            CAXM.AxmMoveVel(MotionIndexNum, jogSpeed, MC_JogAcl, MC_JogDcl);
-            CAXM.AxmStatusGetCmdPos(MotionIndexNum, ref Dp);
-            return Dp;
         }
     }
 }

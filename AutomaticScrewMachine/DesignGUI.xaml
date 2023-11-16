@@ -203,8 +203,8 @@
     <SolidColorBrush x:Key="CustomSliderBackgroundSolidColorBrush" Color="#1E211B" />
     <LinearGradientBrush x:Key="CustomSliderForegroundBrush" StartPoint="0,0" EndPoint="0,1">
         <GradientStop Offset="0.1" Color="#FF010A1F" />
-        <GradientStop Offset="0.5" Color="#FF111E40" />
-        <GradientStop Offset="0.9" Color="#FF020919" />
+        <GradientStop Offset="0.85" Color="#FF020919" />
+        <GradientStop Offset="1.4" Color="#FFACACAC" />
     </LinearGradientBrush>
 
     <LinearGradientBrush x:Key="CustomSliderThumBrush" StartPoint="0,0" EndPoint="0,1">

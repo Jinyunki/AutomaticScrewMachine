@@ -1,11 +1,13 @@
 ﻿using AutomaticScrewMachine.ViewModel;
 using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.Command;
 using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Threading;
 
 namespace AutomaticScrewMachine.Model
 {
@@ -45,9 +47,16 @@ namespace AutomaticScrewMachine.Model
         public ICommand HomeCommand { get; set; }
         public ICommand EmergencyStopCommand { get; set; }
 
-        public ICommand JogSpeedDown { get; set; }
-        public ICommand JogSpeedUp { get; set; }
+        public ICommand TorqIO { get; set; }
+        public ICommand DepthIO { get; set; }
 
+
+        public ICommand JogSpeedUp => new RelayCommand(() => JogMoveSpeed += 0.5);
+        public ICommand JogSpeedDown => new RelayCommand(SpeedDown);
+        private void SpeedDown()
+        {
+            JogMoveSpeed = Math.Max(0.101, JogMoveSpeed - (JogMoveSpeed < 1.1 ? 0.1 : 0.5));
+        }
 
         public ICommand ServoCheckX { get; set; }
         public ICommand ServoCheckY { get; set; }
@@ -81,7 +90,16 @@ namespace AutomaticScrewMachine.Model
         public double MC_JogAcl {  get; set; }
         public double MC_JogDcl {  get; set; }
 
-
+        private int _btnSize = 55;
+        public int BtnSize
+        {
+            get { return _btnSize; }
+            set
+            {
+                _btnSize = value;
+                RaisePropertyChanged(nameof(BtnSize));
+            }
+        }
         private string _titleName = "Seq Name";
         public string TitleName
         {
@@ -190,7 +208,69 @@ namespace AutomaticScrewMachine.Model
             }
         }
 
+        private Brush _torqSig = Brushes.Gray;
+        public Brush TorqSig
+        {
+            get { return _torqSig; }
+            set
+            {
+                _torqSig = value;
+                RaisePropertyChanged(nameof(TorqSig));
+            }
+        }
+
+        private Brush _depthSig = Brushes.Gray;
+        public Brush DepthSig
+        {
+            get { return _depthSig; }
+            set
+            {
+                _depthSig = value;
+                RaisePropertyChanged(nameof(DepthSig));
+            }
+        }
+
+        public Brush RecevieSignalColor(uint signalCode)
+        {
+            Brush ReturnBrush;
+            if (signalCode == 1)
+            {
+                ReturnBrush = Brushes.Green;
+            }
+            else
+            {
+                ReturnBrush = Brushes.Gray;
+            }
+
+            return ReturnBrush;
+        }
+
+        // ServoCheckList
+        public DispatcherTimer Motion_IO_Dispatcher;
+        public uint valueX = 9;
+        public uint valueY = 9;
+        public uint valueZ = 9;
+
+        // ControllCheckList
+        public DispatcherTimer _positionDipatcher;
+        public uint xPosStateValue = 9;
+        public uint yPosStateValue = 9;
+        public uint zPosStateValue = 9;
+
+
+        public uint torqS = 9;
+        public uint depthS = 9;
+
     }
+
+
+
+
+
+
+
+
+    #region ListBox용 Jog클래스
     public class JogData : INotifyPropertyChanged
     {
         private string _name;
@@ -257,4 +337,5 @@ namespace AutomaticScrewMachine.Model
         }
     }
 
+    #endregion
 }
