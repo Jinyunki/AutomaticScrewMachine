@@ -19,18 +19,19 @@ namespace AutomaticScrewMachine.View
 
         private void JogStop_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            Debug.WriteLine("==========   Start   ==========\nMethodName : " + (MethodBase.GetCurrentMethod().Name) + "\n");
+            Trace.WriteLine("==========   Start   ==========\nMethodName : " + (MethodBase.GetCurrentMethod().Name) + "\n");
             try
             {
                 clickedBorder = sender as Border;
                 if (clickedBorder != null && e.LeftButton == MouseButtonState.Pressed)
                 {
-                    StaticControllerSignal.ControllerSignalView(clickedBorder.Name,buzzerPositionX,buzzerPositionY,buzzerPositionZ);
+                    StaticControllerSignal.ControllerSignalView(clickedBorder.Name);
                 }
+
             }
             catch (Exception ex)
             {
-                Debug.WriteLine("========== Exception ==========\nMethodName : " + (MethodBase.GetCurrentMethod().Name) + "\nException : " + ex);
+                Trace.WriteLine("========== Exception ==========\nMethodName : " + (MethodBase.GetCurrentMethod().Name) + "\nException : " + ex);
                 throw;
             }
         }
@@ -43,8 +44,7 @@ namespace AutomaticScrewMachine.View
                 if (clickedBorder != null)
                 {
                     StaticControllerSignal.StopControllerSignalView();
-                    StaticControllerSignal.BuzzerOff(clickedBorder.Name, buzzerPositionX, buzzerPositionY, buzzerPositionZ);
-                } 
+                }
             }
             catch (Exception ex)
             {

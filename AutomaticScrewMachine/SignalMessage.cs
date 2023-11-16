@@ -10,6 +10,7 @@ namespace AutomaticScrewMachine
     {
         public bool IsPress { get; }
         public string IsViewName { get; }
+        public double IsPosValue { get; }
 
         public SignalMessage(string viewName, bool isPress)
         {

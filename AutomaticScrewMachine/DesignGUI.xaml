@@ -4,6 +4,32 @@
     <SolidColorBrush x:Key="DarkBrush" Color="DarkSlateBlue" />
     <SolidColorBrush x:Key="DeepNaby" Color="#FF000C1D" />
 
+    <VisualBrush
+        x:Key="CueBannerBrush"
+        AlignmentX="Left"
+        AlignmentY="Center"
+        Stretch="None">
+        <VisualBrush.Visual>
+            <Label Content="MM:SS:HH AM/PM" Foreground="White" />
+        </VisualBrush.Visual>
+    </VisualBrush>
+
+    <Style
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
+        x:Key="CueBannerTextBoxStyle"
+        TargetType="TextBox">
+        <Style.Triggers>
+            <Trigger Property="Text" Value="{x:Static sys:String.Empty}">
+                <Setter Property="Background" Value="{StaticResource CueBannerBrush}" />
+            </Trigger>
+            <Trigger Property="Text" Value="{x:Null}">
+                <Setter Property="Background" Value="{StaticResource CueBannerBrush}" />
+            </Trigger>
+            <Trigger Property="IsKeyboardFocused" Value="True">
+                <Setter Property="Background" Value="Black" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
     <!--  ScrollView Thumb  -->
 
     <Style x:Key="ScrollThumbs" TargetType="{x:Type Thumb}">

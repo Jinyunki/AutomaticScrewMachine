@@ -34,6 +34,14 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <PlatformTarget>x64</PlatformTarget>
+    <OutputPath>bin\x64\Debug\</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <PlatformTarget>x64</PlatformTarget>
+    <OutputPath>bin\x64\Release\</OutputPath>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="CommonServiceLocator, Version=2.0.7.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
       <HintPath>..\packages\CommonServiceLocator.2.0.7\lib\net47\CommonServiceLocator.dll</HintPath>
@@ -70,6 +78,16 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="LibContorller\AXA.cs" />
+    <Compile Include="LibContorller\AXC.cs" />
+    <Compile Include="LibContorller\AXD.cs" />
+    <Compile Include="LibContorller\AXDev.cs" />
+    <Compile Include="LibContorller\AXHD.cs" />
+    <Compile Include="LibContorller\AXHS.cs" />
+    <Compile Include="LibContorller\AXL.cs" />
+    <Compile Include="LibContorller\AXM.cs" />
+    <Compile Include="LibContorller\AXP.cs" />
+    <Compile Include="LibContorller\AXS.cs" />
     <Compile Include="Model\JogController.cs" />
     <Compile Include="Model\WindowStyle.cs" />
     <Compile Include="SignalMessage.cs" />
@@ -152,8 +170,18 @@
     <Resource Include="Assets\btn_screw_up.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Assets\btn_screw_return.png" />
+    <Resource Include="Assets\btn_jog_speed.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Assets\btn_jog_speed_minus.png" />
+    <Resource Include="Assets\btn_jog_speed_plus.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\btn_jog_return.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\switch_off.png" />
+    <Resource Include="Assets\switch_on.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
