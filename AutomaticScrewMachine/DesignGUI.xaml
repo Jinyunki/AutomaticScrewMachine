@@ -2,7 +2,7 @@
 
     <SolidColorBrush x:Key="ButtonSelectBrush" Color="DarkOrange" />
     <SolidColorBrush x:Key="DarkBrush" Color="DarkSlateBlue" />
-    <SolidColorBrush x:Key="DeepNaby" Color="#FF000C1D" />
+    <SolidColorBrush x:Key="DeepNaby" Color="#FF010A1F" />
 
     <VisualBrush
         x:Key="CueBannerBrush"

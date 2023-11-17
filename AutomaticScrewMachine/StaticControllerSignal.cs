@@ -6,7 +6,7 @@ namespace AutomaticScrewMachine
 {
     public static class StaticControllerSignal
     {
-        private static int ThreadSignalTimer = 100;
+        private static int ThreadSignalTimer = 10;
         private static DispatcherTimer _dispatcherTimer ;
 
         public static bool IsPress = false;

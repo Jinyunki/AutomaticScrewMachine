@@ -93,7 +93,7 @@
 
         <Border
             Grid.Row="1"
-            Background="#FF000C1D"
+            Background="{DynamicResource DeepNaby}"
             CornerRadius="5"
             Opacity="{Binding RealTransparentValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 

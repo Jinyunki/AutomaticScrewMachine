@@ -38,6 +38,7 @@ namespace AutomaticScrewMachine.ViewModel
             // Sylinder AND Air
             TorqIO = new RelayCommand(() => SetWriteOutport(8, torqS));
             DepthIO = new RelayCommand(() => SetWriteOutport(9, depthS));
+            AirIO = new RelayCommand(() => SetWriteOutport(10, airS));
 
         }
         private void ServoMotorThread()
@@ -74,6 +75,9 @@ namespace AutomaticScrewMachine.ViewModel
             TorqSig = RecevieSignalColor(torqS);
             CAXD.AxdoReadOutport(9, ref depthS);
             DepthSig = RecevieSignalColor(depthS);
+
+            CAXD.AxdoReadOutport(10, ref airS);
+            AirSig = RecevieSignalColor(airS);
         }
         public void GetServoData()
         {
@@ -127,8 +131,8 @@ namespace AutomaticScrewMachine.ViewModel
             {
                 var isPress = message.IsPress;
                 var isViewName = message.IsViewName;
-                if (isPress)
-                {
+                //if (isPress)
+                //{
                     switch (isViewName)
                     {
                         // y 전후방
@@ -161,9 +165,8 @@ namespace AutomaticScrewMachine.ViewModel
                         default:
                             break;
                     }
-                }
 
-                else
+                if (!isPress)
                 {
                     CAXM.AxmMoveSStop(0);
                     CAXM.AxmMoveSStop(1);
@@ -216,39 +219,73 @@ namespace AutomaticScrewMachine.ViewModel
 
         private void RemoveSelected()
         {
-            if (SelectedItem != null)
-            {
-                JogDataList.Remove(SelectedItem);
-            }
 
+            Trace.WriteLine("==========   Start   ==========\nMethodName : " + (MethodBase.GetCurrentMethod().Name) + "\n");
+            try
+            {
+                if (SelectedItem != null)
+                {
+                    JogDataList.Remove(SelectedItem);
+                }
+            }
+            catch (Exception ex)
+            {
+                Trace.WriteLine("========== Exception ==========\nMethodName : " + (MethodBase.GetCurrentMethod().Name) + "\nException : " + ex);
+                throw;
+            }
         }
         private void CheckSelected()
         {
-            // Z축을 올려주고 진행이됨.
-            CAXM.AxmMovePos(2, 0, MC_JogSpeed * 0.5, MC_JogAcl, MC_JogDcl);
+            Trace.WriteLine("==========   Start   ==========\nMethodName : " + (MethodBase.GetCurrentMethod().Name) + "\n");
+            try
+            {
+                // Z축을 올려주고 진행이됨.
+                CAXM.AxmMovePos(2, 0, MC_JogSpeed * 0.5, MC_JogAcl, MC_JogDcl);
 
-            CAXM.AxmMovePos(0, SelectedItem.Y, MC_JogSpeed, MC_JogAcl, MC_JogDcl); //Y
-            CAXM.AxmMovePos(1, SelectedItem.X, MC_JogSpeed, MC_JogAcl, MC_JogDcl); //X
+                CAXM.AxmMovePos(0, SelectedItem.Y, MC_JogSpeed, MC_JogAcl, MC_JogDcl); //Y
+                CAXM.AxmMovePos(1, SelectedItem.X, MC_JogSpeed, MC_JogAcl, MC_JogDcl); //X
 
-            CAXM.AxmMovePos(2, SelectedItem.Z, MC_JogSpeed * 0.1, MC_JogAcl, MC_JogDcl); //Z
+                CAXM.AxmMovePos(2, SelectedItem.Z, MC_JogSpeed * 0.1, MC_JogAcl, MC_JogDcl); //Z
+            }
+            catch (Exception ex)
+            {
+                Trace.WriteLine("========== Exception ==========\nMethodName : " + (MethodBase.GetCurrentMethod().Name) + "\nException : " + ex);
+                throw;
+            }
+
         }
         #endregion
 
         private void EmergencyStop()
         {
-            CAXM.AxmMoveSStop(0);
-            CAXM.AxmMoveSStop(1);
-            CAXM.AxmMoveSStop(2);
+            Trace.WriteLine("==========   Start   ==========\nMethodName : " + (MethodBase.GetCurrentMethod().Name) + "\n");
+            try
+            {
+                CAXM.AxmMoveSStop(0);
+                CAXM.AxmMoveSStop(1);
+                CAXM.AxmMoveSStop(2);
+            }
+            catch (Exception ex)
+            {
+                Trace.WriteLine("========== Exception ==========\nMethodName : " + (MethodBase.GetCurrentMethod().Name) + "\nException : " + ex);
+                throw;
+            }
+
         }
 
 
+        //View.Test test ;
         private void CmdHomeReturn()
         {
+            //test = new View.Test();
+            //test.Show();
+            
             CAXM.AxmMovePos(2, 0, MC_JogSpeed, MC_JogAcl, MC_JogDcl);
+
             //Thread.Sleep(300);
 
-            CAXM.AxmMovePos(0, 0, MC_JogSpeed, MC_JogAcl, MC_JogDcl);
-            CAXM.AxmMovePos(1, 0, MC_JogSpeed, MC_JogAcl, MC_JogDcl);
+            //CAXM.AxmMovePos(0, 0, MC_JogSpeed, MC_JogAcl, MC_JogDcl);
+            //CAXM.AxmMovePos(1, 0, MC_JogSpeed, MC_JogAcl, MC_JogDcl);
 
             CAXM.AxmHomeSetStart(2); // Z
             CAXM.AxmHomeSetStart(0); // Y
@@ -264,27 +301,28 @@ namespace AutomaticScrewMachine.ViewModel
             }
         }
 
+        private void MultiMovePos(int AxisCount, double jogSpeed, double jogAcl, double jogDcl)
+        {
+            int axisCnt = 2;
+            int[] jogList = { 0, 1 };
+            double[] posList = { 0, 0 };
+            double[] speedList = { jogSpeed, jogSpeed };
+            double[] aclList = { jogAcl, jogAcl };
+            double[] dclList = { jogDcl, jogDcl };
+
+            CAXM.AxmMoveStartMultiPos(axisCnt, jogList, posList, speedList, aclList, dclList);
+        }
+
         public void Pos_Timer_Tick(object sender, EventArgs e)
         {
             zPosStateValue = AxinStateControll(2);// PositionValueZ
             yPosStateValue = AxinStateControll(0);// PositionValueY
             xPosStateValue = AxinStateControll(1);// PositionValueX
 
-            if (zPosStateValue == 1)
-            {
-                BuzzerZ = Brushes.Gray;
-            }
-
-            if (yPosStateValue == 1)
-            {
-
-                BuzzerY = Brushes.Gray;
-            }
-
-            if (xPosStateValue == 1)
-            {
-                BuzzerX = Brushes.Gray;
-            }
+            BuzzerZ = RecevieSignalColor(zPosStateValue);
+            BuzzerY = RecevieSignalColor(yPosStateValue);
+            BuzzerX = RecevieSignalColor(xPosStateValue);
+            
 
             if (zPosStateValue == 1 && yPosStateValue == 1 && xPosStateValue == 1)
             {
@@ -292,6 +330,9 @@ namespace AutomaticScrewMachine.ViewModel
                 zPosStateValue = 9;
                 yPosStateValue = 9;
                 xPosStateValue = 9;
+
+
+                //test.Close();
             }
         }
 

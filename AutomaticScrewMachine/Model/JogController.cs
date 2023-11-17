@@ -49,6 +49,7 @@ namespace AutomaticScrewMachine.Model
 
         public ICommand TorqIO { get; set; }
         public ICommand DepthIO { get; set; }
+        public ICommand AirIO { get; set; }
 
 
         public ICommand JogSpeedUp => new RelayCommand(() => JogMoveSpeed += 0.5);
@@ -230,6 +231,17 @@ namespace AutomaticScrewMachine.Model
             }
         }
 
+        private Brush _airSig = Brushes.Gray;
+        public Brush AirSig
+        {
+            get { return _airSig; }
+            set
+            {
+                _airSig = value;
+                RaisePropertyChanged(nameof(AirSig));
+            }
+        }
+
         public Brush RecevieSignalColor(uint signalCode)
         {
             Brush ReturnBrush;
@@ -260,6 +272,7 @@ namespace AutomaticScrewMachine.Model
 
         public uint torqS = 9;
         public uint depthS = 9;
+        public uint airS = 9;
 
     }
 
