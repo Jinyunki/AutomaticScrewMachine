@@ -199,6 +199,8 @@ namespace AutomaticScrewMachine.ViewModel
                         X = PositionValueX,
                         Y = PositionValueY,
                         Z = PositionValueZ,
+                        Torq_IO = torqS,
+                        Depth_IO = depthS
                     };
 
                     JogDataList.Add(jogData);
@@ -242,10 +244,21 @@ namespace AutomaticScrewMachine.ViewModel
                 // Z축을 올려주고 진행이됨.
                 CAXM.AxmMovePos(2, 0, MC_JogSpeed * 0.5, MC_JogAcl, MC_JogDcl);
 
-                CAXM.AxmMovePos(0, SelectedItem.Y, MC_JogSpeed, MC_JogAcl, MC_JogDcl); //Y
-                CAXM.AxmMovePos(1, SelectedItem.X, MC_JogSpeed, MC_JogAcl, MC_JogDcl); //X
+                //double[] posList = new double[] { SelectedItem.Y, SelectedItem.X }; // Y(0번 인덱스) X(1번 인덱스)가 각각 이동할 위치 의 정보
+                //MultiMovePos(2, new double[] { SelectedItem.Y, SelectedItem.X }, MC_JogSpeed, MC_JogAcl,MC_JogDcl);
+                
+                for (int i = 0; i < JogDataList.Count; i++)
+                {
+                    CAXM.AxmMovePos(2, 25000, MC_JogSpeed * 0.5, MC_JogAcl, MC_JogDcl);
+                    MultiMovePos(2, new double[] { JogDataList[i].Y, JogDataList[i].X }, MC_JogSpeed, MC_JogAcl, MC_JogDcl );
+                    CAXM.AxmMovePos(2, JogDataList[i].Z, MC_JogSpeed , MC_JogAcl, MC_JogDcl);
+                    //SetWriteOutport(8, torqS);
+                }
 
-                CAXM.AxmMovePos(2, SelectedItem.Z, MC_JogSpeed * 0.1, MC_JogAcl, MC_JogDcl); //Z
+                //CAXM.AxmMovePos(0, SelectedItem.Y, MC_JogSpeed, MC_JogAcl, MC_JogDcl); //Y
+                //CAXM.AxmMovePos(1, SelectedItem.X, MC_JogSpeed, MC_JogAcl, MC_JogDcl); //X
+                //
+                //CAXM.AxmMovePos(2, SelectedItem.Z, MC_JogSpeed * 0.1, MC_JogAcl, MC_JogDcl); //Z
             }
             catch (Exception ex)
             {
@@ -279,13 +292,11 @@ namespace AutomaticScrewMachine.ViewModel
         {
             //test = new View.Test();
             //test.Show();
-            
+            SetWriteOutport(8, 1);
+            SetWriteOutport(9, 1);
+            SetWriteOutport(10, 1);
             CAXM.AxmMovePos(2, 0, MC_JogSpeed, MC_JogAcl, MC_JogDcl);
-
-            //Thread.Sleep(300);
-
-            //CAXM.AxmMovePos(0, 0, MC_JogSpeed, MC_JogAcl, MC_JogDcl);
-            //CAXM.AxmMovePos(1, 0, MC_JogSpeed, MC_JogAcl, MC_JogDcl);
+            MultiMovePos(2, new double[] { 0, 0 }, MC_JogSpeed, MC_JogAcl, MC_JogDcl);
 
             CAXM.AxmHomeSetStart(2); // Z
             CAXM.AxmHomeSetStart(0); // Y
@@ -301,16 +312,14 @@ namespace AutomaticScrewMachine.ViewModel
             }
         }
 
-        private void MultiMovePos(int AxisCount, double jogSpeed, double jogAcl, double jogDcl)
+        private void MultiMovePos(int AxisCount,double[] positionList, double jogSpeed, double jogAcl, double jogDcl)
         {
-            int axisCnt = 2;
             int[] jogList = { 0, 1 };
-            double[] posList = { 0, 0 };
             double[] speedList = { jogSpeed, jogSpeed };
             double[] aclList = { jogAcl, jogAcl };
             double[] dclList = { jogDcl, jogDcl };
 
-            CAXM.AxmMoveStartMultiPos(axisCnt, jogList, posList, speedList, aclList, dclList);
+            CAXM.AxmMoveMultiPos(AxisCount, jogList, positionList, speedList, aclList, dclList);
         }
 
         public void Pos_Timer_Tick(object sender, EventArgs e)

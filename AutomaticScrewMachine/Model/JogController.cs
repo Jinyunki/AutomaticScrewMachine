@@ -342,6 +342,36 @@ namespace AutomaticScrewMachine.Model
             }
         }
 
+        private uint _torq_IO;
+        public uint Torq_IO
+        {
+            get { return _torq_IO; }
+            set
+            {
+                if (_torq_IO != value)
+                {
+                    _torq_IO = value;
+                    OnPropertyChanged(nameof(Torq_IO));
+                }
+            }
+        }
+        
+
+        private uint _depth_IO;
+        public uint Depth_IO
+        {
+            get { return _depth_IO; }
+            set
+            {
+                if (_depth_IO != value)
+                {
+                    _depth_IO = value;
+                    OnPropertyChanged(nameof(Depth_IO));
+                }
+            }
+        }
+
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected virtual void OnPropertyChanged(string propertyName)
