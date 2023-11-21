@@ -44,6 +44,9 @@
     <OutputPath>bin\x64\Release\</OutputPath>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AdapterCollection">
+      <HintPath>..\..\AdapterCollection\AdapterCollection\bin\Release\AdapterCollection.dll</HintPath>
+    </Reference>
     <Reference Include="CommonServiceLocator, Version=2.0.7.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
       <HintPath>..\packages\CommonServiceLocator.2.0.7\lib\net47\CommonServiceLocator.dll</HintPath>
     </Reference>

@@ -52,6 +52,10 @@ namespace AutomaticScrewMachine.Model
         public ICommand AirIO { get; set; }
 
 
+        public ICommand ReadRecipe { get; set; }
+        public ICommand UpdateRecipe { get; set; }
+
+
         public ICommand JogSpeedUp => new RelayCommand(() => JogMoveSpeed += 0.5);
         public ICommand JogSpeedDown => new RelayCommand(SpeedDown);
         private void SpeedDown()

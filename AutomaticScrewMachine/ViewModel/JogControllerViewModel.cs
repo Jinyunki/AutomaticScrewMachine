@@ -1,9 +1,13 @@
-﻿using AutomaticScrewMachine.Model;
+﻿using AdapterCollection;
+using AutomaticScrewMachine.Model;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Reflection;
+using System.Windows.Documents;
 using System.Windows.Media;
 using System.Windows.Threading;
 
@@ -17,7 +21,7 @@ namespace AutomaticScrewMachine.ViewModel
             JogMoveSpeed = 1;
             // 이벤트 관장 핸들러 메신저 Jog 컨트롤
             Messenger.Default.Register<SignalMessage>(this, HandleSignalMessage);
-            
+
             // ServoMotor 제어 Thread Start
             ServoMotorThread();
 
@@ -40,7 +44,46 @@ namespace AutomaticScrewMachine.ViewModel
             DepthIO = new RelayCommand(() => SetWriteOutport(9, depthS));
             AirIO = new RelayCommand(() => SetWriteOutport(10, airS));
 
+            ReadRecipe = new RelayCommand(ReadRecipeCommand);
+            UpdateRecipe = new RelayCommand(UpdateRecipeCommand);
         }
+
+        private void UpdateRecipeCommand()
+        {
+            ExcelAdapter.Save();
+        }
+
+        private void ReadRecipeCommand()
+        {
+            Trace.WriteLine("==========   Start   ==========\nMethodName : " + (MethodBase.GetCurrentMethod().Name) + "\n");
+            try
+            {
+                ExcelAdapter.IsFolderName = "Data";
+                ExcelAdapter.IsFileName = "JogData.xlsx";
+                ExcelAdapter.Connect();
+                for (int j = 1; j < ExcelAdapter.IsRowCount; j++) // j = 0 CategoryList 그래서 1부터 시작
+                {
+                    JogData jogData = new JogData
+                    {
+                        Name = ExcelAdapter.TotalDataList[j][0].ToString(),
+                        X = double.Parse(ExcelAdapter.TotalDataList[j][1]),
+                        Y = double.Parse(ExcelAdapter.TotalDataList[j][2]),
+                        Z = double.Parse(ExcelAdapter.TotalDataList[j][3]),
+                        Torq_IO = uint.Parse(ExcelAdapter.TotalDataList[j][4]),
+                        Depth_IO = uint.Parse(ExcelAdapter.TotalDataList[j][5])
+                    };
+
+                    JogDataList.Add(jogData);
+                }
+            }
+            catch (Exception ex)
+            {
+                Trace.WriteLine("========== Exception ==========\nMethodName : " + (MethodBase.GetCurrentMethod().Name) + "\nException : " + ex);
+                throw;
+            }
+        }
+
+
         private void ServoMotorThread()
         {
             Trace.WriteLine("==========   Start   ==========\nMethodName : " + (MethodBase.GetCurrentMethod().Name) + "\n");
@@ -133,38 +176,38 @@ namespace AutomaticScrewMachine.ViewModel
                 var isViewName = message.IsViewName;
                 //if (isPress)
                 //{
-                    switch (isViewName)
-                    {
-                        // y 전후방
-                        case string n when n == StaticControllerSignal.JOG_STRAIGHT:
-                            CAXM.AxmMoveVel(0, -MC_JogSpeed, MC_JogAcl, MC_JogDcl);
-                            break;
-                        case string n when n == StaticControllerSignal.JOG_BACK:
-                            CAXM.AxmMoveVel(0, MC_JogSpeed, MC_JogAcl, MC_JogDcl);
-                            break;
+                switch (isViewName)
+                {
+                    // y 전후방
+                    case string n when n == StaticControllerSignal.JOG_STRAIGHT:
+                        CAXM.AxmMoveVel(0, -MC_JogSpeed, MC_JogAcl, MC_JogDcl);
+                        break;
+                    case string n when n == StaticControllerSignal.JOG_BACK:
+                        CAXM.AxmMoveVel(0, MC_JogSpeed, MC_JogAcl, MC_JogDcl);
+                        break;
 
 
-                        // x 좌우
-                        case string n when n == StaticControllerSignal.JOG_LEFT:
-                            CAXM.AxmMoveVel(1, -MC_JogSpeed, MC_JogAcl, MC_JogDcl);
-                            break;
-                        case string n when n == StaticControllerSignal.JOG_RIGHT:
-                            CAXM.AxmMoveVel(1, MC_JogSpeed, MC_JogAcl, MC_JogDcl);
-                            break;
+                    // x 좌우
+                    case string n when n == StaticControllerSignal.JOG_LEFT:
+                        CAXM.AxmMoveVel(1, -MC_JogSpeed, MC_JogAcl, MC_JogDcl);
+                        break;
+                    case string n when n == StaticControllerSignal.JOG_RIGHT:
+                        CAXM.AxmMoveVel(1, MC_JogSpeed, MC_JogAcl, MC_JogDcl);
+                        break;
 
 
-                        // z 위아래
-                        case string n when n == StaticControllerSignal.JOG_UP:
-                            CAXM.AxmMoveVel(2, -MC_JogSpeed * 0.5, MC_JogAcl, MC_JogDcl);
-                            break;
+                    // z 위아래
+                    case string n when n == StaticControllerSignal.JOG_UP:
+                        CAXM.AxmMoveVel(2, -MC_JogSpeed * 0.5, MC_JogAcl, MC_JogDcl);
+                        break;
 
-                        case string n when n == StaticControllerSignal.JOG_DOWN:
-                            CAXM.AxmMoveVel(2, MC_JogSpeed * 0.5, MC_JogAcl, MC_JogDcl);
-                            break;
+                    case string n when n == StaticControllerSignal.JOG_DOWN:
+                        CAXM.AxmMoveVel(2, MC_JogSpeed * 0.5, MC_JogAcl, MC_JogDcl);
+                        break;
 
-                        default:
-                            break;
-                    }
+                    default:
+                        break;
+                }
 
                 if (!isPress)
                 {
@@ -182,7 +225,7 @@ namespace AutomaticScrewMachine.ViewModel
 
         }
 
-        
+
 
         #region ListBoxConf
         private void AddPos()
@@ -246,12 +289,12 @@ namespace AutomaticScrewMachine.ViewModel
 
                 //double[] posList = new double[] { SelectedItem.Y, SelectedItem.X }; // Y(0번 인덱스) X(1번 인덱스)가 각각 이동할 위치 의 정보
                 //MultiMovePos(2, new double[] { SelectedItem.Y, SelectedItem.X }, MC_JogSpeed, MC_JogAcl,MC_JogDcl);
-                
+
                 for (int i = 0; i < JogDataList.Count; i++)
                 {
                     CAXM.AxmMovePos(2, 25000, MC_JogSpeed * 0.5, MC_JogAcl, MC_JogDcl);
-                    MultiMovePos(2, new double[] { JogDataList[i].Y, JogDataList[i].X }, MC_JogSpeed, MC_JogAcl, MC_JogDcl );
-                    CAXM.AxmMovePos(2, JogDataList[i].Z, MC_JogSpeed , MC_JogAcl, MC_JogDcl);
+                    MultiMovePos(2, new double[] { JogDataList[i].Y, JogDataList[i].X }, MC_JogSpeed, MC_JogAcl, MC_JogDcl);
+                    CAXM.AxmMovePos(2, JogDataList[i].Z, MC_JogSpeed, MC_JogAcl, MC_JogDcl);
                     //SetWriteOutport(8, torqS);
                 }
 
@@ -312,7 +355,7 @@ namespace AutomaticScrewMachine.ViewModel
             }
         }
 
-        private void MultiMovePos(int AxisCount,double[] positionList, double jogSpeed, double jogAcl, double jogDcl)
+        private void MultiMovePos(int AxisCount, double[] positionList, double jogSpeed, double jogAcl, double jogDcl)
         {
             int[] jogList = { 0, 1 };
             double[] speedList = { jogSpeed, jogSpeed };
@@ -331,7 +374,7 @@ namespace AutomaticScrewMachine.ViewModel
             BuzzerZ = RecevieSignalColor(zPosStateValue);
             BuzzerY = RecevieSignalColor(yPosStateValue);
             BuzzerX = RecevieSignalColor(xPosStateValue);
-            
+
 
             if (zPosStateValue == 1 && yPosStateValue == 1 && xPosStateValue == 1)
             {
