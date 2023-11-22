@@ -711,8 +711,8 @@
                 DisplayMemberPath="Name"
                 FontSize="25"
                 Foreground="White"
-                ItemsSource="{Binding JogDataList}"
-                SelectedItem="{Binding SelectedItem}" />
+                ItemsSource="{Binding SequenceList}"
+                SelectedItem="{Binding SelectedSequenceItem}" />
 
             <Grid Grid.Row="3">
                 <Grid.ColumnDefinitions>
@@ -724,7 +724,7 @@
                     Grid.Column="0"
                     Height="40"
                     VerticalAlignment="Top"
-                    Command="{Binding RemoveSelectedCommand}"
+                    Command="{Binding RemoveSequenceCommand}"
                     Content="Data Delete" />
                 <Button
                     Grid.Column="1"
@@ -763,30 +763,35 @@
                         <ColumnDefinition />
                     </Grid.ColumnDefinitions>
 
-                    <TextBlock
-                        Grid.Column="0"
-                        HorizontalAlignment="Center"
-                        FontSize="20"
-                        Foreground="White"
-                        Text="{Binding SelectedItem.Name}" />
-                    <TextBlock
-                        Grid.Column="1"
-                        HorizontalAlignment="Center"
-                        FontSize="20"
-                        Foreground="White"
-                        Text="{Binding SelectedItem.X}" />
-                    <TextBlock
-                        Grid.Column="2"
-                        HorizontalAlignment="Center"
-                        FontSize="20"
-                        Foreground="White"
-                        Text="{Binding SelectedItem.Y}" />
-                    <TextBlock
-                        Grid.Column="3"
-                        HorizontalAlignment="Center"
-                        FontSize="20"
-                        Foreground="White"
-                        Text="{Binding SelectedItem.Z}" />
+                   
+                    <!--
+ <TextBlock
+     Grid.Column="0"
+     HorizontalAlignment="Center"
+     FontSize="20"
+     Foreground="White"
+     Text="{Binding SelectedItem.Name}" />
+<TextBlock
+    Grid.Column="1"
+    HorizontalAlignment="Center"
+    FontSize="20"
+    Foreground="White"
+    Text="{Binding SelectedItem.X}" />
+<TextBlock
+    Grid.Column="2"
+    HorizontalAlignment="Center"
+    FontSize="20"
+    Foreground="White"
+    Text="{Binding SelectedItem.Y}" />
+<TextBlock
+    Grid.Column="3"
+    HorizontalAlignment="Center"
+    FontSize="20"
+    Foreground="White"
+    Text="{Binding SelectedItem.Z}" />
+
+                    -->
+
                 </Grid>
             </Grid>
         </Grid>

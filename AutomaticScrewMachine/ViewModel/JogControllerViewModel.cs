@@ -3,12 +3,9 @@ using AutomaticScrewMachine.Model;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Reflection;
-using System.Windows.Documents;
-using System.Windows.Media;
+using System.Threading;
 using System.Windows.Threading;
 
 namespace AutomaticScrewMachine.ViewModel
@@ -18,37 +15,72 @@ namespace AutomaticScrewMachine.ViewModel
     {
         public JogControllerViewModel()
         {
-            JogMoveSpeed = 1;
-            // 이벤트 관장 핸들러 메신저 Jog 컨트롤
-            Messenger.Default.Register<SignalMessage>(this, HandleSignalMessage);
+            DefaultSet();
+            
+            // HOME
+            HomeCommand = new RelayCommand(CmdHomeReturn);
 
             // ServoMotor 제어 Thread Start
             ServoMotorThread();
 
-            //SEQ BTN
-            AddPosition = new RelayCommand(AddPos);
-            RemoveSelectedCommand = new RelayCommand(RemoveSelected);
-            CheckSelectedCommand = new RelayCommand(CheckSelected);
+            // Button TriggerEvent
+            SetButtonEvent();
 
-            // HOME, EMERGENCY
-            HomeCommand = new RelayCommand(CmdHomeReturn);
-            EmergencyStopCommand = new RelayCommand(EmergencyStop);
-
-            // Servo
-            ServoCheckX = new RelayCommand(() => SetServoState(1, valueX));
-            ServoCheckY = new RelayCommand(() => SetServoState(0, valueY));
-            ServoCheckZ = new RelayCommand(() => SetServoState(2, valueZ));
-
-            // Sylinder AND Air
-            TorqIO = new RelayCommand(() => SetWriteOutport(8, torqS));
-            DepthIO = new RelayCommand(() => SetWriteOutport(9, depthS));
-            AirIO = new RelayCommand(() => SetWriteOutport(10, airS));
-
-            ReadRecipe = new RelayCommand(ReadRecipeCommand);
-            UpdateRecipe = new RelayCommand(UpdateRecipeCommand);
         }
 
-        private void UpdateRecipeCommand()
+        private void SetButtonEvent()
+        {
+
+            Trace.WriteLine("==========   Start   ==========\nMethodName : " + (MethodBase.GetCurrentMethod().Name) + "\n");
+            try
+            {
+                if (!MotionRock)
+                {
+                    // 이벤트 관장 핸들러 메신저 Jog 컨트롤
+                    Messenger.Default.Register<SignalMessage>(this, HandleSignalMessage);
+
+                    //SEQ BTN
+                    AddPosition = new RelayCommand(AddPos);
+                    RemoveSequenceCommand = new RelayCommand(RemoveSelectedSequenceListItem);
+                    CheckSelectedCommand = new RelayCommand(CheckSelected);
+
+                    // EMERGENCY
+                    EmergencyStopCommand = new RelayCommand(EmergencyStop);
+
+                    // Servo
+                    ServoCheckX = new RelayCommand(() => SetServoState(1, valueX));
+                    ServoCheckY = new RelayCommand(() => SetServoState(0, valueY));
+                    ServoCheckZ = new RelayCommand(() => SetServoState(2, valueZ));
+
+                    // Sylinder AND Air
+                    TorqIO = new RelayCommand(() => SetWriteOutport(8, torqS));
+                    DepthIO = new RelayCommand(() => SetWriteOutport(9, depthS));
+                    AirIO = new RelayCommand(() => SetWriteOutport(10, airS));
+
+                    ReadRecipe = new RelayCommand(ReadRecipeCommand);
+                    UpdateRecipe = new RelayCommand(SaveRecipeCommand);
+                }
+            }
+            catch (Exception ex)
+            {
+                Trace.WriteLine("========== Exception ==========\nMethodName : " + (MethodBase.GetCurrentMethod().Name) + "\nException : " + ex);
+                throw;
+            }
+
+            
+        }
+
+        public void DefaultSet()
+        {
+            MotionRock = false;
+            JogMoveSpeed = 1;
+        }
+
+        public void CommandList()
+        {
+
+        }
+        private void SaveRecipeCommand()
         {
             ExcelAdapter.Save();
         }
@@ -61,6 +93,17 @@ namespace AutomaticScrewMachine.ViewModel
                 ExcelAdapter.IsFolderName = "Data";
                 ExcelAdapter.IsFileName = "JogData.xlsx";
                 ExcelAdapter.Connect();
+
+                for (int i = 0; i < ExcelAdapter.WorkSheetNameList.Count; i++)
+                {
+                    Sequence seq = new Sequence
+                    {
+                        Name = ExcelAdapter.WorkSheetNameList[i].ToString()
+                    };
+
+                    SequenceList.Add(seq);
+                }
+                /**
                 for (int j = 1; j < ExcelAdapter.IsRowCount; j++) // j = 0 CategoryList 그래서 1부터 시작
                 {
                     JogData jogData = new JogData
@@ -75,6 +118,7 @@ namespace AutomaticScrewMachine.ViewModel
 
                     JogDataList.Add(jogData);
                 }
+                /**/
             }
             catch (Exception ex)
             {
@@ -262,15 +306,15 @@ namespace AutomaticScrewMachine.ViewModel
 
         }
 
-        private void RemoveSelected()
+        private void RemoveSelectedSequenceListItem()
         {
 
             Trace.WriteLine("==========   Start   ==========\nMethodName : " + (MethodBase.GetCurrentMethod().Name) + "\n");
             try
             {
-                if (SelectedItem != null)
+                if (SelectedSequenceItem != null)
                 {
-                    JogDataList.Remove(SelectedItem);
+                    SequenceList.Remove(SelectedSequenceItem);
                 }
             }
             catch (Exception ex)
@@ -284,24 +328,15 @@ namespace AutomaticScrewMachine.ViewModel
             Trace.WriteLine("==========   Start   ==========\nMethodName : " + (MethodBase.GetCurrentMethod().Name) + "\n");
             try
             {
-                // Z축을 올려주고 진행이됨.
                 CAXM.AxmMovePos(2, 0, MC_JogSpeed * 0.5, MC_JogAcl, MC_JogDcl);
-
-                //double[] posList = new double[] { SelectedItem.Y, SelectedItem.X }; // Y(0번 인덱스) X(1번 인덱스)가 각각 이동할 위치 의 정보
-                //MultiMovePos(2, new double[] { SelectedItem.Y, SelectedItem.X }, MC_JogSpeed, MC_JogAcl,MC_JogDcl);
 
                 for (int i = 0; i < JogDataList.Count; i++)
                 {
-                    CAXM.AxmMovePos(2, 25000, MC_JogSpeed * 0.5, MC_JogAcl, MC_JogDcl);
+                    CAXM.AxmMovePos(2, 5000, MC_JogSpeed * 0.5, MC_JogAcl, MC_JogDcl);
                     MultiMovePos(2, new double[] { JogDataList[i].Y, JogDataList[i].X }, MC_JogSpeed, MC_JogAcl, MC_JogDcl);
                     CAXM.AxmMovePos(2, JogDataList[i].Z, MC_JogSpeed, MC_JogAcl, MC_JogDcl);
-                    //SetWriteOutport(8, torqS);
                 }
 
-                //CAXM.AxmMovePos(0, SelectedItem.Y, MC_JogSpeed, MC_JogAcl, MC_JogDcl); //Y
-                //CAXM.AxmMovePos(1, SelectedItem.X, MC_JogSpeed, MC_JogAcl, MC_JogDcl); //X
-                //
-                //CAXM.AxmMovePos(2, SelectedItem.Z, MC_JogSpeed * 0.1, MC_JogAcl, MC_JogDcl); //Z
             }
             catch (Exception ex)
             {
@@ -333,13 +368,14 @@ namespace AutomaticScrewMachine.ViewModel
         //View.Test test ;
         private void CmdHomeReturn()
         {
-            //test = new View.Test();
-            //test.Show();
+            MotionRock = true;
+            // DI/O
             SetWriteOutport(8, 1);
             SetWriteOutport(9, 1);
             SetWriteOutport(10, 1);
-            CAXM.AxmMovePos(2, 0, MC_JogSpeed, MC_JogAcl, MC_JogDcl);
-            MultiMovePos(2, new double[] { 0, 0 }, MC_JogSpeed, MC_JogAcl, MC_JogDcl);
+
+            //CAXM.AxmMovePos(2, 0, MC_JogSpeed, MC_JogAcl, MC_JogDcl);
+            //MultiMovePos(2, new double[] { 0, 0 }, MC_JogSpeed, MC_JogAcl, MC_JogDcl);
 
             CAXM.AxmHomeSetStart(2); // Z
             CAXM.AxmHomeSetStart(0); // Y
@@ -371,21 +407,18 @@ namespace AutomaticScrewMachine.ViewModel
             yPosStateValue = AxinStateControll(0);// PositionValueY
             xPosStateValue = AxinStateControll(1);// PositionValueX
 
-            BuzzerZ = RecevieSignalColor(zPosStateValue);
-            BuzzerY = RecevieSignalColor(yPosStateValue);
-            BuzzerX = RecevieSignalColor(xPosStateValue);
-
+            //BuzzerZ = RecevieSignalColor(zPosStateValue);
+            //BuzzerY = RecevieSignalColor(yPosStateValue);
+            //BuzzerX = RecevieSignalColor(xPosStateValue);
 
             if (zPosStateValue == 1 && yPosStateValue == 1 && xPosStateValue == 1)
             {
+                //zPosStateValue = 9;
+                //yPosStateValue = 9;
+                //xPosStateValue = 9;
+                MotionRock = false;
                 _positionDipatcher.Stop();
-                zPosStateValue = 9;
-                yPosStateValue = 9;
-                xPosStateValue = 9;
-
-
-                //test.Close();
-            }
+            } 
         }
 
         public uint AxinStateControll(int MotionIndexNum)

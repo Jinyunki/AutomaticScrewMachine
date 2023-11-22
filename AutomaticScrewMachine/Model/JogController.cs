@@ -1,48 +1,46 @@
-﻿using AutomaticScrewMachine.ViewModel;
-using GalaSoft.MvvmLight;
+﻿using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 
 namespace AutomaticScrewMachine.Model
 {
     public class JogController : ViewModelBase
     {
-        private JogData _selectedItem;
-        public JogData SelectedItem
+        private Sequence _selectedSequenceItem;
+        public Sequence SelectedSequenceItem
         {
-            get { return _selectedItem; }
+            get { return _selectedSequenceItem; }
             set
             {
-                if (_selectedItem != value)
+                if (_selectedSequenceItem != value)
                 {
-                    _selectedItem = value;
-                    RaisePropertyChanged(nameof(SelectedItem));
+                    _selectedSequenceItem = value;
+                    RaisePropertyChanged(nameof(_selectedSequenceItem));
 
                     // 선택된 항목에 대한 처리 수행
-                    if (_selectedItem != null)
+                    if (_selectedSequenceItem != null)
                     {
-                        int index = JogDataList.IndexOf(_selectedItem);
+                        int index = SequenceList.IndexOf(_selectedSequenceItem);
 
                         Console.WriteLine("선택된 index : " + index);
-                        Console.WriteLine("Name : " + _selectedItem.Name);
-                        Console.WriteLine("X : " + _selectedItem.X);
-                        Console.WriteLine("Y : " + _selectedItem.Y);
-                        Console.WriteLine("Z : " + _selectedItem.Z);
+                        Console.WriteLine("Name : " + _selectedSequenceItem.Name);
+                        //Console.WriteLine("X : " + _selectedItem.X);
+                        //Console.WriteLine("Y : " + _selectedItem.Y);
+                        //Console.WriteLine("Z : " + _selectedItem.Z);
 
                     }
                 }
             }
         }
 
-
+        public bool MotionRock {  get; set; }
         public ICommand AddPosition { get; set; }
-        public ICommand RemoveSelectedCommand { get; set; }
+        public ICommand RemoveSequenceCommand { get; set; }
         public ICommand CheckSelectedCommand { get; set; }
         public ICommand HomeCommand { get; set; }
         public ICommand EmergencyStopCommand { get; set; }
@@ -75,6 +73,16 @@ namespace AutomaticScrewMachine.Model
             {
                 _jogDataList = value;
                 RaisePropertyChanged(nameof(JogDataList));
+            }
+        }
+        private ObservableCollection<Sequence> _sequenceList = new ObservableCollection<Sequence>();
+        public ObservableCollection<Sequence> SequenceList
+        {
+            get { return _sequenceList; }
+            set
+            {
+                _sequenceList = value;
+                RaisePropertyChanged(nameof(SequenceList));
             }
         }
         private double _jogMoveSpeed = 1;
@@ -375,6 +383,30 @@ namespace AutomaticScrewMachine.Model
             }
         }
 
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected virtual void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+    }
+    
+    public class Sequence : INotifyPropertyChanged
+    {
+        private string _name;
+        public string Name
+        {
+            get { return _name; }
+            set
+            {
+                if (_name != value)
+                {
+                    _name = value;
+                    OnPropertyChanged(nameof(Name));
+                }
+            }
+        }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
