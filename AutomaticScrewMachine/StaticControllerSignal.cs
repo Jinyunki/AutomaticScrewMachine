@@ -1,4 +1,5 @@
-﻿using GalaSoft.MvvmLight.Messaging;
+﻿using AutomaticScrewMachine.Bases;
+using GalaSoft.MvvmLight.Messaging;
 using System;
 using System.Windows.Threading;
 

@@ -1,6 +1,8 @@
-﻿using GalaSoft.MvvmLight;
+﻿using AdapterCollection;
+using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows.Input;
@@ -11,6 +13,8 @@ namespace AutomaticScrewMachine.Model
 {
     public class JogController : ViewModelBase
     {
+        public readonly string isFolderName = "Data";
+        public readonly string isFileName = "JogData.xlsx";
         private Sequence _selectedSequenceItem;
         public Sequence SelectedSequenceItem
         {
@@ -26,12 +30,62 @@ namespace AutomaticScrewMachine.Model
                     if (_selectedSequenceItem != null)
                     {
                         int index = SequenceList.IndexOf(_selectedSequenceItem);
-
                         Console.WriteLine("선택된 index : " + index);
                         Console.WriteLine("Name : " + _selectedSequenceItem.Name);
-                        //Console.WriteLine("X : " + _selectedItem.X);
-                        //Console.WriteLine("Y : " + _selectedItem.Y);
-                        //Console.WriteLine("Z : " + _selectedItem.Z);
+                        GetReadingData();
+                    }
+                }
+            }
+        }
+
+        public void GetReadingData()
+        {
+            JogDataList?.Clear();
+            ObservableCollection<List<string>> GetJogDataList = new ObservableCollection<List<string>>();
+            GetJogDataList = ExcelAdapter.GetReadData(isFolderName, isFileName);
+            for (int j = 1; j < GetJogDataList.Count; j++) // j = 0 CategoryList 그래서 1부터 시작
+            {
+                JogData jogData = new JogData
+                {
+                    Name = GetJogDataList[j][0].ToString(),
+                    X = double.Parse(GetJogDataList[j][1]),
+                    Y = double.Parse(GetJogDataList[j][2]),
+                    Z = double.Parse(GetJogDataList[j][3]),
+                    Torq_IO = uint.Parse(GetJogDataList[j][4]),
+                    Depth_IO = uint.Parse(GetJogDataList[j][5])
+                };
+
+                JogDataList.Add(jogData);
+            }
+
+        }
+
+
+
+
+        private JogData _selectedJogItem;
+        public JogData SelectedJogItem
+        {
+            get { return _selectedJogItem; }
+            set
+            {
+                if (_selectedJogItem != value)
+                {
+                    _selectedJogItem = value;
+                    RaisePropertyChanged(nameof(SelectedJogItem));
+
+                    // 선택된 항목에 대한 처리 수행
+                    if (_selectedJogItem != null)
+                    {
+                        int index = JogDataList.IndexOf(_selectedJogItem);
+
+                        Console.WriteLine("선택된 index : " + index);
+                        Console.WriteLine("Name : " + _selectedJogItem.Name);
+                        Console.WriteLine("X : " + _selectedJogItem.X);
+                        Console.WriteLine("Y : " + _selectedJogItem.Y);
+                        Console.WriteLine("Z : " + _selectedJogItem.Z);
+                        Console.WriteLine("Torq : " + _selectedJogItem.Torq_IO);
+                        Console.WriteLine("Depth : " + _selectedJogItem.Depth_IO);
 
                     }
                 }
@@ -41,7 +95,7 @@ namespace AutomaticScrewMachine.Model
         public bool MotionRock {  get; set; }
         public ICommand AddPosition { get; set; }
         public ICommand RemoveSequenceCommand { get; set; }
-        public ICommand CheckSelectedCommand { get; set; }
+        public ICommand SequenceStart { get; set; }
         public ICommand HomeCommand { get; set; }
         public ICommand EmergencyStopCommand { get; set; }
 
@@ -52,6 +106,7 @@ namespace AutomaticScrewMachine.Model
 
         public ICommand ReadRecipe { get; set; }
         public ICommand UpdateRecipe { get; set; }
+        public ICommand AddRecipe { get; set; }
 
 
         public ICommand JogSpeedUp => new RelayCommand(() => JogMoveSpeed += 0.5);
@@ -113,7 +168,7 @@ namespace AutomaticScrewMachine.Model
                 RaisePropertyChanged(nameof(BtnSize));
             }
         }
-        private string _titleName = "Seq Name";
+        private string _titleName = "Name";
         public string TitleName
         {
             get { return _titleName; }
@@ -407,6 +462,8 @@ namespace AutomaticScrewMachine.Model
                 }
             }
         }
+        public ICommand SequenceStart { get; set; }
+
 
         public event PropertyChangedEventHandler PropertyChanged;
 

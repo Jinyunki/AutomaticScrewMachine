@@ -1,11 +1,12 @@
 ﻿using AdapterCollection;
+using AutomaticScrewMachine.Bases;
 using AutomaticScrewMachine.Model;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using System;
+using System.Collections.Specialized;
 using System.Diagnostics;
 using System.Reflection;
-using System.Threading;
 using System.Windows.Threading;
 
 namespace AutomaticScrewMachine.ViewModel
@@ -40,9 +41,9 @@ namespace AutomaticScrewMachine.ViewModel
                     Messenger.Default.Register<SignalMessage>(this, HandleSignalMessage);
 
                     //SEQ BTN
-                    AddPosition = new RelayCommand(AddPos);
-                    RemoveSequenceCommand = new RelayCommand(RemoveSelectedSequenceListItem);
-                    CheckSelectedCommand = new RelayCommand(CheckSelected);
+                    AddPosition = new RelayCommand(AddPos); // Seq 추가
+                    RemoveSequenceCommand = new RelayCommand(RemoveSelectedSequenceListItem); // 삭제
+                    SequenceStart = new RelayCommand(GetSequenceStart);
 
                     // EMERGENCY
                     EmergencyStopCommand = new RelayCommand(EmergencyStop);
@@ -59,6 +60,7 @@ namespace AutomaticScrewMachine.ViewModel
 
                     ReadRecipe = new RelayCommand(ReadRecipeCommand);
                     UpdateRecipe = new RelayCommand(SaveRecipeCommand);
+                    AddRecipe = new RelayCommand(AddRecipeCommand);
                 }
             }
             catch (Exception ex)
@@ -70,19 +72,24 @@ namespace AutomaticScrewMachine.ViewModel
             
         }
 
+        private void AddRecipeCommand()
+        {
+            ExcelAdapter.Add(isFolderName, isFileName, "TESTADD");
+            SequenceList.Add(new Sequence{
+                Name = "TESTADD"
+                
+            });
+        }
+
         public void DefaultSet()
         {
             MotionRock = false;
             JogMoveSpeed = 1;
         }
 
-        public void CommandList()
-        {
-
-        }
         private void SaveRecipeCommand()
         {
-            ExcelAdapter.Save();
+            ExcelAdapter.Save(isFolderName, isFileName);
         }
 
         private void ReadRecipeCommand()
@@ -90,10 +97,9 @@ namespace AutomaticScrewMachine.ViewModel
             Trace.WriteLine("==========   Start   ==========\nMethodName : " + (MethodBase.GetCurrentMethod().Name) + "\n");
             try
             {
-                ExcelAdapter.IsFolderName = "Data";
-                ExcelAdapter.IsFileName = "JogData.xlsx";
-                ExcelAdapter.Connect();
+                SequenceList?.Clear();
 
+                ExcelAdapter.Connect(isFolderName,isFileName);
                 for (int i = 0; i < ExcelAdapter.WorkSheetNameList.Count; i++)
                 {
                     Sequence seq = new Sequence
@@ -103,22 +109,7 @@ namespace AutomaticScrewMachine.ViewModel
 
                     SequenceList.Add(seq);
                 }
-                /**
-                for (int j = 1; j < ExcelAdapter.IsRowCount; j++) // j = 0 CategoryList 그래서 1부터 시작
-                {
-                    JogData jogData = new JogData
-                    {
-                        Name = ExcelAdapter.TotalDataList[j][0].ToString(),
-                        X = double.Parse(ExcelAdapter.TotalDataList[j][1]),
-                        Y = double.Parse(ExcelAdapter.TotalDataList[j][2]),
-                        Z = double.Parse(ExcelAdapter.TotalDataList[j][3]),
-                        Torq_IO = uint.Parse(ExcelAdapter.TotalDataList[j][4]),
-                        Depth_IO = uint.Parse(ExcelAdapter.TotalDataList[j][5])
-                    };
-
-                    JogDataList.Add(jogData);
-                }
-                /**/
+                
             }
             catch (Exception ex)
             {
@@ -218,47 +209,49 @@ namespace AutomaticScrewMachine.ViewModel
             {
                 var isPress = message.IsPress;
                 var isViewName = message.IsViewName;
-                //if (isPress)
-                //{
-                switch (isViewName)
+                if (!MotionRock)
                 {
-                    // y 전후방
-                    case string n when n == StaticControllerSignal.JOG_STRAIGHT:
-                        CAXM.AxmMoveVel(0, -MC_JogSpeed, MC_JogAcl, MC_JogDcl);
-                        break;
-                    case string n when n == StaticControllerSignal.JOG_BACK:
-                        CAXM.AxmMoveVel(0, MC_JogSpeed, MC_JogAcl, MC_JogDcl);
-                        break;
+                    switch (isViewName)
+                    {
+                        // y 전후방
+                        case string n when n == StaticControllerSignal.JOG_STRAIGHT:
+                            CAXM.AxmMoveVel(0, -MC_JogSpeed, MC_JogAcl, MC_JogDcl);
+                            break;
+                        case string n when n == StaticControllerSignal.JOG_BACK:
+                            CAXM.AxmMoveVel(0, MC_JogSpeed, MC_JogAcl, MC_JogDcl);
+                            break;
 
 
-                    // x 좌우
-                    case string n when n == StaticControllerSignal.JOG_LEFT:
-                        CAXM.AxmMoveVel(1, -MC_JogSpeed, MC_JogAcl, MC_JogDcl);
-                        break;
-                    case string n when n == StaticControllerSignal.JOG_RIGHT:
-                        CAXM.AxmMoveVel(1, MC_JogSpeed, MC_JogAcl, MC_JogDcl);
-                        break;
+                        // x 좌우
+                        case string n when n == StaticControllerSignal.JOG_LEFT:
+                            CAXM.AxmMoveVel(1, -MC_JogSpeed, MC_JogAcl, MC_JogDcl);
+                            break;
+                        case string n when n == StaticControllerSignal.JOG_RIGHT:
+                            CAXM.AxmMoveVel(1, MC_JogSpeed, MC_JogAcl, MC_JogDcl);
+                            break;
 
 
-                    // z 위아래
-                    case string n when n == StaticControllerSignal.JOG_UP:
-                        CAXM.AxmMoveVel(2, -MC_JogSpeed * 0.5, MC_JogAcl, MC_JogDcl);
-                        break;
+                        // z 위아래
+                        case string n when n == StaticControllerSignal.JOG_UP:
+                            CAXM.AxmMoveVel(2, -MC_JogSpeed * 0.5, MC_JogAcl, MC_JogDcl);
+                            break;
 
-                    case string n when n == StaticControllerSignal.JOG_DOWN:
-                        CAXM.AxmMoveVel(2, MC_JogSpeed * 0.5, MC_JogAcl, MC_JogDcl);
-                        break;
+                        case string n when n == StaticControllerSignal.JOG_DOWN:
+                            CAXM.AxmMoveVel(2, MC_JogSpeed * 0.5, MC_JogAcl, MC_JogDcl);
+                            break;
 
-                    default:
-                        break;
+                        default:
+                            break;
+                    }
+
+                    if (!isPress)
+                    {
+                        CAXM.AxmMoveSStop(0);
+                        CAXM.AxmMoveSStop(1);
+                        CAXM.AxmMoveSStop(2);
+                    }
                 }
-
-                if (!isPress)
-                {
-                    CAXM.AxmMoveSStop(0);
-                    CAXM.AxmMoveSStop(1);
-                    CAXM.AxmMoveSStop(2);
-                }
+                
 
             }
             catch (Exception ex)
@@ -314,7 +307,7 @@ namespace AutomaticScrewMachine.ViewModel
             {
                 if (SelectedSequenceItem != null)
                 {
-                    SequenceList.Remove(SelectedSequenceItem);
+                    ExcelAdapter.Remove(isFolderName,isFileName, RemoveAndGetIndex(SelectedSequenceItem));
                 }
             }
             catch (Exception ex)
@@ -323,7 +316,29 @@ namespace AutomaticScrewMachine.ViewModel
                 throw;
             }
         }
-        private void CheckSelected()
+        public int RemoveAndGetIndex(Sequence itemToRemove)
+        {
+            int removedIndex = -1;
+
+            // CollectionChanged 이벤트 핸들러 등록
+            SequenceList.CollectionChanged += (sender, e) =>
+            {
+                if (e.Action == NotifyCollectionChangedAction.Remove)
+                {
+                    // 제거된 항목의 인덱스를 가져옴
+                    removedIndex = e.OldStartingIndex;
+                }
+            };
+
+            // 항목 제거
+            SequenceList.Remove(itemToRemove);
+
+            // 이벤트 핸들러 제거
+            SequenceList.CollectionChanged -= null;
+
+            return removedIndex;
+        }
+        private void GetSequenceStart()
         {
             Trace.WriteLine("==========   Start   ==========\nMethodName : " + (MethodBase.GetCurrentMethod().Name) + "\n");
             try
@@ -368,27 +383,38 @@ namespace AutomaticScrewMachine.ViewModel
         //View.Test test ;
         private void CmdHomeReturn()
         {
-            MotionRock = true;
-            // DI/O
-            SetWriteOutport(8, 1);
-            SetWriteOutport(9, 1);
-            SetWriteOutport(10, 1);
 
-            //CAXM.AxmMovePos(2, 0, MC_JogSpeed, MC_JogAcl, MC_JogDcl);
-            //MultiMovePos(2, new double[] { 0, 0 }, MC_JogSpeed, MC_JogAcl, MC_JogDcl);
-
-            CAXM.AxmHomeSetStart(2); // Z
-            CAXM.AxmHomeSetStart(0); // Y
-            CAXM.AxmHomeSetStart(1); // X
-            if (zPosStateValue != 1 || yPosStateValue != 1 || xPosStateValue != 1)
+            Trace.WriteLine("==========   Start   ==========\nMethodName : " + (MethodBase.GetCurrentMethod().Name) + "\n");
+            try
             {
-                _positionDipatcher = new DispatcherTimer
+                MotionRock = true;
+                // DI/O
+                SetWriteOutport(8, 1);
+                SetWriteOutport(9, 1);
+                SetWriteOutport(10, 1);
+
+                CAXM.AxmMovePos(2, 0, MC_JogSpeed, MC_JogAcl, MC_JogDcl);
+                MultiMovePos(2, new double[] { 0, 0 }, MC_JogSpeed, MC_JogAcl, MC_JogDcl);
+
+                CAXM.AxmHomeSetStart(2); // Z
+                CAXM.AxmHomeSetStart(0); // Y
+                CAXM.AxmHomeSetStart(1); // X
+                if (zPosStateValue != 1 || yPosStateValue != 1 || xPosStateValue != 1)
                 {
-                    Interval = TimeSpan.FromMilliseconds(100)
-                };
-                _positionDipatcher.Tick += Pos_Timer_Tick;
-                _positionDipatcher.Start();
+                    _positionDipatcher = new DispatcherTimer
+                    {
+                        Interval = TimeSpan.FromMilliseconds(100)
+                    };
+                    _positionDipatcher.Tick += Pos_Timer_Tick;
+                    _positionDipatcher.Start();
+                }
             }
+            catch (Exception ex)
+            {
+                Trace.WriteLine("========== Exception ==========\nMethodName : " + (MethodBase.GetCurrentMethod().Name) + "\nException : " + ex);
+                throw;
+            }
+
         }
 
         private void MultiMovePos(int AxisCount, double[] positionList, double jogSpeed, double jogAcl, double jogDcl)
@@ -407,17 +433,14 @@ namespace AutomaticScrewMachine.ViewModel
             yPosStateValue = AxinStateControll(0);// PositionValueY
             xPosStateValue = AxinStateControll(1);// PositionValueX
 
-            //BuzzerZ = RecevieSignalColor(zPosStateValue);
-            //BuzzerY = RecevieSignalColor(yPosStateValue);
-            //BuzzerX = RecevieSignalColor(xPosStateValue);
 
             if (zPosStateValue == 1 && yPosStateValue == 1 && xPosStateValue == 1)
             {
-                //zPosStateValue = 9;
-                //yPosStateValue = 9;
-                //xPosStateValue = 9;
                 MotionRock = false;
                 _positionDipatcher.Stop();
+                zPosStateValue = 9;
+                yPosStateValue = 9;
+                xPosStateValue = 9;
             } 
         }
 

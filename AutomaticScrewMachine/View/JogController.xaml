@@ -27,7 +27,7 @@
         <Grid Grid.Column="0">
             <Grid.RowDefinitions>
                 <RowDefinition />
-                <RowDefinition Height="400" />
+                <RowDefinition />
             </Grid.RowDefinitions>
 
             <Border
@@ -45,10 +45,7 @@
                     <RowDefinition />
                 </Grid.RowDefinitions>
 
-                <Border
-                    Grid.Row="0"
-                    Background="{DynamicResource DeepNaby}"
-                    CornerRadius="10" />
+
                 <Grid Grid.Row="0">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="10*" />
@@ -61,13 +58,15 @@
                         HorizontalAlignment="Left"
                         VerticalAlignment="Center"
                         FontSize="20"
+                        FontWeight="Bold"
                         Foreground="White"
-                        Text="Category" />
+                        Text="Categorise" />
                     <TextBlock
                         Grid.Column="1"
                         HorizontalAlignment="Left"
                         VerticalAlignment="Center"
                         FontSize="20"
+                        FontWeight="Bold"
                         Foreground="White"
                         Text="PositionValue" />
 
@@ -76,6 +75,7 @@
                         HorizontalAlignment="Center"
                         VerticalAlignment="Center"
                         FontSize="20"
+                        FontWeight="Bold"
                         Foreground="White"
                         Text="SIGNAL" />
                 </Grid>
@@ -93,14 +93,14 @@
                         Margin="10,0,0,0"
                         HorizontalAlignment="Left"
                         VerticalAlignment="Center"
-                        FontSize="20"
+                        FontSize="15"
                         Foreground="White"
                         Text="Position X" />
                     <TextBlock
                         Grid.Column="1"
                         HorizontalAlignment="Left"
                         VerticalAlignment="Center"
-                        FontSize="20"
+                        FontSize="15"
                         Foreground="White"
                         Text="{Binding PositionValueX, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                     <Border
@@ -125,14 +125,14 @@
                         Margin="10,0,0,0"
                         HorizontalAlignment="Left"
                         VerticalAlignment="Center"
-                        FontSize="20"
+                        FontSize="15"
                         Foreground="White"
                         Text="Position Y" />
                     <TextBlock
                         Grid.Column="1"
                         HorizontalAlignment="Left"
                         VerticalAlignment="Center"
-                        FontSize="20"
+                        FontSize="15"
                         Foreground="White"
                         Text="{Binding PositionValueY, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                     <Border
@@ -157,14 +157,14 @@
                         Margin="10,0,0,0"
                         HorizontalAlignment="Left"
                         VerticalAlignment="Center"
-                        FontSize="20"
+                        FontSize="15"
                         Foreground="White"
                         Text="Position Z" />
                     <TextBlock
                         Grid.Column="1"
                         HorizontalAlignment="Left"
                         VerticalAlignment="Center"
-                        FontSize="20"
+                        FontSize="15"
                         Foreground="White"
                         Text="{Binding PositionValueZ, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                     <Border
@@ -189,14 +189,14 @@
                         Margin="10,0,0,0"
                         HorizontalAlignment="Left"
                         VerticalAlignment="Center"
-                        FontSize="20"
+                        FontSize="15"
                         Foreground="White"
                         Text="Encoder" />
                     <TextBlock
                         Grid.Column="1"
                         HorizontalAlignment="Left"
                         VerticalAlignment="Center"
-                        FontSize="20"
+                        FontSize="15"
                         Foreground="White"
                         Text="Value Encoder" />
                     <Border
@@ -220,14 +220,14 @@
                         Margin="10,0,0,0"
                         HorizontalAlignment="Left"
                         VerticalAlignment="Center"
-                        FontSize="20"
+                        FontSize="15"
                         Foreground="White"
                         Text="Encoder ll" />
                     <TextBlock
                         Grid.Column="1"
                         HorizontalAlignment="Left"
                         VerticalAlignment="Center"
-                        FontSize="20"
+                        FontSize="15"
                         Foreground="White"
                         Text="Value Encoder ll" />
                     <Border
@@ -247,334 +247,352 @@
                 Grid.Row="1"
                 Margin="0,0,10,0"
                 Background="{DynamicResource CustomSliderForegroundBrush}"
-                CornerRadius="15" />
-            <Grid Grid.Row="1" Margin="10">
-                <Grid.RowDefinitions>
-                    <RowDefinition />
-                    <RowDefinition />
-                    <RowDefinition />
-                    <RowDefinition />
-                    <RowDefinition />
-                </Grid.RowDefinitions>
+                CornerRadius="15">
 
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition />
-                    <ColumnDefinition />
-                    <ColumnDefinition />
-                    <ColumnDefinition />
-                    <ColumnDefinition />
-                    <ColumnDefinition />
-                </Grid.ColumnDefinitions>
-
-
-                <!--  JOG STRAIGHT  -->
-                <Border
-                    x:Name="JogStraightBtn"
-                    Grid.Row="0"
-                    Grid.Column="1"
-                    Width="{Binding BtnSize}"
-                    Height="{Binding BtnSize}"
-                    VerticalAlignment="Bottom"
-                    MouseDown="JogStop_MouseDown"
-                    MouseUp="JogStop_MouseUp"
-                    Style="{StaticResource RoundedBorderStyle}">
-                    <Border.Background>
-                        <ImageBrush ImageSource="../Assets/btn_jog_up.png" />
-                    </Border.Background>
-                </Border>
-
-                <!--  JOG BACK  -->
-                <Border
-                    x:Name="JogBackBtn"
-                    Grid.Row="2"
-                    Grid.Column="1"
-                    Width="{Binding BtnSize}"
-                    Height="{Binding BtnSize}"
-                    VerticalAlignment="Top"
-                    MouseDown="JogStop_MouseDown"
-                    MouseUp="JogStop_MouseUp"
-                    Style="{StaticResource RoundedBorderStyle}">
-                    <Border.Background>
-                        <ImageBrush ImageSource="../Assets/btn_jog_down.png" />
-                    </Border.Background>
-                </Border>
-
-                <!--  JOG LEFT  -->
-                <Border
-                    x:Name="JogLeftBtn"
-                    Grid.Row="1"
-                    Grid.Column="0"
-                    Width="{Binding BtnSize}"
-                    Height="{Binding BtnSize}"
-                    HorizontalAlignment="Right"
-                    MouseDown="JogStop_MouseDown"
-                    MouseUp="JogStop_MouseUp"
-                    Style="{StaticResource RoundedBorderStyle}">
-                    <Border.Background>
-                        <ImageBrush ImageSource="../Assets/btn_jog_left.png" />
-                    </Border.Background>
-                </Border>
-
-                <!--  JOG RIGHT  -->
-                <Border
-                    x:Name="JogRightBtn"
-                    Grid.Row="1"
-                    Grid.Column="2"
-                    Width="{Binding BtnSize}"
-                    Height="{Binding BtnSize}"
-                    HorizontalAlignment="Left"
-                    MouseDown="JogStop_MouseDown"
-                    MouseUp="JogStop_MouseUp"
-                    Style="{StaticResource RoundedBorderStyle}">
-                    <Border.Background>
-                        <ImageBrush ImageSource="../Assets/btn_jog_right.png" />
-                    </Border.Background>
-                </Border>
-
-                <!--  JOG STOP  -->
-                <Button
-                    x:Name="JogStopBtn"
-                    Grid.Row="1"
-                    Grid.Column="1"
-                    Width="{Binding BtnSize}"
-                    Height="{Binding BtnSize}"
-                    Command="{Binding EmergencyStopCommand}"
-                    Content="STOP"
-                    FontSize="15"
-                    Foreground="Black"
-                    MouseDown="JogStop_MouseDown"
-                    MouseUp="JogStop_MouseUp"
-                    Style="{StaticResource RoundedButtonStyle}">
-                    <Button.Background>
-                        <ImageBrush ImageSource="../Assets/btn_jog_stop.png" />
-                    </Button.Background>
-                </Button>
-
-
-                <!--  JOG UP  -->
-                <Border
-                    x:Name="JogUpBtn"
-                    Grid.Row="0"
-                    Grid.Column="3"
-                    Width="{Binding BtnSize}"
-                    Height="{Binding BtnSize}"
-                    VerticalAlignment="Bottom"
-                    MouseDown="JogStop_MouseDown"
-                    MouseUp="JogStop_MouseUp"
-                    Style="{StaticResource RoundedBorderStyle}">
-                    <Border.Background>
-                        <ImageBrush ImageSource="../Assets/btn_screw_up.png" />
-                    </Border.Background>
-                </Border>
-
-                <!--  Return to Home Btn  -->
-                <Button
-                    x:Name="JogReturnBtn"
-                    Grid.Row="0"
-                    Grid.Column="6"
-                    Width="{Binding BtnSize}"
-                    Height="{Binding BtnSize}"
-                    Command="{Binding HomeCommand}"
-                    Style="{StaticResource RoundedButtonStyle}">
-                    <Button.Background>
-                        <ImageBrush ImageSource="../Assets/btn_jog_return.png" />
-                    </Button.Background>
-                </Button>
-
-                <Border
-                    x:Name="JogDownBtn"
-                    Grid.Row="2"
-                    Grid.Column="3"
-                    Width="{Binding BtnSize}"
-                    Height="{Binding BtnSize}"
-                    VerticalAlignment="Top"
-                    MouseDown="JogStop_MouseDown"
-                    MouseUp="JogStop_MouseUp"
-                    Style="{StaticResource RoundedBorderStyle}">
-                    <Border.Background>
-                        <ImageBrush ImageSource="../Assets/btn_screw_down.png" />
-                    </Border.Background>
-                </Border>
-
-
-
-                <TextBlock
-                    Grid.Row="4"
-                    Grid.Column="0"
-                    Grid.ColumnSpan="2"
-                    Margin="10,0,0,0"
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Center"
-                    FontSize="15"
-                    Foreground="White"
-                    Text="Move(m/s)" />
-
-
-                <Border
-                    Grid.Row="4"
-                    Grid.Column="2"
-                    Width="{Binding BtnSize}"
-                    Height="{Binding BtnSize}"
-                    Style="{StaticResource RoundedBorderStyle}">
-                    <Border.Background>
-                        <ImageBrush ImageSource="../Assets/btn_jog_speed.png" />
-                    </Border.Background>
-                </Border>
-
-                <TextBlock
-                    Grid.Row="4"
-                    Grid.Column="2"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center"
-                    FontSize="15"
-                    Foreground="White"
-                    Text="{Binding JogMoveSpeed}" />
-
-                <Button
-                    Grid.Row="4"
-                    Grid.Column="1"
-                    Width="{Binding BtnSize}"
-                    Height="{Binding BtnSize}"
-                    HorizontalAlignment="Right"
-                    Command="{Binding JogSpeedDown}"
-                    Style="{StaticResource RoundedButtonStyle}">
-                    <Button.Background>
-                        <ImageBrush ImageSource="../Assets/btn_jog_speed_minus.png" />
-                    </Button.Background>
-                </Button>
-
-                <Button
-                    Grid.Row="4"
-                    Grid.Column="3"
-                    Width="{Binding BtnSize}"
-                    Height="{Binding BtnSize}"
-                    HorizontalAlignment="Left"
-                    Command="{Binding JogSpeedUp}"
-                    Style="{StaticResource RoundedButtonStyle}">
-                    <Button.Background>
-                        <ImageBrush ImageSource="../Assets/btn_jog_speed_plus.png" />
-                    </Button.Background>
-                </Button>
-
-
-                <Grid
-                    Grid.Row="2"
-                    Grid.RowSpan="3"
-                    Grid.Column="4"
-                    Grid.ColumnSpan="2"
-                    Margin="40,10,10,10">
+                <Grid Grid.Row="1" Margin="10">
                     <Grid.RowDefinitions>
-                        <RowDefinition />
-                        <RowDefinition />
                         <RowDefinition />
                         <RowDefinition />
                         <RowDefinition />
                         <RowDefinition />
                     </Grid.RowDefinitions>
 
-                    <TextBlock
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+
+
+                    <Border
                         Grid.Row="0"
-                        HorizontalAlignment="Left"
-                        VerticalAlignment="Center"
-                        FontSize="12"
-                        Foreground="White"
-                        Text="Servo X" />
-                    <Button
+                        Grid.RowSpan="3"
+                        Grid.Column="0"
+                        Grid.ColumnSpan="3"
+                        Margin="50,50,50,20"
+                        Background="Gray"
+                        CornerRadius="200"
+                        Opacity="1" />
+                    <!--  JOG STRAIGHT  -->
+                    <Border
+                        x:Name="JogStraightBtn"
                         Grid.Row="0"
-                        Width="20"
-                        Height="20"
-                        HorizontalAlignment="Right"
-                        Background="{Binding ServoX, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                        Command="{Binding ServoCheckX}"
-                        Style="{StaticResource RoundedButtonStyle}" />
+                        Grid.Column="1"
+                        Width="{Binding BtnSize}"
+                        Height="35"
+                        VerticalAlignment="Bottom"
+                        MouseDown="JogStop_MouseDown"
+                        MouseUp="JogStop_MouseUp"
+                        Style="{StaticResource RoundedBorderStyle}">
+                        <Border.Background>
+                            <ImageBrush ImageSource="../Assets/btn_up.png" />
+                        </Border.Background>
+                    </Border>
 
-                    <TextBlock
-                        Grid.Row="1"
-                        HorizontalAlignment="Left"
-                        VerticalAlignment="Center"
-                        FontSize="12"
-                        Foreground="White"
-                        Text="Servo Y" />
-                    <Button
-                        Grid.Row="1"
-                        Width="20"
-                        Height="20"
-                        HorizontalAlignment="Right"
-                        Background="{Binding ServoY, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                        Command="{Binding ServoCheckY}"
-                        Style="{StaticResource RoundedButtonStyle}" />
-
-
-                    <TextBlock
+                    <!--  JOG BACK  -->
+                    <Border
+                        x:Name="JogBackBtn"
                         Grid.Row="2"
-                        HorizontalAlignment="Left"
-                        VerticalAlignment="Center"
-                        FontSize="12"
-                        Foreground="White"
-                        Text="Servo Z" />
-                    <Button
-                        Grid.Row="2"
-                        Width="20"
-                        Height="20"
+                        Grid.Column="1"
+                        Width="{Binding BtnSize}"
+                        Height="75"
+                        VerticalAlignment="Top"
+                        MouseDown="JogStop_MouseDown"
+                        MouseUp="JogStop_MouseUp"
+                        Style="{StaticResource RoundedBorderStyle}">
+                        <Border.Background>
+                            <ImageBrush ImageSource="../Assets/btn_down.png" />
+                        </Border.Background>
+                    </Border>
+
+                    <!--  JOG LEFT  -->
+                    <Border
+                        x:Name="JogLeftBtn"
+                        Grid.Row="1"
+                        Grid.Column="0"
+                        Width="90"
+                        Height="30"
                         HorizontalAlignment="Right"
-                        Background="{Binding ServoZ, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                        Command="{Binding ServoCheckZ}"
-                        Style="{StaticResource RoundedButtonStyle}" />
+                        MouseDown="JogStop_MouseDown"
+                        MouseUp="JogStop_MouseUp"
+                        Style="{StaticResource RoundedBorderStyle}">
+                        <Border.Background>
+                            <ImageBrush ImageSource="../Assets/btn_left.png" />
+                        </Border.Background>
+                    </Border>
+
+                    <!--  JOG RIGHT  -->
+                    <Border
+                        x:Name="JogRightBtn"
+                        Grid.Row="1"
+                        Grid.Column="2"
+                        Width="90"
+                        Height="30"
+                        HorizontalAlignment="Left"
+                        MouseDown="JogStop_MouseDown"
+                        MouseUp="JogStop_MouseUp"
+                        Style="{StaticResource RoundedBorderStyle}">
+                        <Border.Background>
+                            <ImageBrush ImageSource="../Assets/btn_right.png" />
+                        </Border.Background>
+                    </Border>
+
+                    <!--  JOG STOP  -->
+                    <Button
+                        x:Name="JogStopBtn"
+                        Grid.Row="1"
+                        Grid.Column="1"
+                        Width="{Binding BtnSize}"
+                        Height="35"
+                        Command="{Binding EmergencyStopCommand}"
+                        Content="STOP"
+                        FontSize="15"
+                        Foreground="White"
+                        MouseDown="JogStop_MouseDown"
+                        MouseUp="JogStop_MouseUp"
+                        Style="{StaticResource RoundedButtonStyle}">
+                        <Button.Background>
+                            <ImageBrush ImageSource="../Assets/btn_stop.png" />
+                        </Button.Background>
+                    </Button>
+
+                    <!--  Return to Home Btn  -->
+                    <Button
+                        x:Name="JogReturnBtn"
+                        Grid.Row="0"
+                        Grid.Column="3"
+                        Width="{Binding BtnSize}"
+                        Height="{Binding BtnSize}"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Top"
+                        Command="{Binding HomeCommand}"
+                        Style="{StaticResource RoundedButtonStyle}">
+                        <Button.Background>
+                            <ImageBrush ImageSource="../Assets/btn_home.png" />
+                        </Button.Background>
+                    </Button>
+
+
+                    <!--  JOG UP  -->
+                    <Border
+                        x:Name="JogUpBtn"
+                        Grid.Row="0"
+                        Grid.Column="2"
+                        Width="{Binding BtnSize}"
+                        Height="{Binding BtnSize}"
+                        VerticalAlignment="Top"
+                        MouseDown="JogStop_MouseDown"
+                        MouseUp="JogStop_MouseUp"
+                        Style="{StaticResource RoundedBorderStyle}">
+                        <Border.Background>
+                            <ImageBrush ImageSource="../Assets/btn_screw_up.png" />
+                        </Border.Background>
+                    </Border>
+
+                    <!--  JOG DOWN  -->
+                    <Border
+                        x:Name="JogDownBtn"
+                        Grid.Row="0"
+                        Grid.Column="0"
+                        Width="{Binding BtnSize}"
+                        Height="{Binding BtnSize}"
+                        VerticalAlignment="Top"
+                        MouseDown="JogStop_MouseDown"
+                        MouseUp="JogStop_MouseUp"
+                        Style="{StaticResource RoundedBorderStyle}">
+                        <Border.Background>
+                            <ImageBrush ImageSource="../Assets/btn_screw_down.png" />
+                        </Border.Background>
+                    </Border>
+
+
 
                     <TextBlock
                         Grid.Row="3"
-                        HorizontalAlignment="Left"
-                        VerticalAlignment="Center"
-                        FontSize="12"
+                        Grid.Column="2"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Bottom"
+                        FontSize="10"
+                        FontWeight="Light"
                         Foreground="White"
-                        Text="Torq Ctr" />
-                    <Button
+                        Text="Speed (m/s)" />
+
+
+                    <Border
                         Grid.Row="3"
-                        Width="20"
-                        Height="20"
+                        Grid.Column="2"
+                        Width="45"
+                        Height="45"
                         HorizontalAlignment="Right"
-                        Background="{Binding TorqSig, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                        Command="{Binding TorqIO}"
-                        Style="{StaticResource RoundedButtonStyle}" />
-
-                    <TextBlock
-                        Grid.Row="4"
-                        HorizontalAlignment="Left"
                         VerticalAlignment="Center"
-                        FontSize="12"
-                        Foreground="White"
-                        Text="Depth Ctr" />
-                    <Button
-                        Grid.Row="4"
-                        Width="20"
-                        Height="20"
-                        HorizontalAlignment="Right"
-                        Background="{Binding DepthSig, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                        Command="{Binding DepthIO}"
-                        Style="{StaticResource RoundedButtonStyle}" />
+                        Background="#FF8A8A8A"
+                        CornerRadius="500">
 
-                    <TextBlock
-                        Grid.Row="5"
-                        HorizontalAlignment="Left"
-                        VerticalAlignment="Center"
-                        FontSize="12"
-                        Foreground="White"
-                        Text="Air Ctr" />
-                    <Button
-                        Grid.Row="5"
-                        Width="20"
-                        Height="20"
-                        HorizontalAlignment="Right"
-                        Background="{Binding AirSig, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                        Command="{Binding AirIO}"
-                        Style="{StaticResource RoundedButtonStyle}" />
+                        <TextBlock
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            FontSize="15"
+                            Foreground="White"
+                            Text="{Binding JogMoveSpeed}" />
+                    </Border>
 
+
+                    <Grid Grid.Row="3" Grid.Column="3">
+                        <Grid.RowDefinitions>
+                            <RowDefinition />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+
+                        <Button
+                            Grid.Row="0"
+                            Grid.Column="0"
+                            Width="35"
+                            Height="35"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Bottom"
+                            Command="{Binding JogSpeedUp}"
+                            Style="{StaticResource RoundedButtonStyle}">
+                            <Button.Background>
+                                <ImageBrush ImageSource="../Assets/btn_jog_speed_plus.png" />
+                            </Button.Background>
+                        </Button>
+
+                        <Button
+                            Grid.Row="1"
+                            Grid.Column="0"
+                            Width="35"
+                            Height="35"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Bottom"
+                            Command="{Binding JogSpeedDown}"
+                            Style="{StaticResource RoundedButtonStyle}">
+                            <Button.Background>
+                                <ImageBrush ImageSource="../Assets/btn_jog_speed_minus.png" />
+                            </Button.Background>
+                        </Button>
+                    </Grid>
+                    <Grid
+                        Grid.Row="1"
+                        Grid.RowSpan="2"
+                        Grid.Column="3">
+                        <Grid.RowDefinitions>
+                            <RowDefinition />
+                            <RowDefinition />
+                            <RowDefinition />
+                            <RowDefinition />
+                            <RowDefinition />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+
+                        <TextBlock
+                            Grid.Row="0"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Center"
+                            FontSize="10"
+                            Foreground="White"
+                            Text="Servo X" />
+                        <Button
+                            Grid.Row="0"
+                            Width="20"
+                            Height="20"
+                            HorizontalAlignment="Right"
+                            Background="{Binding ServoX, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                            Command="{Binding ServoCheckX}"
+                            Style="{StaticResource RoundedButtonStyle}" />
+
+                        <TextBlock
+                            Grid.Row="1"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Center"
+                            FontSize="10"
+                            Foreground="White"
+                            Text="Servo Y" />
+                        <Button
+                            Grid.Row="1"
+                            Width="20"
+                            Height="20"
+                            HorizontalAlignment="Right"
+                            Background="{Binding ServoY, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                            Command="{Binding ServoCheckY}"
+                            Style="{StaticResource RoundedButtonStyle}" />
+
+
+                        <TextBlock
+                            Grid.Row="2"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Center"
+                            FontSize="10"
+                            Foreground="White"
+                            Text="Servo Z" />
+                        <Button
+                            Grid.Row="2"
+                            Width="20"
+                            Height="20"
+                            HorizontalAlignment="Right"
+                            Background="{Binding ServoZ, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                            Command="{Binding ServoCheckZ}"
+                            Style="{StaticResource RoundedButtonStyle}" />
+
+                        <TextBlock
+                            Grid.Row="3"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Center"
+                            FontSize="10"
+                            Foreground="White"
+                            Text="Torq Ctr" />
+                        <Button
+                            Grid.Row="3"
+                            Width="20"
+                            Height="20"
+                            HorizontalAlignment="Right"
+                            Background="{Binding TorqSig, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                            Command="{Binding TorqIO}"
+                            Style="{StaticResource RoundedButtonStyle}" />
+
+                        <TextBlock
+                            Grid.Row="4"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Center"
+                            FontSize="10"
+                            Foreground="White"
+                            Text="Depth Ctr" />
+                        <Button
+                            Grid.Row="4"
+                            Width="20"
+                            Height="20"
+                            HorizontalAlignment="Right"
+                            Background="{Binding DepthSig, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                            Command="{Binding DepthIO}"
+                            Style="{StaticResource RoundedButtonStyle}" />
+
+                        <TextBlock
+                            Grid.Row="5"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Center"
+                            FontSize="10"
+                            Foreground="White"
+                            Text="Air Ctr" />
+                        <Button
+                            Grid.Row="5"
+                            Width="20"
+                            Height="20"
+                            HorizontalAlignment="Right"
+                            Background="{Binding AirSig, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                            Command="{Binding AirIO}"
+                            Style="{StaticResource RoundedButtonStyle}" />
+
+                    </Grid>
                 </Grid>
-            </Grid>
 
+            </Border>
         </Grid>
 
-        <Grid Grid.Column="1" Background="Transparent">
+        <Grid Grid.Column="1">
             <Grid.RowDefinitions>
                 <RowDefinition Height="0.9*" />
                 <RowDefinition Height="1*" />
@@ -584,217 +602,359 @@
                 <RowDefinition Height="1*" />
             </Grid.RowDefinitions>
 
-            <Border
-                Grid.Row="0"
-                Grid.RowSpan="2"
-                Background="{DynamicResource DeepNaby}"
-                CornerRadius="15" />
-            <Grid Grid.Row="0">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition />
-                    <ColumnDefinition />
-                    <ColumnDefinition />
-                    <ColumnDefinition />
-                    <ColumnDefinition />
-                </Grid.ColumnDefinitions>
-                <TextBlock
-                    Grid.Column="0"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center"
-                    FontSize="15"
-                    Foreground="White"
-                    Text="NAME" />
-                <TextBlock
-                    Grid.Column="1"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center"
-                    FontSize="15"
-                    Foreground="White"
-                    Text="X-Value" />
-                <TextBlock
-                    Grid.Column="2"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center"
-                    FontSize="15"
-                    Foreground="White"
-                    Text="Y-Value" />
-                <TextBlock
-                    Grid.Column="3"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center"
-                    FontSize="15"
-                    Foreground="White"
-                    Text="Z-Value" />
-                <TextBlock
-                    Grid.Column="4"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center"
-                    FontSize="15"
-                    Foreground="White"
-                    Text="AddBtn" />
-            </Grid>
-
-            <Grid Grid.Row="1" Background="{DynamicResource CustomSliderForegroundBrush}">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition />
-                    <ColumnDefinition />
-                    <ColumnDefinition />
-                    <ColumnDefinition />
-                    <ColumnDefinition />
-                </Grid.ColumnDefinitions>
-                <Grid Grid.Column="0">
-                    <Grid.RowDefinitions>
-                        <RowDefinition />
-                        <RowDefinition />
-                        <RowDefinition />
-                    </Grid.RowDefinitions>
-
-                    <Grid
-                        Grid.Row="1"
-                        Margin="5,0"
-                        Background="Silver"
-                        Opacity="0.5" />
-
-                    <Grid
-                        Grid.Row="2"
-                        Height="2"
-                        Margin="5,0"
-                        VerticalAlignment="Top"
-                        Background="Silver" />
-
-
-                </Grid>
-                <TextBox
-                    Grid.Column="0"
-                    MinWidth="100"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center"
-                    Background="Transparent"
-                    BorderThickness="0"
-                    FontSize="15"
-                    Foreground="White"
-                    Text="{Binding TitleName}" />
-                <TextBlock
-                    Grid.Column="1"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center"
-                    FontSize="15"
-                    Foreground="White"
-                    Text="{Binding PositionValueX}" />
-                <TextBlock
-                    Grid.Column="2"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center"
-                    FontSize="15"
-                    Foreground="White"
-                    Text="{Binding PositionValueY}" />
-                <TextBlock
-                    Grid.Column="3"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center"
-                    FontSize="15"
-                    Foreground="White"
-                    Text="{Binding PositionValueZ}" />
-
-                <Button
-                    Grid.Column="4"
-                    Width="55"
-                    Height="55"
-                    Command="{Binding AddPosition}"
-                    Content="Add"
-                    Style="{StaticResource RoundedButtonStyle}" />
-            </Grid>
-
-            <ListBox
-                Grid.Row="2"
-                Background="{DynamicResource DeepNaby}"
-                DisplayMemberPath="Name"
-                FontSize="25"
-                Foreground="White"
-                ItemsSource="{Binding SequenceList}"
-                SelectedItem="{Binding SelectedSequenceItem}" />
-
-            <Grid Grid.Row="3">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition />
-                    <ColumnDefinition />
-                </Grid.ColumnDefinitions>
-
-                <Button
-                    Grid.Column="0"
-                    Height="40"
-                    VerticalAlignment="Top"
-                    Command="{Binding RemoveSequenceCommand}"
-                    Content="Data Delete" />
-                <Button
-                    Grid.Column="1"
-                    Height="40"
-                    VerticalAlignment="Top"
-                    Command="{Binding CheckSelectedCommand}"
-                    Content="Get Move Sequence" />
-            </Grid>
 
             <Grid Grid.Row="4">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="1*" />
-                    <RowDefinition Height="9*" />
+                    <RowDefinition Height="2*" />
+                    <RowDefinition Height="2*" />
+                    <RowDefinition Height="8*" />
                 </Grid.RowDefinitions>
 
                 <Grid Grid.Row="0" Background="{DynamicResource CustomSliderForegroundBrush}">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition />
-                        <ColumnDefinition />
+                        <ColumnDefinition Width="267*" />
+                        <ColumnDefinition Width="184*" />
+                        <ColumnDefinition Width="83*" />
                     </Grid.ColumnDefinitions>
-                    <Button
-                        Grid.Column="0"
-                        Command="{Binding ReadRecipe}"
-                        Content="ReadData" />
-                    <Button
-                        Grid.Column="1"
-                        Command="{Binding UpdateRecipe}"
-                        Content="Save" />
                 </Grid>
 
-                <Grid Grid.Row="1" Background="Transparent">
+                <Grid Grid.Row="2">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition />
                         <ColumnDefinition />
                         <ColumnDefinition />
                         <ColumnDefinition />
+                        <ColumnDefinition />
                     </Grid.ColumnDefinitions>
+                    <TextBlock
+                        Grid.Column="0"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        FontSize="15"
+                        Foreground="White"
+                        Text="NAME" />
+                    <TextBlock
+                        Grid.Column="1"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        FontSize="15"
+                        Foreground="White"
+                        Text="X-Value" />
+                    <TextBlock
+                        Grid.Column="2"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        FontSize="15"
+                        Foreground="White"
+                        Text="Y-Value" />
+                    <TextBlock
+                        Grid.Column="3"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        FontSize="15"
+                        Foreground="White"
+                        Text="Z-Value" />
+                    <TextBlock
+                        Grid.Column="4"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        FontSize="15"
+                        Foreground="White"
+                        Text="AddBtn" />
+                </Grid>
 
-                   
-                    <!--
+                <!--
  <TextBlock
      Grid.Column="0"
      HorizontalAlignment="Center"
-     FontSize="20"
+     FontSize="15"
      Foreground="White"
      Text="{Binding SelectedItem.Name}" />
 <TextBlock
     Grid.Column="1"
     HorizontalAlignment="Center"
-    FontSize="20"
+    FontSize="15"
     Foreground="White"
     Text="{Binding SelectedItem.X}" />
 <TextBlock
     Grid.Column="2"
     HorizontalAlignment="Center"
-    FontSize="20"
+    FontSize="15"
     Foreground="White"
     Text="{Binding SelectedItem.Y}" />
 <TextBlock
     Grid.Column="3"
     HorizontalAlignment="Center"
-    FontSize="20"
+    FontSize="15"
     Foreground="White"
     Text="{Binding SelectedItem.Z}" />
 
-                    -->
+                -->
 
-                </Grid>
             </Grid>
         </Grid>
 
+        <Grid Grid.Column="2">
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <Border
+                Grid.Row="0"
+                Margin="0,0,10,10"
+                Background="{DynamicResource CustomSliderForegroundBrush}"
+                CornerRadius="15">
+                <Grid
+                    Grid.Row="0"
+                    Margin="10"
+                    Background="Transparent"
+                    ShowGridLines="False">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="2*" />
+                        <RowDefinition Height="8*" />
+                    </Grid.RowDefinitions>
+
+                    <Grid Grid.Row="0" Background="{DynamicResource CustomSliderForegroundBrush}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="1*" />
+                            <ColumnDefinition Width="2*" />
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock
+                            Grid.Column="0"
+                            VerticalAlignment="Center"
+                            FontSize="20"
+                            FontWeight="Bold"
+                            Foreground="White"
+                            Text="SEQUENCE LIST" />
+
+                        <Grid Grid.Column="1">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition />
+                                <ColumnDefinition />
+                                <ColumnDefinition />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+
+                            <Button
+                                Grid.Column="0"
+                                Width="{Binding BtnSize}"
+                                Height="{Binding BtnSize}"
+                                Command="{Binding ReadRecipe}"
+                                Style="{StaticResource RoundedButtonStyle}">
+                                <Button.Background>
+                                    <ImageBrush ImageSource="../Assets/btn_list.png" />
+                                </Button.Background>
+                            </Button>
+
+                            <Button
+                                Grid.Column="1"
+                                Width="{Binding BtnSize}"
+                                Height="{Binding BtnSize}"
+                                Command="{Binding AddRecipe}"
+                                Style="{StaticResource RoundedButtonStyle}">
+                                <Button.Background>
+                                    <ImageBrush ImageSource="../Assets/btn_addList.png" />
+                                </Button.Background>
+                            </Button>
+
+                            <Button
+                                Grid.Column="2"
+                                Width="{Binding BtnSize}"
+                                Height="{Binding BtnSize}"
+                                Command="{Binding SequenceStart}"
+                                Style="{StaticResource RoundedButtonStyle}">
+                                <Button.Background>
+                                    <ImageBrush ImageSource="../Assets/btn_start.png" />
+                                </Button.Background>
+                            </Button>
+
+                            <Button
+                                Grid.Column="3"
+                                Width="{Binding BtnSize}"
+                                Height="{Binding BtnSize}"
+                                Command="{Binding RemoveSequenceCommand}"
+                                Style="{StaticResource RoundedButtonStyle}">
+                                <Button.Background>
+                                    <ImageBrush ImageSource="../Assets/btn_delete.png" />
+                                </Button.Background>
+                            </Button>
+                        </Grid>
+
+                    </Grid>
+
+                    <ListBox
+                        Grid.Row="1"
+                        HorizontalContentAlignment="Stretch"
+                        Background="Transparent"
+                        BorderThickness="0"
+                        FontSize="20"
+                        Foreground="White"
+                        ItemsSource="{Binding SequenceList}"
+                        SelectedItem="{Binding SelectedSequenceItem}">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition />
+                                        <ColumnDefinition />
+                                        <ColumnDefinition />
+                                        <ColumnDefinition />
+                                        <ColumnDefinition />
+                                        <ColumnDefinition />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Grid.Column="0" Text="{Binding Name}" />
+                                    
+                                </Grid>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+
+                    </ListBox>
+
+                </Grid>
+            </Border>
+
+            <Border
+                Grid.Row="1"
+                Margin="0,0,10,0"
+                Background="{DynamicResource CustomSliderForegroundBrush}"
+                CornerRadius="15">
+                <Grid
+                    Grid.Row="0"
+                    Margin="10"
+                    Background="Transparent"
+                    ShowGridLines="False">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="1*" />
+                        <RowDefinition Height="8*" />
+                        <RowDefinition Height="1*" />
+                    </Grid.RowDefinitions>
+                    <Grid Grid.Row="0" Background="{DynamicResource CustomSliderForegroundBrush}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="2*" />
+                            <ColumnDefinition Width="1*" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock
+                            Grid.Column="0"
+                            VerticalAlignment="Center"
+                            FontSize="20"
+                            FontWeight="Bold"
+                            Foreground="White"
+                            Text="Sequence Data Information" />
+                        <Grid Grid.Column="1">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition />
+                                <ColumnDefinition />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                            
+                            <Button
+                                Grid.Column="0"
+                                Width="35"
+                                Height="35"
+                                Command="{Binding AddPosition}"
+                                Content="Add"
+                                Style="{StaticResource RoundedButtonStyle}" />
+
+
+                            <Button
+                                Grid.Column="1"
+                                Width="35"
+                                Height="35"
+                                Command="{Binding UpdateRecipe}"
+                                Style="{StaticResource RoundedButtonStyle}">
+                                <Button.Background>
+                                    <ImageBrush ImageSource="../Assets/btn_save.png" />
+                                </Button.Background>
+                            </Button>
+
+                        </Grid>
+
+                    </Grid>
+
+                    <Grid Grid.Row="2" Background="{DynamicResource CustomSliderForegroundBrush}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+                        <Grid Grid.Column="0">
+                            <Grid.RowDefinitions>
+                                <RowDefinition />
+                                <RowDefinition />
+                                <RowDefinition />
+                            </Grid.RowDefinitions>
+
+                        </Grid>
+                        <TextBox
+                            Grid.Column="0"
+                            MinWidth="100"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            FontSize="15"
+                            Foreground="Black"
+                            Text="{Binding TitleName}" />
+                        <TextBlock
+                            Grid.Column="1"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            FontSize="15"
+                            Foreground="White"
+                            Text="{Binding PositionValueX}" />
+                        <TextBlock
+                            Grid.Column="2"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            FontSize="15"
+                            Foreground="White"
+                            Text="{Binding PositionValueY}" />
+                        <TextBlock
+                            Grid.Column="3"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            FontSize="15"
+                            Foreground="White"
+                            Text="{Binding PositionValueZ}" />
+
+                    </Grid>
+                    <ListBox
+                        Grid.Row="1"
+                        HorizontalContentAlignment="Stretch"
+                        Background="Transparent"
+                        BorderThickness="0"
+                        FontSize="12"
+                        Foreground="White"
+                        ItemsSource="{Binding JogDataList}"
+                        SelectedItem="{Binding SelectedJogItem}">
+                        <!--  우측의 명령어가 리스트의 가로 비율을 균일하게 배분  -->
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition />
+                                        <ColumnDefinition />
+                                        <ColumnDefinition />
+                                        <ColumnDefinition />
+                                        <ColumnDefinition />
+                                        <ColumnDefinition />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Grid.Column="0" Text="{Binding Name}" />
+                                    <TextBlock Grid.Column="1" Text="{Binding X}" />
+                                    <TextBlock Grid.Column="2" Text="{Binding Y}" />
+                                    <TextBlock Grid.Column="3" Text="{Binding Z}" />
+                                    <TextBlock Grid.Column="4" Text="{Binding Torq_IO}" />
+                                    <TextBlock Grid.Column="5" Text="{Binding Depth_IO}" />
+                                </Grid>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+
+                    </ListBox>
+
+                </Grid>
+            </Border>
+        </Grid>
     </Grid>
 </UserControl>

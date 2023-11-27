@@ -94,7 +94,7 @@
     <Compile Include="LibContorller\AXS.cs" />
     <Compile Include="Model\JogController.cs" />
     <Compile Include="Model\WindowStyle.cs" />
-    <Compile Include="SignalMessage.cs" />
+    <Compile Include="Bases\SignalMessage.cs" />
     <Compile Include="StaticControllerSignal.cs" />
     <Compile Include="ViewModel\JogControllerViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
@@ -155,26 +155,11 @@
     <Resource Include="MousePointer.cur" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Assets\btn_jog_down.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Assets\btn_jog_left.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Assets\btn_jog_right.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Assets\btn_jog_up.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Assets\btn_jog_stop.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Assets\btn_screw_down.png" />
     <Resource Include="Assets\btn_screw_up.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Assets\btn_jog_speed.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Assets\btn_jog_speed_minus.png" />
@@ -189,6 +174,39 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Assets\wait.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\btn_excel.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\btn_open.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\btn_list.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\btn_save.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\btn_down.png" />
+    <Resource Include="Assets\btn_left.png" />
+    <Resource Include="Assets\btn_right.png" />
+    <Resource Include="Assets\btn_up.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\btn_stop.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\btn_home.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\btn_start.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\btn_delete.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\btn_addList.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
