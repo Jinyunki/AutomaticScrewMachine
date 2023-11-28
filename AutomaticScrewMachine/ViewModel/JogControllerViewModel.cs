@@ -7,6 +7,8 @@ using System;
 using System.Collections.Specialized;
 using System.Diagnostics;
 using System.Reflection;
+using System.Threading;
+using System.Windows;
 using System.Windows.Threading;
 
 namespace AutomaticScrewMachine.ViewModel
@@ -17,7 +19,7 @@ namespace AutomaticScrewMachine.ViewModel
         public JogControllerViewModel()
         {
             DefaultSet();
-            
+
             // HOME
             HomeCommand = new RelayCommand(CmdHomeReturn);
 
@@ -26,6 +28,8 @@ namespace AutomaticScrewMachine.ViewModel
 
             // Button TriggerEvent
             SetButtonEvent();
+
+            //ScrewPosList = new Thickness(-350, -300, 0, 0);
 
         }
 
@@ -69,15 +73,16 @@ namespace AutomaticScrewMachine.ViewModel
                 throw;
             }
 
-            
+
         }
 
         private void AddRecipeCommand()
         {
             ExcelAdapter.Add(isFolderName, isFileName, "TESTADD");
-            SequenceList.Add(new Sequence{
+            SequenceList.Add(new Sequence
+            {
                 Name = "TESTADD"
-                
+
             });
         }
 
@@ -99,7 +104,7 @@ namespace AutomaticScrewMachine.ViewModel
             {
                 SequenceList?.Clear();
 
-                ExcelAdapter.Connect(isFolderName,isFileName);
+                ExcelAdapter.Connect(isFolderName, isFileName);
                 for (int i = 0; i < ExcelAdapter.WorkSheetNameList.Count; i++)
                 {
                     Sequence seq = new Sequence
@@ -109,7 +114,7 @@ namespace AutomaticScrewMachine.ViewModel
 
                     SequenceList.Add(seq);
                 }
-                
+
             }
             catch (Exception ex)
             {
@@ -177,6 +182,9 @@ namespace AutomaticScrewMachine.ViewModel
             PositionValueX = dpX;
             PositionValueY = dpY;
             PositionValueZ = dpZ;
+
+            ScrewPosList = new Thickness(PositionValueX * 0.001, PositionValueY * 0.0009, 0, 0);
+            ScrewMCForcus = PositionValueZ;
         }
         public void GetBuzzerData()
         {
@@ -387,16 +395,25 @@ namespace AutomaticScrewMachine.ViewModel
             Trace.WriteLine("==========   Start   ==========\nMethodName : " + (MethodBase.GetCurrentMethod().Name) + "\n");
             try
             {
+                
                 MotionRock = true;
                 // DI/O
                 SetWriteOutport(8, 1);
                 SetWriteOutport(9, 1);
                 SetWriteOutport(10, 1);
 
-                CAXM.AxmMovePos(2, 0, MC_JogSpeed, MC_JogAcl, MC_JogDcl);
-                MultiMovePos(2, new double[] { 0, 0 }, MC_JogSpeed, MC_JogAcl, MC_JogDcl);
+                //CAXM.AxmMovePos(2, 0, MC_JogSpeed, MC_JogAcl, MC_JogDcl);
+                double homeSetSpeed = 80000;
+                double homeSetSpeed2 = 20000;
+                double homeSetSpeed3 = 10000;
+                double homeSetSpeedDev = 5000;
+
+                CAXM.AxmHomeSetVel(2, homeSetSpeed, homeSetSpeed2, homeSetSpeed3, homeSetSpeedDev, homeSetSpeed * 10,homeSetSpeed * 10);
+                CAXM.AxmHomeSetVel(0, homeSetSpeed, homeSetSpeed2, homeSetSpeed3, homeSetSpeedDev, homeSetSpeed * 10,homeSetSpeed * 10);
+                CAXM.AxmHomeSetVel(1, homeSetSpeed, homeSetSpeed2, homeSetSpeed3, homeSetSpeedDev, homeSetSpeed * 10,homeSetSpeed * 10);
 
                 CAXM.AxmHomeSetStart(2); // Z
+                Thread.Sleep(1000);
                 CAXM.AxmHomeSetStart(0); // Y
                 CAXM.AxmHomeSetStart(1); // X
                 if (zPosStateValue != 1 || yPosStateValue != 1 || xPosStateValue != 1)
@@ -424,11 +441,12 @@ namespace AutomaticScrewMachine.ViewModel
             double[] aclList = { jogAcl, jogAcl };
             double[] dclList = { jogDcl, jogDcl };
 
-            CAXM.AxmMoveMultiPos(AxisCount, jogList, positionList, speedList, aclList, dclList);
+            CAXM.AxmMoveStartMultiPos(AxisCount, jogList, positionList, speedList, aclList, dclList);
         }
 
         public void Pos_Timer_Tick(object sender, EventArgs e)
         {
+            
             zPosStateValue = AxinStateControll(2);// PositionValueZ
             yPosStateValue = AxinStateControll(0);// PositionValueY
             xPosStateValue = AxinStateControll(1);// PositionValueX

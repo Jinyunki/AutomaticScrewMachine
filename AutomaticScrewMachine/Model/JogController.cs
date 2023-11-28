@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Threading;
@@ -91,7 +92,19 @@ namespace AutomaticScrewMachine.Model
                 }
             }
         }
-
+        private Thickness _screwPosList;
+        public Thickness ScrewPosList
+        {
+            get => _screwPosList;
+            set
+            {
+                if (_screwPosList != value)
+                {
+                    _screwPosList = value;
+                    RaisePropertyChanged(nameof(ScrewPosList));
+                }
+            }
+        }
         public bool MotionRock {  get; set; }
         public ICommand AddPosition { get; set; }
         public ICommand RemoveSequenceCommand { get; set; }
@@ -166,6 +179,16 @@ namespace AutomaticScrewMachine.Model
             {
                 _btnSize = value;
                 RaisePropertyChanged(nameof(BtnSize));
+            }
+        }
+        private double _screwMCForcus = 0.0;
+        public double ScrewMCForcus
+        {
+            get { return _screwMCForcus; }
+            set
+            {
+                _screwMCForcus = value * 0.00001 * 2;
+                RaisePropertyChanged(nameof(ScrewMCForcus));
             }
         }
         private string _titleName = "Name";

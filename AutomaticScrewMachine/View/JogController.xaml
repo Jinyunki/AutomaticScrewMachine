@@ -20,9 +20,9 @@
     </UserControl.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition />
-            <ColumnDefinition />
-            <ColumnDefinition />
+            <ColumnDefinition Width="1*" />
+            <ColumnDefinition Width="1*" />
+            <ColumnDefinition Width="1*" />
         </Grid.ColumnDefinitions>
         <Grid Grid.Column="0">
             <Grid.RowDefinitions>
@@ -592,107 +592,44 @@
             </Border>
         </Grid>
 
+
         <Grid Grid.Column="1">
             <Grid.RowDefinitions>
-                <RowDefinition Height="0.9*" />
                 <RowDefinition Height="1*" />
                 <RowDefinition Height="3*" />
-                <RowDefinition Height="0.5*" />
-                <RowDefinition Height="5*" />
                 <RowDefinition Height="1*" />
             </Grid.RowDefinitions>
 
-
-            <Grid Grid.Row="4">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="1*" />
-                    <RowDefinition Height="2*" />
-                    <RowDefinition Height="2*" />
-                    <RowDefinition Height="8*" />
-                </Grid.RowDefinitions>
-
-                <Grid Grid.Row="0" Background="{DynamicResource CustomSliderForegroundBrush}">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="267*" />
-                        <ColumnDefinition Width="184*" />
-                        <ColumnDefinition Width="83*" />
-                    </Grid.ColumnDefinitions>
+            <Border Grid.Row="1" Background="DarkGray" CornerRadius="10"/>
+            <Border Grid.Row="1" Background="Gray" CornerRadius="25" Margin="50">
+                <!--  -350,-300,0,0  -->
+                <Grid HorizontalAlignment="Left" VerticalAlignment="Top">
+                    <Border
+                        Width="100"
+                        Height="100"
+                        Margin="{Binding ScrewPosList, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        CornerRadius="100">
+                        <Border.Background>
+                            <ImageBrush ImageSource="../Assets/btn_screw_mc.png" />
+                        </Border.Background>
+                    </Border>
+                    <Border
+                        Width="30"
+                        Height="30"
+                        Margin="{Binding ScrewPosList, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        Background="#FF0680A8"
+                        CornerRadius="100" />
+                    <Border
+                        Opacity="{Binding ScrewMCForcus,  Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        Width="25"
+                        Height="25"
+                        Margin="{Binding ScrewPosList, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        Background="Black"
+                        CornerRadius="100" />
                 </Grid>
 
-                <Grid Grid.Row="2">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition />
-                        <ColumnDefinition />
-                        <ColumnDefinition />
-                        <ColumnDefinition />
-                        <ColumnDefinition />
-                    </Grid.ColumnDefinitions>
-                    <TextBlock
-                        Grid.Column="0"
-                        HorizontalAlignment="Center"
-                        VerticalAlignment="Center"
-                        FontSize="15"
-                        Foreground="White"
-                        Text="NAME" />
-                    <TextBlock
-                        Grid.Column="1"
-                        HorizontalAlignment="Center"
-                        VerticalAlignment="Center"
-                        FontSize="15"
-                        Foreground="White"
-                        Text="X-Value" />
-                    <TextBlock
-                        Grid.Column="2"
-                        HorizontalAlignment="Center"
-                        VerticalAlignment="Center"
-                        FontSize="15"
-                        Foreground="White"
-                        Text="Y-Value" />
-                    <TextBlock
-                        Grid.Column="3"
-                        HorizontalAlignment="Center"
-                        VerticalAlignment="Center"
-                        FontSize="15"
-                        Foreground="White"
-                        Text="Z-Value" />
-                    <TextBlock
-                        Grid.Column="4"
-                        HorizontalAlignment="Center"
-                        VerticalAlignment="Center"
-                        FontSize="15"
-                        Foreground="White"
-                        Text="AddBtn" />
-                </Grid>
 
-                <!--
- <TextBlock
-     Grid.Column="0"
-     HorizontalAlignment="Center"
-     FontSize="15"
-     Foreground="White"
-     Text="{Binding SelectedItem.Name}" />
-<TextBlock
-    Grid.Column="1"
-    HorizontalAlignment="Center"
-    FontSize="15"
-    Foreground="White"
-    Text="{Binding SelectedItem.X}" />
-<TextBlock
-    Grid.Column="2"
-    HorizontalAlignment="Center"
-    FontSize="15"
-    Foreground="White"
-    Text="{Binding SelectedItem.Y}" />
-<TextBlock
-    Grid.Column="3"
-    HorizontalAlignment="Center"
-    FontSize="15"
-    Foreground="White"
-    Text="{Binding SelectedItem.Z}" />
-
-                -->
-
-            </Grid>
+            </Border>
         </Grid>
 
         <Grid Grid.Column="2">
@@ -702,7 +639,7 @@
             </Grid.RowDefinitions>
             <Border
                 Grid.Row="0"
-                Margin="0,0,10,10"
+                Margin="0,0,0,10"
                 Background="{DynamicResource CustomSliderForegroundBrush}"
                 CornerRadius="15">
                 <Grid
@@ -805,7 +742,7 @@
                                         <ColumnDefinition />
                                     </Grid.ColumnDefinitions>
                                     <TextBlock Grid.Column="0" Text="{Binding Name}" />
-                                    
+
                                 </Grid>
                             </DataTemplate>
                         </ListBox.ItemTemplate>
@@ -817,7 +754,7 @@
 
             <Border
                 Grid.Row="1"
-                Margin="0,0,10,0"
+                Margin="0,0,0,0"
                 Background="{DynamicResource CustomSliderForegroundBrush}"
                 CornerRadius="15">
                 <Grid
@@ -827,8 +764,8 @@
                     ShowGridLines="False">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="1*" />
-                        <RowDefinition Height="8*" />
                         <RowDefinition Height="1*" />
+                        <RowDefinition Height="8*" />
                     </Grid.RowDefinitions>
                     <Grid Grid.Row="0" Background="{DynamicResource CustomSliderForegroundBrush}">
                         <Grid.ColumnDefinitions>
@@ -848,7 +785,7 @@
                                 <ColumnDefinition />
                                 <ColumnDefinition />
                             </Grid.ColumnDefinitions>
-                            
+
                             <Button
                                 Grid.Column="0"
                                 Width="35"
@@ -873,55 +810,70 @@
 
                     </Grid>
 
-                    <Grid Grid.Row="2" Background="{DynamicResource CustomSliderForegroundBrush}">
+
+
+                    <Grid Grid.Row="1" Background="Transparent">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition />
                             <ColumnDefinition />
                             <ColumnDefinition />
                             <ColumnDefinition />
                             <ColumnDefinition />
+                            <ColumnDefinition />
                         </Grid.ColumnDefinitions>
-                        <Grid Grid.Column="0">
-                            <Grid.RowDefinitions>
-                                <RowDefinition />
-                                <RowDefinition />
-                                <RowDefinition />
-                            </Grid.RowDefinitions>
-
-                        </Grid>
-                        <TextBox
+                        <TextBlock
                             Grid.Column="0"
-                            MinWidth="100"
-                            HorizontalAlignment="Center"
+                            HorizontalAlignment="Right"
                             VerticalAlignment="Center"
-                            FontSize="15"
-                            Foreground="Black"
-                            Text="{Binding TitleName}" />
+                            FontSize="12"
+                            FontWeight="Bold"
+                            Foreground="White"
+                            Text="SeqName" />
                         <TextBlock
                             Grid.Column="1"
-                            HorizontalAlignment="Center"
+                            HorizontalAlignment="Right"
                             VerticalAlignment="Center"
-                            FontSize="15"
+                            FontSize="12"
+                            FontWeight="Bold"
                             Foreground="White"
-                            Text="{Binding PositionValueX}" />
+                            Text="X:PosValue" />
                         <TextBlock
                             Grid.Column="2"
-                            HorizontalAlignment="Center"
+                            HorizontalAlignment="Right"
                             VerticalAlignment="Center"
-                            FontSize="15"
+                            FontSize="12"
+                            FontWeight="Bold"
                             Foreground="White"
-                            Text="{Binding PositionValueY}" />
+                            Text="Y:PosValue" />
                         <TextBlock
                             Grid.Column="3"
-                            HorizontalAlignment="Center"
+                            HorizontalAlignment="Right"
                             VerticalAlignment="Center"
-                            FontSize="15"
+                            FontSize="12"
+                            FontWeight="Bold"
                             Foreground="White"
-                            Text="{Binding PositionValueZ}" />
+                            Text="Z:PosValue" />
+                        <TextBlock
+                            Grid.Column="4"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Center"
+                            FontSize="12"
+                            FontWeight="Bold"
+                            Foreground="White"
+                            Text="TorqIO" />
+                        <TextBlock
+                            Grid.Column="5"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Center"
+                            FontSize="12"
+                            FontWeight="Bold"
+                            Foreground="White"
+                            Text="DepthIO" />
 
                     </Grid>
+
                     <ListBox
-                        Grid.Row="1"
+                        Grid.Row="2"
                         HorizontalContentAlignment="Stretch"
                         Background="Transparent"
                         BorderThickness="0"
@@ -941,18 +893,35 @@
                                         <ColumnDefinition />
                                         <ColumnDefinition />
                                     </Grid.ColumnDefinitions>
-                                    <TextBlock Grid.Column="0" Text="{Binding Name}" />
-                                    <TextBlock Grid.Column="1" Text="{Binding X}" />
-                                    <TextBlock Grid.Column="2" Text="{Binding Y}" />
-                                    <TextBlock Grid.Column="3" Text="{Binding Z}" />
-                                    <TextBlock Grid.Column="4" Text="{Binding Torq_IO}" />
-                                    <TextBlock Grid.Column="5" Text="{Binding Depth_IO}" />
+                                    <TextBlock
+                                        Grid.Column="0"
+                                        HorizontalAlignment="Right"
+                                        Text="{Binding Name}" />
+                                    <TextBlock
+                                        Grid.Column="1"
+                                        HorizontalAlignment="Right"
+                                        Text="{Binding X}" />
+                                    <TextBlock
+                                        Grid.Column="2"
+                                        HorizontalAlignment="Right"
+                                        Text="{Binding Y}" />
+                                    <TextBlock
+                                        Grid.Column="3"
+                                        HorizontalAlignment="Right"
+                                        Text="{Binding Z}" />
+                                    <TextBlock
+                                        Grid.Column="4"
+                                        HorizontalAlignment="Right"
+                                        Text="{Binding Torq_IO}" />
+                                    <TextBlock
+                                        Grid.Column="5"
+                                        HorizontalAlignment="Right"
+                                        Text="{Binding Depth_IO}" />
                                 </Grid>
                             </DataTemplate>
                         </ListBox.ItemTemplate>
 
                     </ListBox>
-
                 </Grid>
             </Border>
         </Grid>
