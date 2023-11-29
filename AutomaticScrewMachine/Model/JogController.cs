@@ -33,32 +33,34 @@ namespace AutomaticScrewMachine.Model
                         int index = SequenceList.IndexOf(_selectedSequenceItem);
                         Console.WriteLine("선택된 index : " + index);
                         Console.WriteLine("Name : " + _selectedSequenceItem.Name);
-                        GetReadingData();
+                        GetReadingData(index);
                     }
                 }
             }
         }
 
-        public void GetReadingData()
+        public void GetReadingData(int workSheetIndex)
         {
             JogDataList?.Clear();
-            ObservableCollection<List<string>> GetJogDataList = new ObservableCollection<List<string>>();
-            GetJogDataList = ExcelAdapter.GetReadData(isFolderName, isFileName);
-            for (int j = 1; j < GetJogDataList.Count; j++) // j = 0 CategoryList 그래서 1부터 시작
+            ObservableCollection<List<string>> GetJogDataList ;
+            GetJogDataList = ExcelAdapter.GetReadData(isFolderName, isFileName, workSheetIndex);
+            if (GetJogDataList != null)
             {
-                JogData jogData = new JogData
+                for (int j = 1; j < GetJogDataList.Count; j++) // j = 0 CategoryList 그래서 1부터 시작
                 {
-                    Name = GetJogDataList[j][0].ToString(),
-                    X = double.Parse(GetJogDataList[j][1]),
-                    Y = double.Parse(GetJogDataList[j][2]),
-                    Z = double.Parse(GetJogDataList[j][3]),
-                    Torq_IO = uint.Parse(GetJogDataList[j][4]),
-                    Depth_IO = uint.Parse(GetJogDataList[j][5])
-                };
+                    JogData jogData = new JogData
+                    {
+                        Name = GetJogDataList[j][0].ToString(),
+                        X = double.Parse(GetJogDataList[j][1]),
+                        Y = double.Parse(GetJogDataList[j][2]),
+                        Z = double.Parse(GetJogDataList[j][3]),
+                        Torq_IO = uint.Parse(GetJogDataList[j][4]),
+                        Depth_IO = uint.Parse(GetJogDataList[j][5])
+                    };
 
-                JogDataList.Add(jogData);
-            }
-
+                    JogDataList.Add(jogData);
+                }
+            } 
         }
 
 
@@ -171,7 +173,7 @@ namespace AutomaticScrewMachine.Model
         public double MC_JogAcl {  get; set; }
         public double MC_JogDcl {  get; set; }
 
-        private int _btnSize = 55;
+        private int _btnSize = 35;
         public int BtnSize
         {
             get { return _btnSize; }
@@ -181,6 +183,7 @@ namespace AutomaticScrewMachine.Model
                 RaisePropertyChanged(nameof(BtnSize));
             }
         }
+
         private double _screwMCForcus = 0.0;
         public double ScrewMCForcus
         {
@@ -191,13 +194,13 @@ namespace AutomaticScrewMachine.Model
                 RaisePropertyChanged(nameof(ScrewMCForcus));
             }
         }
-        private string _titleName = "Name";
+        private string _titleName = "";
         public string TitleName
         {
             get { return _titleName; }
             set
             {
-                _titleName = value;
+                _titleName = "#" + value;
                 RaisePropertyChanged(nameof(TitleName));
             }
         }

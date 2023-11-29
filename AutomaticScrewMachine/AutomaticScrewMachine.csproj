@@ -99,8 +99,17 @@
     <Compile Include="ViewModel\JogControllerViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />
+    <Compile Include="View\DIO_Controller.xaml.cs">
+      <DependentUpon>DIO_Controller.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\JogController.xaml.cs">
       <DependentUpon>JogController.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\JogCtr.xaml.cs">
+      <DependentUpon>JogCtr.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\PositionMC.xaml.cs">
+      <DependentUpon>PositionMC.xaml</DependentUpon>
     </Compile>
     <Page Include="DesignGUI.xaml">
       <SubType>Designer</SubType>
@@ -118,7 +127,19 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="View\DIO_Controller.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\JogController.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\JogCtr.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\PositionMC.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -188,16 +209,13 @@
     <Resource Include="Assets\btn_save.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Assets\btn_down.png" />
+    <Resource Include="Assets\btn_back.png" />
     <Resource Include="Assets\btn_left.png" />
     <Resource Include="Assets\btn_right.png" />
-    <Resource Include="Assets\btn_up.png" />
+    <Resource Include="Assets\btn_straight.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Assets\btn_stop.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Assets\btn_home.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Assets\btn_start.png" />
@@ -210,6 +228,26 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Assets\btn_screw_mc.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\btn_down.png" />
+    <Resource Include="Assets\btn_up.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\btn_home.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\btn_home_white.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\btn_back_white.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\btn_straight_white.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\btn_left_white.png" />
+    <Resource Include="Assets\btn_right_white.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -4,6 +4,7 @@ using AutomaticScrewMachine.Model;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using System;
+using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Diagnostics;
 using System.Reflection;
@@ -78,10 +79,19 @@ namespace AutomaticScrewMachine.ViewModel
 
         private void AddRecipeCommand()
         {
-            ExcelAdapter.Add(isFolderName, isFileName, "TESTADD");
+            List<string> itemList = new List<string>
+            {
+                "Name",
+                "X Value",
+                "Y Value",
+                "Z Value",
+                "Torq",
+                "Depth"
+            };
+            ExcelAdapter.Add(isFolderName, isFileName, "Recepe#" + SequenceList.Count, itemList);
             SequenceList.Add(new Sequence
             {
-                Name = "TESTADD"
+                Name = "Recepe#" + SequenceList.Count
 
             });
         }
@@ -104,7 +114,7 @@ namespace AutomaticScrewMachine.ViewModel
             {
                 SequenceList?.Clear();
 
-                ExcelAdapter.Connect(isFolderName, isFileName);
+                ExcelAdapter.Connect(isFolderName, isFileName,0);
                 for (int i = 0; i < ExcelAdapter.WorkSheetNameList.Count; i++)
                 {
                     Sequence seq = new Sequence
@@ -183,7 +193,7 @@ namespace AutomaticScrewMachine.ViewModel
             PositionValueY = dpY;
             PositionValueZ = dpZ;
 
-            ScrewPosList = new Thickness(PositionValueX * 0.001, PositionValueY * 0.0009, 0, 0);
+            ScrewPosList = new Thickness(PositionValueX * 0.00098, PositionValueY * 0.0009, 0, 0);
             ScrewMCForcus = PositionValueZ;
         }
         public void GetBuzzerData()
@@ -279,25 +289,21 @@ namespace AutomaticScrewMachine.ViewModel
             Trace.WriteLine("==========   Start   ==========\nMethodName : " + (MethodBase.GetCurrentMethod().Name) + "\n");
             try
             {
-                if (TitleName != "")
-                {
-                    JogData jogData = new JogData()
-                    {
-                        Name = TitleName,
-                        X = PositionValueX,
-                        Y = PositionValueY,
-                        Z = PositionValueZ,
-                        Torq_IO = torqS,
-                        Depth_IO = depthS
-                    };
+                TitleName = (JogDataList.Count + 1).ToString();
 
-                    JogDataList.Add(jogData);
-                    TitleName = "";
-                }
-                else
+                JogData jogData = new JogData()
                 {
-                    TitleName = "#" + JogDataList.Count.ToString();
-                }
+                    Name = TitleName,
+                    X = PositionValueX,
+                    Y = PositionValueY,
+                    Z = PositionValueZ,
+                    Torq_IO = torqS,
+                    Depth_IO = depthS
+                };
+
+                JogDataList.Add(jogData);
+                TitleName = "";
+
             }
             catch (Exception ex)
             {
@@ -355,7 +361,7 @@ namespace AutomaticScrewMachine.ViewModel
 
                 for (int i = 0; i < JogDataList.Count; i++)
                 {
-                    CAXM.AxmMovePos(2, 5000, MC_JogSpeed * 0.5, MC_JogAcl, MC_JogDcl);
+                    CAXM.AxmMovePos(2, 0, MC_JogSpeed * 0.5, MC_JogAcl, MC_JogDcl);
                     MultiMovePos(2, new double[] { JogDataList[i].Y, JogDataList[i].X }, MC_JogSpeed, MC_JogAcl, MC_JogDcl);
                     CAXM.AxmMovePos(2, JogDataList[i].Z, MC_JogSpeed, MC_JogAcl, MC_JogDcl);
                 }

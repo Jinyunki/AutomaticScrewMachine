@@ -3,6 +3,8 @@
     <SolidColorBrush x:Key="ButtonSelectBrush" Color="DarkOrange" />
     <SolidColorBrush x:Key="DarkBrush" Color="DarkSlateBlue" />
     <SolidColorBrush x:Key="DeepNaby" Color="#FF010A1F" />
+    <SolidColorBrush x:Key="DarkNavyGray" Color="#1A202C" />
+    <SolidColorBrush x:Key="FontColor" Color="#9BA9BB" />
 
     <VisualBrush
         x:Key="CueBannerBrush"
@@ -13,6 +15,21 @@
             <Label Content="MM:SS:HH AM/PM" Foreground="White" />
         </VisualBrush.Visual>
     </VisualBrush>
+
+
+    <LinearGradientBrush x:Key="MainBackGroundColor" StartPoint="0,0" EndPoint="1,1">
+        <GradientStop Offset="0.1" Color="#FF2B2B2B" />
+        <GradientStop Offset="0.2" Color="#FF2E2E2E" />
+        <GradientStop Offset="0.3" Color="#FF2F2F2F" />
+        <GradientStop Offset="0.4" Color="#FF3B3B3B" />
+        <GradientStop Offset="0.5" Color="#FF3E3E3E" />
+        <GradientStop Offset="0.6" Color="#FF4B4B4B" />
+        <GradientStop Offset="0.7" Color="#FF6B6B6B" />
+        <GradientStop Offset="0.8" Color="#FF8B8B8B" />
+        <GradientStop Offset="0.99" Color="#FF9A9A9A" />
+        <GradientStop Offset="1.0" Color="#FFD5D5D5" />
+    </LinearGradientBrush>
+
 
     <Style
         xmlns:sys="clr-namespace:System;assembly=mscorlib"
@@ -170,7 +187,7 @@
                             <Setter TargetName="border" Property="Opacity" Value="1.0" />
                         </Trigger>
                         <Trigger Property="IsMouseOver" Value="False">
-                            <Setter TargetName="border" Property="Opacity" Value="0.5" />
+                            <Setter TargetName="border" Property="Opacity" Value="0.7" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
@@ -185,7 +202,110 @@
                 <Setter Property="Opacity" Value="1.0" />
             </Trigger>
             <Trigger Property="IsMouseOver" Value="False">
+                <Setter Property="Opacity" Value="0.7" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <!-- Arrow Border Back -->
+    <Style x:Key="BackArrow" TargetType="Border">
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
                 <Setter Property="Opacity" Value="0.5" />
+                <Setter Property="Background">
+                    <Setter.Value>
+                        <ImageBrush ImageSource="Assets/btn_back_white.png" />
+                    </Setter.Value>
+                </Setter>
+            </Trigger>
+            <Trigger Property="IsMouseOver" Value="False">
+                <Setter Property="Opacity" Value="0.5" />
+                <Setter Property="Background">
+                    <Setter.Value>
+                        <ImageBrush ImageSource="Assets/btn_back.png" />
+                    </Setter.Value>
+                </Setter>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <!-- Arrow Border Straight -->
+    <Style x:Key="StraightArrow" TargetType="Border">
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Opacity" Value="0.5" />
+                <Setter Property="Background">
+                    <Setter.Value>
+                        <ImageBrush ImageSource="Assets/btn_straight_white.png" />
+                    </Setter.Value>
+                </Setter>
+            </Trigger>
+            <Trigger Property="IsMouseOver" Value="False">
+                <Setter Property="Opacity" Value="0.5" />
+                <Setter Property="Background">
+                    <Setter.Value>
+                        <ImageBrush ImageSource="Assets/btn_straight.png" />
+                    </Setter.Value>
+                </Setter>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+
+    <!-- Arrow Border Left -->
+    <Style x:Key="LeftArrow" TargetType="Border">
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Opacity" Value="0.5" />
+                <Setter Property="Background">
+                    <Setter.Value>
+                        <ImageBrush ImageSource="Assets/btn_left_white.png" />
+                    </Setter.Value>
+                </Setter>
+            </Trigger>
+            <Trigger Property="IsMouseOver" Value="False">
+                <Setter Property="Opacity" Value="0.5" />
+                <Setter Property="Background">
+                    <Setter.Value>
+                        <ImageBrush ImageSource="Assets/btn_left.png" />
+                    </Setter.Value>
+                </Setter>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+
+    <!-- Arrow Border Right -->
+    <Style x:Key="RightArrow" TargetType="Border">
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Opacity" Value="0.5" />
+                <Setter Property="Background">
+                    <Setter.Value>
+                        <ImageBrush ImageSource="Assets/btn_right_white.png" />
+                    </Setter.Value>
+                </Setter>
+            </Trigger>
+            <Trigger Property="IsMouseOver" Value="False">
+                <Setter Property="Opacity" Value="0.5" />
+                <Setter Property="Background">
+                    <Setter.Value>
+                        <ImageBrush ImageSource="Assets/btn_right.png" />
+                    </Setter.Value>
+                </Setter>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+
+    <Style x:Key="SelectedBorderStyle" TargetType="Border">
+        <Setter Property="CornerRadius" Value="50" />
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="BorderBrush" Value="Silver"/>
+            </Trigger>
+            <Trigger Property="IsMouseOver" Value="False">
+                <Setter Property="BorderBrush" Value="Transparent" />
             </Trigger>
         </Style.Triggers>
     </Style>

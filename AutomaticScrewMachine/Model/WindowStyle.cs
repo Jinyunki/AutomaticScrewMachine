@@ -68,7 +68,7 @@ namespace AutomaticScrewMachine.Model
                 }
             }
         }
-        private int _transparentValue = 90;
+        private int _transparentValue = 100;
         public int TransparentValue
         {
             get => _transparentValue;
@@ -96,7 +96,7 @@ namespace AutomaticScrewMachine.Model
             }
         }
 
-        private double _realTransparentValue = 0.8;
+        private double _realTransparentValue = 1.0;
         public double RealTransparentValue
         {
             get => _realTransparentValue;
