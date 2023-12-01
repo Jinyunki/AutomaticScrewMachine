@@ -146,29 +146,12 @@
     <Compile Include="LibContorller\AXM.cs" />
     <Compile Include="LibContorller\AXP.cs" />
     <Compile Include="LibContorller\AXS.cs" />
-    <Compile Include="Model\JogController.cs" />
-    <Compile Include="Model\WindowStyle.cs" />
+    <Compile Include="Model\MainViewBindingData.cs" />
     <Compile Include="Bases\SignalMessage.cs" />
-    <Compile Include="StaticControllerSignal.cs" />
+    <Compile Include="Bases\StaticControllerSignal.cs" />
     <Compile Include="Utiles\ExcelAdapter.cs" />
-    <Compile Include="ViewModel\JogControllerViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />
-    <Compile Include="View\DIO_Controller.xaml.cs">
-      <DependentUpon>DIO_Controller.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="View\Frag_Jog\jog_IO.xaml.cs">
-      <DependentUpon>jog_IO.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="View\JogController.xaml.cs">
-      <DependentUpon>JogController.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="View\JogCtr.xaml.cs">
-      <DependentUpon>JogCtr.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="View\PositionMC.xaml.cs">
-      <DependentUpon>PositionMC.xaml</DependentUpon>
-    </Compile>
     <Page Include="CurrentList\1.Jog\View\frag\Frag_IO.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -213,26 +196,6 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="View\DIO_Controller.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="View\Frag_Jog\jog_IO.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="View\JogController.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="View\JogCtr.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="View\PositionMC.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -339,6 +302,8 @@
     <Resource Include="Assets\btn_left_white.png" />
     <Resource Include="Assets\btn_right_white.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="View\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

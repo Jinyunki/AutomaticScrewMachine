@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace AutomaticScrewMachine.Bases
-{
+﻿namespace AutomaticScrewMachine.Bases {
     public class SignalMessage
     {
         public bool IsPress { get; }

@@ -5,7 +5,6 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:fragList="clr-namespace:AutomaticScrewMachine.CurrentList._1.Jog.View.frag"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:view="clr-namespace:AutomaticScrewMachine.View"
     d:DesignHeight="800"
     d:DesignWidth="1600"
     Background="Transparent"
@@ -45,20 +44,16 @@
                         <RowDefinition Height="35" />
                         <RowDefinition />
                         <RowDefinition />
-                        <RowDefinition />
-                        <RowDefinition />
                     </Grid.RowDefinitions>
 
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition />
-                        <ColumnDefinition />
                         <ColumnDefinition />
                         <ColumnDefinition />
                     </Grid.ColumnDefinitions>
 
                     <TextBlock
                         Grid.Row="0"
-                        Grid.ColumnSpan="4"
+                        Grid.ColumnSpan="2"
                         FontSize="20"
                         FontWeight="Bold"
                         Foreground="{DynamicResource FontColor}"
@@ -66,18 +61,11 @@
 
                     <fragList:Frag_joystick
                         Grid.Row="1"
-                        Grid.RowSpan="2"
-                        Grid.Column="0"
-                        Grid.ColumnSpan="2" />
+                        Grid.Column="0" />
 
                     <fragList:Frag_IO
                         Grid.Row="1"
-                        Grid.RowSpan="2"
-                        Grid.Column="2"
-                        Grid.ColumnSpan="2" />
-
-
-
+                        Grid.Column="1"/>
                 </Grid>
             </Border>
         </Grid>

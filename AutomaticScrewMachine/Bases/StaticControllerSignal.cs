@@ -1,9 +1,9 @@
-﻿using AutomaticScrewMachine.Bases;
+﻿
 using GalaSoft.MvvmLight.Messaging;
 using System;
 using System.Windows.Threading;
 
-namespace AutomaticScrewMachine
+namespace AutomaticScrewMachine.Bases
 {
     public static class StaticControllerSignal
     {

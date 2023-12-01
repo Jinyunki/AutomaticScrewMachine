@@ -43,7 +43,6 @@ namespace AutomaticScrewMachine.ViewModel
             ////}
 
             SimpleIoc.Default.Register<MainViewModel>();
-            SimpleIoc.Default.Register<JogControllerViewModel>();
             SimpleIoc.Default.Register<JogViewModel>();
         }
 
@@ -52,13 +51,6 @@ namespace AutomaticScrewMachine.ViewModel
             get
             {
                 return ServiceLocator.Current.GetInstance<MainViewModel>();
-            }
-        }
-        public JogControllerViewModel JogControllerViewModel
-        {
-            get
-            {
-                return ServiceLocator.Current.GetInstance<JogControllerViewModel>();
             }
         }
         public JogViewModel JogViewModel {

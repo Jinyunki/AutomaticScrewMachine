@@ -9,6 +9,7 @@
     d:DesignWidth="450"
     Background="Transparent"
     DataContext="{Binding JogViewModel, Source={StaticResource Locator}}"
+    MouseLeave="JogControl_MouseLeave"
     MouseUp="JogStop_MouseUp"
     mc:Ignorable="d">
     <UserControl.Resources>
