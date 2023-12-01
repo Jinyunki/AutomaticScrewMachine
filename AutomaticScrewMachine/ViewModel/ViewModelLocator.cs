@@ -12,6 +12,7 @@
   See http://www.galasoft.ch/mvvm
 */
 
+using AutomaticScrewMachine.CurrentList._1.Jog.ViewModel;
 using CommonServiceLocator;
 using GalaSoft.MvvmLight.Ioc;
 
@@ -43,6 +44,7 @@ namespace AutomaticScrewMachine.ViewModel
 
             SimpleIoc.Default.Register<MainViewModel>();
             SimpleIoc.Default.Register<JogControllerViewModel>();
+            SimpleIoc.Default.Register<JogViewModel>();
         }
 
         public MainViewModel Main
@@ -57,6 +59,12 @@ namespace AutomaticScrewMachine.ViewModel
             get
             {
                 return ServiceLocator.Current.GetInstance<JogControllerViewModel>();
+            }
+        }
+        public JogViewModel JogViewModel {
+            get
+            {
+                return ServiceLocator.Current.GetInstance<JogViewModel>();
             }
         }
         

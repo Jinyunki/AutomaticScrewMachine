@@ -10,7 +10,7 @@ namespace AutomaticScrewMachine.ViewModel
         {
             WinBtnEvent();
             RealTime();
-            CurrentViewModel = _locator.JogControllerViewModel;
+            CurrentViewModel = _locator.JogViewModel;
             Docking();
         }
 

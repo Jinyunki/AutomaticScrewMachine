@@ -1,4 +1,4 @@
-﻿using AdapterCollection;
+﻿using AutomaticScrewMachine.Utiles;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using System;
@@ -10,8 +10,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Threading;
 
-namespace AutomaticScrewMachine.Model
-{
+namespace AutomaticScrewMachine.Model {
     public class JogController : ViewModelBase
     {
         public readonly string isFolderName = "Data";
@@ -43,6 +42,7 @@ namespace AutomaticScrewMachine.Model
         {
             JogDataList?.Clear();
             ObservableCollection<List<string>> GetJogDataList ;
+
             GetJogDataList = ExcelAdapter.GetReadData(isFolderName, isFileName, workSheetIndex);
             if (GetJogDataList != null)
             {
@@ -120,7 +120,7 @@ namespace AutomaticScrewMachine.Model
 
 
         public ICommand ReadRecipe { get; set; }
-        public ICommand UpdateRecipe { get; set; }
+        public ICommand SavePosDataRecipe { get; set; }
         public ICommand AddRecipe { get; set; }
 
 
@@ -464,7 +464,6 @@ namespace AutomaticScrewMachine.Model
             }
         }
 
-
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected virtual void OnPropertyChanged(string propertyName)
@@ -475,6 +474,7 @@ namespace AutomaticScrewMachine.Model
     
     public class Sequence : INotifyPropertyChanged
     {
+
         private string _name;
         public string Name
         {
@@ -488,7 +488,7 @@ namespace AutomaticScrewMachine.Model
                 }
             }
         }
-        public ICommand SequenceStart { get; set; }
+        public ICommand SequenceListStart { get; set; }
 
 
         public event PropertyChangedEventHandler PropertyChanged;

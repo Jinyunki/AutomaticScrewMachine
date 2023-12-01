@@ -44,11 +44,17 @@
     <OutputPath>bin\x64\Release\</OutputPath>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AdapterCollection">
-      <HintPath>..\..\AdapterCollection\AdapterCollection\bin\Release\AdapterCollection.dll</HintPath>
-    </Reference>
     <Reference Include="CommonServiceLocator, Version=2.0.7.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
       <HintPath>..\packages\CommonServiceLocator.2.0.7\lib\net47\CommonServiceLocator.dll</HintPath>
+    </Reference>
+    <Reference Include="EPPlus, Version=7.0.2.0, Culture=neutral, PublicKeyToken=ea159fdaa78159a1, processorArchitecture=MSIL">
+      <HintPath>..\packages\EPPlus.7.0.2\lib\net462\EPPlus.dll</HintPath>
+    </Reference>
+    <Reference Include="EPPlus.Interfaces, Version=6.1.1.0, Culture=neutral, PublicKeyToken=a694d7f3b0907a61, processorArchitecture=MSIL">
+      <HintPath>..\packages\EPPlus.Interfaces.6.1.1\lib\net462\EPPlus.Interfaces.dll</HintPath>
+    </Reference>
+    <Reference Include="EPPlus.System.Drawing, Version=6.1.1.0, Culture=neutral, PublicKeyToken=2308d35469c9bac0, processorArchitecture=MSIL">
+      <HintPath>..\packages\EPPlus.System.Drawing.6.1.1\lib\net462\EPPlus.System.Drawing.dll</HintPath>
     </Reference>
     <Reference Include="GalaSoft.MvvmLight, Version=5.4.1.0, Culture=neutral, PublicKeyToken=e7570ab207bcb616, processorArchitecture=MSIL">
       <HintPath>..\packages\MvvmLightLibs.5.4.1.1\lib\net45\GalaSoft.MvvmLight.dll</HintPath>
@@ -59,8 +65,31 @@
     <Reference Include="GalaSoft.MvvmLight.Platform, Version=5.4.1.0, Culture=neutral, PublicKeyToken=5f873c45e98af8a1, processorArchitecture=MSIL">
       <HintPath>..\packages\MvvmLightLibs.5.4.1.1\lib\net45\GalaSoft.MvvmLight.Platform.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.IO.RecyclableMemoryStream, Version=2.3.2.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.IO.RecyclableMemoryStream.2.3.2\lib\net462\Microsoft.IO.RecyclableMemoryStream.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Buffers.4.5.1\lib\net461\System.Buffers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ComponentModel.Annotations, Version=4.2.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ComponentModel.Annotations.5.0.0\lib\net461\System.ComponentModel.Annotations.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.configuration" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Memory, Version=4.0.1.2, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Memory.4.5.5\lib\net461\System.Memory.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Numerics.Vectors, Version=4.1.4.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Numerics.Vectors.4.5.0\lib\net46\System.Numerics.Vectors.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.6.0.0\lib\net461\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Security" />
+    <Reference Include="System.Threading.Tasks" />
     <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\MvvmLightLibs.5.4.1.1\lib\net45\System.Windows.Interactivity.dll</HintPath>
     </Reference>
@@ -82,6 +111,31 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="CurrentList\1.Jog\Model\JogData.cs" />
+    <Compile Include="CurrentList\1.Jog\Model\PosData.cs" />
+    <Compile Include="CurrentList\1.Jog\Model\SequenceData.cs" />
+    <Compile Include="CurrentList\1.Jog\ViewModel\JogViewModel.cs" />
+    <Compile Include="CurrentList\1.Jog\View\frag\Frag_IO.xaml.cs">
+      <DependentUpon>Frag_IO.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="CurrentList\1.Jog\View\frag\Frag_joystick.xaml.cs">
+      <DependentUpon>Frag_joystick.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="CurrentList\1.Jog\View\frag\Frag_MachineLocation.xaml.cs">
+      <DependentUpon>Frag_MachineLocation.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="CurrentList\1.Jog\View\frag\Frag_PositionList.xaml.cs">
+      <DependentUpon>Frag_PositionList.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="CurrentList\1.Jog\View\frag\Frag_SequnceList.xaml.cs">
+      <DependentUpon>Frag_SequnceList.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="CurrentList\1.Jog\View\frag\Frag_signal.xaml.cs">
+      <DependentUpon>Frag_signal.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="CurrentList\1.Jog\View\JogMain.xaml.cs">
+      <DependentUpon>JogMain.xaml</DependentUpon>
+    </Compile>
     <Compile Include="LibContorller\AXA.cs" />
     <Compile Include="LibContorller\AXC.cs" />
     <Compile Include="LibContorller\AXD.cs" />
@@ -96,11 +150,15 @@
     <Compile Include="Model\WindowStyle.cs" />
     <Compile Include="Bases\SignalMessage.cs" />
     <Compile Include="StaticControllerSignal.cs" />
+    <Compile Include="Utiles\ExcelAdapter.cs" />
     <Compile Include="ViewModel\JogControllerViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />
     <Compile Include="View\DIO_Controller.xaml.cs">
       <DependentUpon>DIO_Controller.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Frag_Jog\jog_IO.xaml.cs">
+      <DependentUpon>jog_IO.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\JogController.xaml.cs">
       <DependentUpon>JogController.xaml</DependentUpon>
@@ -111,6 +169,34 @@
     <Compile Include="View\PositionMC.xaml.cs">
       <DependentUpon>PositionMC.xaml</DependentUpon>
     </Compile>
+    <Page Include="CurrentList\1.Jog\View\frag\Frag_IO.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="CurrentList\1.Jog\View\frag\Frag_joystick.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="CurrentList\1.Jog\View\frag\Frag_MachineLocation.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="CurrentList\1.Jog\View\frag\Frag_PositionList.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="CurrentList\1.Jog\View\frag\Frag_SequnceList.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="CurrentList\1.Jog\View\frag\Frag_signal.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="CurrentList\1.Jog\View\JogMain.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="DesignGUI.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -128,6 +214,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="View\DIO_Controller.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Frag_Jog\jog_IO.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -249,5 +339,6 @@
     <Resource Include="Assets\btn_left_white.png" />
     <Resource Include="Assets\btn_right_white.png" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

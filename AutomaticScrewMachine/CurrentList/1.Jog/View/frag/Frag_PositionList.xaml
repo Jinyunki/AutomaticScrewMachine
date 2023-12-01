@@ -1,0 +1,202 @@
+﻿<UserControl
+    x:Class="AutomaticScrewMachine.CurrentList._1.Jog.View.frag.Frag_PositionList"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    d:DesignHeight="450"
+    d:DesignWidth="450"
+    Background="Transparent"
+    DataContext="{Binding JogViewModel, Source={StaticResource Locator}}"
+    mc:Ignorable="d">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../../../../DesignGUI.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <Border
+        Grid.Row="1"
+        Margin="0,0,0,0"
+        Background="{DynamicResource DarkNavyGray}"
+        CornerRadius="15">
+        <Grid
+            Grid.Row="0"
+            Margin="10"
+            Background="Transparent"
+            ShowGridLines="False">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="8*" />
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="0" Background="{DynamicResource DarkNavyGray}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="2*" />
+                    <ColumnDefinition Width="1*" />
+                </Grid.ColumnDefinitions>
+                <TextBlock
+                    Grid.Column="0"
+                    VerticalAlignment="Center"
+                    FontSize="20"
+                    FontWeight="Bold"
+                    Foreground="{DynamicResource FontColor}"
+                    Text="Sequence Data Information" />
+                <Grid Grid.Column="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+
+                    <Button
+                        Grid.Column="0"
+                        Width="35"
+                        Height="35"
+                        Command="{Binding AddPosition}"
+                        Content="Add"
+                        Style="{StaticResource RoundedButtonStyle}" />
+
+                    <Button
+                        Grid.Column="1"
+                        Width="{Binding BtnSize}"
+                        Height="{Binding BtnSize}"
+                        Command="{Binding AddRecipe}"
+                        Style="{StaticResource RoundedButtonStyle}">
+                        <Button.Background>
+                            <ImageBrush ImageSource="../../../../Assets/btn_addList.png" />
+                        </Button.Background>
+                    </Button>
+
+
+                    <Button
+                        Grid.Column="2"
+                        Width="35"
+                        Height="35"
+                        Command="{Binding SavePosDataRecipe}"
+                        Style="{StaticResource RoundedButtonStyle}">
+                        <Button.Background>
+                            <ImageBrush ImageSource="../../../../Assets/btn_save.png" />
+                        </Button.Background>
+                    </Button>
+
+                </Grid>
+
+            </Grid>
+
+
+
+            <Grid Grid.Row="1" Background="Transparent">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <TextBlock
+                    Grid.Column="0"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Center"
+                    FontSize="12"
+                    FontWeight="Bold"
+                    Foreground="{DynamicResource FontColor}"
+                    Text="SeqName" />
+                <TextBlock
+                    Grid.Column="1"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Center"
+                    FontSize="12"
+                    FontWeight="Bold"
+                    Foreground="{DynamicResource FontColor}"
+                    Text="X:PosValue" />
+                <TextBlock
+                    Grid.Column="2"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Center"
+                    FontSize="12"
+                    FontWeight="Bold"
+                    Foreground="{DynamicResource FontColor}"
+                    Text="Y:PosValue" />
+                <TextBlock
+                    Grid.Column="3"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Center"
+                    FontSize="12"
+                    FontWeight="Bold"
+                    Foreground="{DynamicResource FontColor}"
+                    Text="Z:PosValue" />
+                <TextBlock
+                    Grid.Column="4"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Center"
+                    FontSize="12"
+                    FontWeight="Bold"
+                    Foreground="{DynamicResource FontColor}"
+                    Text="TorqIO" />
+                <TextBlock
+                    Grid.Column="5"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Center"
+                    FontSize="12"
+                    FontWeight="Bold"
+                    Foreground="{DynamicResource FontColor}"
+                    Text="DepthIO" />
+            </Grid>
+
+            <ListBox
+                Grid.Row="2"
+                HorizontalContentAlignment="Stretch"
+                Background="Transparent"
+                BorderThickness="0"
+                FontSize="12"
+                Foreground="{DynamicResource FontColor}"
+                ItemsSource="{Binding PositionDataList}"
+                SelectedItem="{Binding SelectedPositionItem}">
+                <!--  우측의 명령어가 리스트의 가로 비율을 균일하게 배분  -->
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition />
+                                <ColumnDefinition />
+                                <ColumnDefinition />
+                                <ColumnDefinition />
+                                <ColumnDefinition />
+                                <ColumnDefinition />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock
+                                Grid.Column="0"
+                                HorizontalAlignment="Right"
+                                Text="{Binding Name}" />
+                            <TextBlock
+                                Grid.Column="1"
+                                HorizontalAlignment="Right"
+                                Text="{Binding X}" />
+                            <TextBlock
+                                Grid.Column="2"
+                                HorizontalAlignment="Right"
+                                Text="{Binding Y}" />
+                            <TextBlock
+                                Grid.Column="3"
+                                HorizontalAlignment="Right"
+                                Text="{Binding Z}" />
+                            <TextBlock
+                                Grid.Column="4"
+                                HorizontalAlignment="Right"
+                                Text="{Binding Torq_IO}" />
+                            <TextBlock
+                                Grid.Column="5"
+                                HorizontalAlignment="Right"
+                                Text="{Binding Depth_IO}" />
+                        </Grid>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </Grid>
+    </Border>
+</UserControl>

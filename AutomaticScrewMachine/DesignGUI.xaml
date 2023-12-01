@@ -207,7 +207,7 @@
         </Style.Triggers>
     </Style>
 
-    <!-- Arrow Border Back -->
+    <!--  Arrow Border Back  -->
     <Style x:Key="BackArrow" TargetType="Border">
         <Style.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
@@ -229,7 +229,7 @@
         </Style.Triggers>
     </Style>
 
-    <!-- Arrow Border Straight -->
+    <!--  Arrow Border Straight  -->
     <Style x:Key="StraightArrow" TargetType="Border">
         <Style.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
@@ -252,7 +252,7 @@
     </Style>
 
 
-    <!-- Arrow Border Left -->
+    <!--  Arrow Border Left  -->
     <Style x:Key="LeftArrow" TargetType="Border">
         <Style.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
@@ -275,7 +275,7 @@
     </Style>
 
 
-    <!-- Arrow Border Right -->
+    <!--  Arrow Border Right  -->
     <Style x:Key="RightArrow" TargetType="Border">
         <Style.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
@@ -302,7 +302,7 @@
         <Setter Property="CornerRadius" Value="50" />
         <Style.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="BorderBrush" Value="Silver"/>
+                <Setter Property="BorderBrush" Value="Silver" />
             </Trigger>
             <Trigger Property="IsMouseOver" Value="False">
                 <Setter Property="BorderBrush" Value="Transparent" />

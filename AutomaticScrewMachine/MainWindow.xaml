@@ -6,6 +6,8 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:view="clr-namespace:AutomaticScrewMachine.View"
     xmlns:vm="clr-namespace:AutomaticScrewMachine.ViewModel"
+    xmlns:currentVM="clr-namespace:AutomaticScrewMachine.CurrentList._1.Jog.ViewModel"
+    xmlns:currentView="clr-namespace:AutomaticScrewMachine.CurrentList._1.Jog.View"
     Title="MainWindow"
     Width="1600"
     Height="900"
@@ -22,9 +24,11 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="DesignGUI.xaml" />
             </ResourceDictionary.MergedDictionaries>
-            <DataTemplate DataType="{x:Type vm:JogControllerViewModel}">
-                <view:JogController />
+
+            <DataTemplate DataType="{x:Type currentVM:JogViewModel}">
+                <currentView:JogMain />
             </DataTemplate>
+
         </ResourceDictionary>
     </Window.Resources>
     <Grid>
