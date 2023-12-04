@@ -11,6 +11,54 @@ using GalaSoft.MvvmLight.Command;
 
 namespace AutomaticScrewMachine.CurrentList._1.Jog.Model {
     public class JogData : ViewModelBase {
+        public enum DIOIndex : int{
+            STARTBTN = 0,
+            RESETBTN = 1,
+            EMGBTN = 2,
+            START2BTN = 3,
+            
+            IDK4 = 4,
+            IDK5 = 5,
+            IDK6 = 6,
+            
+            ERRORMODEL = 7,
+            
+            DRIVER = 8,
+            DEPTH = 9,
+            VACUUM = 10,
+            
+            OK_LED_PORT1 = 11,
+            OK_LED_PORT2 = 12,
+            OK_LED_PORT3 = 13,
+            OK_LED_PORT4 = 14,
+            OK_LED_PORT5 = 15,
+
+            NG_LED_PORT1 = 16,
+            NG_LED_PORT2 = 17,
+            NG_LED_PORT3 = 18,
+            NG_LED_PORT4 = 19,
+            NG_LED_PORT5 = 20,
+
+            LED_BUZZER_RED = 21,
+            LED_BUZZER_YELLOW = 22,
+            LED_BUZZER_GREEN = 23,
+            SOUND_BUZZER = 24,
+
+
+            IDK25 = 25,
+            IDK26 = 26,
+            IDK27 = 27,
+            IDK28 = 28,
+            IDK29 = 29,
+            IDK30 = 30,
+            IDK31 = 31
+        }
+        public enum ServoIndex {
+            YPOSITION = 0,
+            XPOSITION = 1,
+            ZPOSITION = 2
+        }
+
         public readonly string isFolderName = "Data";
         public readonly string isFileName = "JogData.xlsx";
         private SequenceData _selectedSequenceItem;
@@ -98,7 +146,7 @@ namespace AutomaticScrewMachine.CurrentList._1.Jog.Model {
         public ICommand HomeCommand { get; set; }
         public ICommand EmergencyStopCommand { get; set; }
 
-        public ICommand TorqIO { get; set; }
+        public ICommand DriverIO { get; set; }
         public ICommand DepthIO { get; set; }
         public ICommand AirIO { get; set; }
 
@@ -298,6 +346,7 @@ namespace AutomaticScrewMachine.CurrentList._1.Jog.Model {
         public uint valueX = 9;
         public uint valueY = 9;
         public uint valueZ = 9;
+        public bool ServoSignal = false;
 
         // ControllCheckList
         public DispatcherTimer _positionDipatcher;

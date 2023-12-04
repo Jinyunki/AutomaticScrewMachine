@@ -127,7 +127,7 @@
                         Height="20"
                         HorizontalAlignment="Right"
                         Background="{Binding TorqSig, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                        Command="{Binding TorqIO}"
+                        Command="{Binding DriverIO}"
                         Style="{StaticResource RoundedButtonStyle}" />
                 </Grid>
                 <Grid Grid.Row="1">

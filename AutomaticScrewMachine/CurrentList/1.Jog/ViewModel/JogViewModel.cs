@@ -18,7 +18,6 @@ namespace AutomaticScrewMachine.CurrentList._1.Jog.ViewModel {
             DefaultSet();
             // EMERGENCY
             EmergencyStopCommand = new RelayCommand(EmergencyStop);
-
             // HOME
             HomeCommand = new RelayCommand(CmdHomeReturn);
 
@@ -44,14 +43,14 @@ namespace AutomaticScrewMachine.CurrentList._1.Jog.ViewModel {
 
                     
                     // Servo
-                    ServoCheckX = new RelayCommand(() => SetServoState(1, valueX));
-                    ServoCheckY = new RelayCommand(() => SetServoState(0, valueY));
-                    ServoCheckZ = new RelayCommand(() => SetServoState(2, valueZ));
+                    ServoCheckX = new RelayCommand(() => SetServoState((int)ServoIndex.XPOSITION, valueX));
+                    ServoCheckY = new RelayCommand(() => SetServoState((int)ServoIndex.YPOSITION, valueY));
+                    ServoCheckZ = new RelayCommand(() => SetServoState((int)ServoIndex.ZPOSITION, valueZ));
 
                     // Sylinder AND Air
-                    TorqIO = new RelayCommand(() => SetWriteOutport(8, torqS));
-                    DepthIO = new RelayCommand(() => SetWriteOutport(9, depthS));
-                    AirIO = new RelayCommand(() => SetWriteOutport(10, airS));
+                    DriverIO = new RelayCommand(() => SetWriteOutport((int)DIOIndex.DRIVER, torqS));
+                    DepthIO = new RelayCommand(() => SetWriteOutport((int)DIOIndex.DEPTH, depthS));
+                    AirIO = new RelayCommand(() => SetWriteOutport((int)DIOIndex.VACUUM, airS));
 
                     ReadRecipe = new RelayCommand(ReadRecipeCommand);
                     AddRecipe = new RelayCommand(AddRecipeCommand);
@@ -320,38 +319,60 @@ namespace AutomaticScrewMachine.CurrentList._1.Jog.ViewModel {
         private void GetSequenceStart () {
             Trace.WriteLine("==========   Start   ==========\nMethodName : " + (MethodBase.GetCurrentMethod().Name) + "\n");
             try {
+                if (CheckSignal()) {
+                    /**/
+                    for (int i = 0; i < PositionDataList.Count; i++) {
+                        if (SeqStartHoldPosition()) {
+                            if (GetterScrewMotion() && PositionValueZ < 500) { // 스크류 습득
 
-                if (SeqStartHoldPosition() == true) { // 대기 포지션으로 잘 이동 하였는가
-                    Console.WriteLine("준비 Position 도착");
-                    if (GetterScrewMotion() == true) { // 스크류캐치 시퀀스를 진행하였는가
-                        Console.WriteLine("Screw Catch Succes");
-                        for (int i = 0; i < PositionDataList.Count; i++) {
-                            CAXM.AxmMovePos(1, PositionDataList[i].X, MC_JogSpeed, MC_JogAcl, MC_JogDcl);
-                            CAXM.AxmMovePos(0, PositionDataList[i].Y, MC_JogSpeed, MC_JogAcl, MC_JogDcl);
-
-                            CAXM.AxmMovePos(2, PositionDataList[i].Z, MC_JogSpeed, MC_JogAcl, MC_JogDcl);
-
+                                GetMoveXYPos(i); // XY POS
+                            }
+                            //CAXM.AxmMovePos(2, PositionDataList[i].Z, MC_JogSpeed, MC_JogAcl, MC_JogDcl);
+                            CAXM.AxmMovePos(2, 35000, MC_JogSpeed, MC_JogAcl, MC_JogDcl);
                             CAXM.AxmMovePos(2, 0, MC_JogSpeed, MC_JogAcl, MC_JogDcl);
 
+                            if (PositionValueZ > 500) {
+                                break;
+                            }
 
+                            Thread.Sleep(100);
                         }
                     }
-                    
-                } else {
-                    Console.WriteLine("준비 position 실패");
-                    
-                    /**
-                    for (int i = 0; i < PositionDataList.Count; i++) {
-                        CAXM.AxmMovePos(2, PositionDataList[i].Z - 5000, MC_JogSpeed * 0.5, MC_JogAcl, MC_JogDcl);
 
-                        CAXM.AxmMovePos(1, PositionDataList[i].X, MC_JogSpeed, MC_JogAcl, MC_JogDcl);
-                        CAXM.AxmMovePos(0, PositionDataList[i].Y, MC_JogSpeed, MC_JogAcl, MC_JogDcl);
-                        CAXM.AxmMovePos(2, PositionDataList[i].Z, MC_JogSpeed, MC_JogAcl, MC_JogDcl);
-                    }
-                    CAXM.AxmMovePos(2, 0, MC_JogSpeed * 0.5, MC_JogAcl, MC_JogDcl);
-
+                    SeqStartHoldPosition();
                     /**/
+                }
 
+            } catch (Exception ex) {
+                Trace.WriteLine("========== Exception ==========\nMethodName : " + (MethodBase.GetCurrentMethod().Name) + "\nException : " + ex);
+                throw;
+            }
+        }
+        /// <summary>
+        /// 시퀀스 시작전 대기 장소 (스크류공급기 위치)
+        /// </summary>
+        private bool SeqStartHoldPosition () {
+            Trace.WriteLine("==========   Start   ==========\nMethodName : " + (MethodBase.GetCurrentMethod().Name) + "\n");
+            try {
+
+                // DI/O OffSet
+                CAXD.AxdoWriteOutport((int)DIOIndex.DRIVER, 0);
+                CAXD.AxdoWriteOutport((int)DIOIndex.DEPTH, 0);
+                CAXD.AxdoWriteOutport((int)DIOIndex.VACUUM, 0);
+
+                double[] XYHoldPos = new double[2] { 175000, 113122 }; // X/Y 대기 장소
+                CAXM.AxmMovePos((int)ServoIndex.ZPOSITION, 0, MC_JogSpeed * 0.5, MC_JogAcl, MC_JogDcl);
+
+                MultiMovePos(XYHoldPos, MC_JogSpeed, MC_JogAcl, MC_JogDcl);
+
+                ReturnPosValue((int)ServoIndex.XPOSITION);
+                ReturnPosValue((int)ServoIndex.YPOSITION);
+                ReturnPosValue((int)ServoIndex.ZPOSITION);
+                if (XYHoldPos[0] == ReturnPosValue((int)ServoIndex.XPOSITION) && XYHoldPos[1] == ReturnPosValue((int)ServoIndex.YPOSITION) && ReturnPosValue((int)ServoIndex.ZPOSITION) < 1000) {
+                    return true;
+
+                } else {
+                    return false;
                 }
             } catch (Exception ex) {
                 Trace.WriteLine("========== Exception ==========\nMethodName : " + (MethodBase.GetCurrentMethod().Name) + "\nException : " + ex);
@@ -359,14 +380,34 @@ namespace AutomaticScrewMachine.CurrentList._1.Jog.ViewModel {
             }
         }
 
+        private void GetMoveXYPos (int index) {
+
+            Trace.WriteLine("==========   Start   ==========\nMethodName : " + (MethodBase.GetCurrentMethod().Name) + "\n");
+            try {
+
+                double[] XYHoldPos = new double[2] { PositionDataList[index].X, PositionDataList[index].Y }; // X/Y 리스트의 데이터를 참조
+                MultiMovePos(XYHoldPos, MC_JogSpeed, MC_JogAcl, MC_JogDcl);
+            } catch (Exception ex) {
+                Trace.WriteLine("========== Exception ==========\nMethodName : " + (MethodBase.GetCurrentMethod().Name) + "\nException : " + ex);
+                throw;
+            }
+
+        }
+
+        private bool CheckSignal () {
+            //XYZ Onsignal Catch
+            if (valueX != 0 && valueY != 0 && valueZ != 0) {
+                return true;
+            } else {
+                return false;
+            }
+        }
         private bool GetterScrewMotion () {
             CAXM.AxmMovePos(2, 54000, MC_JogSpeed * 0.5, MC_JogAcl, MC_JogDcl);
-
-            CAXD.AxdoReadOutport(8,ref torqS); // IO 토크
-            SetWriteOutport(8, torqS);
-
-            CAXD.AxdoReadOutport(10, ref airS); // IO Air
-            SetWriteOutport(10, airS);
+            CAXD.AxdoReadOutport((int)DIOIndex.DRIVER,ref torqS); // IO 토크
+            SetWriteOutport((int)DIOIndex.DRIVER, torqS);
+            CAXD.AxdoReadOutport((int)DIOIndex.VACUUM, ref airS); // IO Air
+            SetWriteOutport((int)DIOIndex.VACUUM, airS);
 
             Thread.Sleep(500);
             CAXM.AxmMovePos(2, 0, MC_JogSpeed * 0.5, MC_JogAcl, MC_JogDcl);
@@ -394,29 +435,6 @@ namespace AutomaticScrewMachine.CurrentList._1.Jog.ViewModel {
 
             return value;
         }
-        /// <summary>
-        /// 시퀀스 시작전 대기 장소 (스크류공급기 위치)
-        /// </summary>
-        private bool SeqStartHoldPosition () {
-            Trace.WriteLine("==========   Start   ==========\nMethodName : " + (MethodBase.GetCurrentMethod().Name) + "\n");
-            try {
-                double[] XYHoldPos = new double[2] { 175000, 113122 }; // X/Y 대기 장소
-                CAXM.AxmMovePos(2, 0, MC_JogSpeed * 0.5, MC_JogAcl, MC_JogDcl);
-                MultiMovePos(XYHoldPos, MC_JogSpeed, MC_JogAcl, MC_JogDcl);
-                ReturnPosValue(1);
-                ReturnPosValue(0);
-                ReturnPosValue(2);
-                if (XYHoldPos[0] == ReturnPosValue(1) && XYHoldPos[1] == ReturnPosValue(0) && ReturnPosValue(2) < 1000) {
-                    return true;
-
-                } else {
-                    return false;
-                }
-            } catch (Exception ex) {
-                Trace.WriteLine("========== Exception ==========\nMethodName : " + (MethodBase.GetCurrentMethod().Name) + "\nException : " + ex);
-                throw;
-            }
-        }
         #endregion
 
         private void EmergencyStop () {
@@ -430,8 +448,6 @@ namespace AutomaticScrewMachine.CurrentList._1.Jog.ViewModel {
                 CAXM.AxmSignalServoOn(2, (uint)(valueZ == 0 ? 1 : 0));
                 CAXM.AxmSignalServoOn(1, (uint)(valueX == 0 ? 1 : 0));
                 CAXM.AxmSignalServoOn(0, (uint)(valueY == 0 ? 1 : 0));
-
-                
 
             } catch (Exception ex) {
                 Trace.WriteLine("========== Exception ==========\nMethodName : " + (MethodBase.GetCurrentMethod().Name) + "\nException : " + ex);
@@ -448,12 +464,11 @@ namespace AutomaticScrewMachine.CurrentList._1.Jog.ViewModel {
             try {
 
                 MotionRock = true;
-                // DI/O
-                SetWriteOutport(8, 1);
-                SetWriteOutport(9, 1);
-                SetWriteOutport(10, 1);
+                // DI/O ZeroSet
+                SetWriteOutport((int)DIOIndex.DRIVER, 1);
+                SetWriteOutport((int)DIOIndex.DEPTH, 1);
+                SetWriteOutport((int)DIOIndex.VACUUM, 1);
 
-                //CAXM.AxmMovePos(2, 0, MC_JogSpeed, MC_JogAcl, MC_JogDcl);
                 double homeSetSpeed = 80000;
                 double homeSetSpeed2 = 20000;
                 double homeSetSpeed3 = 10000;
@@ -481,21 +496,39 @@ namespace AutomaticScrewMachine.CurrentList._1.Jog.ViewModel {
             }
 
         }
-
+        private uint YCHECKER = 9;
+        private uint XCHECKER = 9;
+        private DispatcherTimer posChecker;
         private void MultiMovePos (double[] positionList, double jogSpeed, double jogAcl, double jogDcl) {
             int[] jogList = { 1, 0 }; // X,Y
             double[] speedList = { jogSpeed, jogSpeed };
             double[] aclList = { jogAcl, jogAcl };
             double[] dclList = { jogDcl, jogDcl };
-
+            
             CAXM.AxmMoveMultiPos(2, jogList, positionList, speedList, aclList, dclList);
+            //CAXM.AxmMoveStartMultiPos(2, jogList, positionList, speedList, aclList, dclList);
+            //posChecker = new DispatcherTimer {
+            //    Interval = TimeSpan.FromMilliseconds(100)
+            //};
+            //posChecker.Tick += Pos_Checker_Tick;
+            //posChecker.Start();
+        }
+
+        private void Pos_Checker_Tick (object sender, EventArgs e) {
+            CAXM.AxmStatusReadInMotion(0, ref YCHECKER);
+            CAXM.AxmStatusReadInMotion(1, ref XCHECKER);
+
+            if (YCHECKER != 0 && XCHECKER != 0) {
+                return;
+            } else {
+                posChecker.Stop();
+            }
         }
 
         public void Pos_Timer_Tick (object sender, EventArgs e) {
-
-            zPosStateValue = AxinStateControll(2);// PositionValueZ
-            yPosStateValue = AxinStateControll(0);// PositionValueY
-            xPosStateValue = AxinStateControll(1);// PositionValueX
+            zPosStateValue = AxinStateControll((int)ServoIndex.ZPOSITION);// PositionValueZ
+            yPosStateValue = AxinStateControll((int)ServoIndex.YPOSITION);// PositionValueY
+            xPosStateValue = AxinStateControll((int)ServoIndex.XPOSITION);// PositionValueX
 
             if (zPosStateValue == 1 && yPosStateValue == 1 && xPosStateValue == 1) {
                 MotionRock = false;

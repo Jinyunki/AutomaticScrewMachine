@@ -59,13 +59,9 @@
                         Foreground="{DynamicResource FontColor}"
                         Text="JOG Controller" />
 
-                    <fragList:Frag_joystick
-                        Grid.Row="1"
-                        Grid.Column="0" />
+                    <fragList:Frag_joystick Grid.Row="1" Grid.Column="0" />
 
-                    <fragList:Frag_IO
-                        Grid.Row="1"
-                        Grid.Column="1"/>
+                    <fragList:Frag_IO Grid.Row="1" Grid.Column="1" />
                 </Grid>
             </Border>
         </Grid>
@@ -88,7 +84,7 @@
             </Grid>
 
             <Grid Grid.Row="1">
-                <fragList:Frag_MachineLocation/>
+                <fragList:Frag_MachineLocation />
             </Grid>
         </Grid>
 
@@ -97,10 +93,10 @@
                 <RowDefinition />
                 <RowDefinition />
             </Grid.RowDefinitions>
-            
+
             <fragList:Frag_SequnceList Grid.Row="0" />
             <fragList:Frag_PositionList Grid.Row="1" />
-           
+
         </Grid>
     </Grid>
 </UserControl>
