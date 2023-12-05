@@ -55,7 +55,7 @@
                     </Grid.ColumnDefinitions>
 
                     <Button
-                        Grid.Column="0"
+                        Grid.Column="1"
                         Width="{Binding BtnSize}"
                         Height="{Binding BtnSize}"
                         Command="{Binding ReadRecipe}"
@@ -65,15 +65,14 @@
                         </Button.Background>
                     </Button>
 
-
                     <Button
                         Grid.Column="2"
                         Width="{Binding BtnSize}"
                         Height="{Binding BtnSize}"
-                        Command="{Binding SequenceStart}"
+                        Command="{Binding AddRecipe}"
                         Style="{StaticResource RoundedButtonStyle}">
                         <Button.Background>
-                            <ImageBrush ImageSource="../../../../Assets/btn_start.png" />
+                            <ImageBrush ImageSource="../../../../Assets/btn_addList.png" />
                         </Button.Background>
                     </Button>
 
@@ -90,6 +89,7 @@
                 </Grid>
             </Grid>
             <ListBox
+                x:Name="SeqListBox"
                 Grid.Row="1"
                 HorizontalContentAlignment="Stretch"
                 Background="Transparent"
@@ -97,6 +97,7 @@
                 FontSize="20"
                 Foreground="{DynamicResource FontColor}"
                 ItemsSource="{Binding SequenceDataList}"
+                MouseDown="SeqListBox_MouseDown"
                 SelectedItem="{Binding SelectedSequenceItem}">
                 <ListBox.ItemTemplate>
                     <DataTemplate>

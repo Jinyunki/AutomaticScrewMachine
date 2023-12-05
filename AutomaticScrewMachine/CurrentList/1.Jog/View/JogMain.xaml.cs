@@ -15,13 +15,13 @@ namespace AutomaticScrewMachine.CurrentList._1.Jog.View {
             InitializeComponent();
         }
         private void JogStop_MouseUp (object sender, MouseButtonEventArgs e) {
-            Trace.WriteLine("==========   Start   ==========\nMethodName : " + (MethodBase.GetCurrentMethod().Name) + "\n");
+            Trace.WriteLine("==========   Start   ==========\nMethodName : " + MethodBase.GetCurrentMethod().Name + "\n");
             try {
                 if (clickedBorder != null) {
                     StaticControllerSignal.StopControllerSignalView();
                 }
             } catch (Exception ex) {
-                Trace.WriteLine("========== Exception ==========\nMethodName : " + (MethodBase.GetCurrentMethod().Name) + "\nException : " + ex);
+                Trace.WriteLine("========== Exception ==========\nMethodName : " + MethodBase.GetCurrentMethod().Name + "\nException : " + ex);
                 throw;
             }
 

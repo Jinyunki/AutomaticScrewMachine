@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using System.Windows.Input;
 
 namespace AutomaticScrewMachine.CurrentList._1.Jog.Model {
     public class PosData : INotifyPropertyChanged {
@@ -48,12 +49,12 @@ namespace AutomaticScrewMachine.CurrentList._1.Jog.Model {
         }
 
         private uint _torq_IO;
-        public uint Torq_IO {
+        public uint Driver_IO {
             get { return _torq_IO; }
             set {
                 if (_torq_IO != value) {
                     _torq_IO = value;
-                    OnPropertyChanged(nameof(Torq_IO));
+                    OnPropertyChanged(nameof(Driver_IO));
                 }
             }
         }
@@ -69,7 +70,7 @@ namespace AutomaticScrewMachine.CurrentList._1.Jog.Model {
                 }
             }
         }
-
+        public ICommand ChangePositionDataBtn { get;set; }
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected virtual void OnPropertyChanged (string propertyName) {

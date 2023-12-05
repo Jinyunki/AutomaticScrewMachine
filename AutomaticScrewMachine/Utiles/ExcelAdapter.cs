@@ -1,4 +1,5 @@
-﻿using OfficeOpenXml;
+﻿using AutomaticScrewMachine.CurrentList._1.Jog.Model;
+using OfficeOpenXml;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -17,6 +18,7 @@ namespace AutomaticScrewMachine.Utiles {
         public static bool IsConnectCheck { get; set; }
         public static List<string> WorkSheetNameList;
         public static List<string> ColumnData;
+
         static ExcelAdapter () {
             ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
         }
@@ -30,9 +32,9 @@ namespace AutomaticScrewMachine.Utiles {
         }
         public static ObservableCollection<List<string>> GetReadData (string IsFolderName, string IsFileName, int sheetIndex) {
 
-            Trace.WriteLine("==========   Start   ==========\nMethodName : " + (MethodBase.GetCurrentMethod().Name) + "\n");
-
+            Trace.WriteLine("==========   Start   ==========\nMethodName : " + MethodBase.GetCurrentMethod().Name + "\n");
             try {
+
                 string appPath = AppDomain.CurrentDomain.BaseDirectory;
                 string folderName = Path.Combine(appPath, IsFolderName);
                 string FilePath = Path.Combine(folderName, IsFileName);
@@ -69,14 +71,14 @@ namespace AutomaticScrewMachine.Utiles {
 
             } catch (Exception ex) {
                 IsConnectCheck = false;
-                Trace.WriteLine("========== Exception ==========\nMethodName : " + (MethodBase.GetCurrentMethod().Name) + "\nException : " + ex);
+                Trace.WriteLine("========== Exception ==========\nMethodName : " + MethodBase.GetCurrentMethod().Name + "\nException : " + ex);
                 throw;
             }
 
         }
 
-        public static void Save (string IsFolderName, string IsFileName) {
-            Trace.WriteLine("==========   Start   ==========\nMethodName : " + (MethodBase.GetCurrentMethod().Name) + "\n");
+        public static void Save (string IsFolderName, string IsFileName,int workSheetIndex, int posRowIndex, ObservableCollection<PosData> posDataList) {
+            Trace.WriteLine("==========   Start   ==========\nMethodName : " + MethodBase.GetCurrentMethod().Name + "\n");
             try {
                 string appPath = AppDomain.CurrentDomain.BaseDirectory;
                 string folderName = Path.Combine(appPath, IsFolderName);
@@ -85,12 +87,17 @@ namespace AutomaticScrewMachine.Utiles {
                 if (File.Exists(FilePath)) {
                     IsConnectCheck = true;
                     using (var package = new ExcelPackage(new FileInfo(FilePath))) {
-                        ExcelWorksheet worksheet = package.Workbook.Worksheets[0];
+                        ExcelWorksheet worksheet = package.Workbook.Worksheets[workSheetIndex];
                         ExcelWorksheets excelWorksheets = package.Workbook.Worksheets;
-                        excelWorksheets[0].Name = "Sequence TEST"; // SheetName
-                                                                   //worksheet.Cells[1, 1].Value = "TEST"; // In Index를 어떻게 참조 할 것인가 
 
+                        worksheet.Cells[posRowIndex + 2, 1].Value = posDataList[posRowIndex].Name; 
+                        worksheet.Cells[posRowIndex + 2, 2].Value = posDataList[posRowIndex].X;
+                        worksheet.Cells[posRowIndex + 2, 3].Value = posDataList[posRowIndex].Y;
+                        worksheet.Cells[posRowIndex + 2, 4].Value = posDataList[posRowIndex].Z;
+                        worksheet.Cells[posRowIndex + 2, 5].Value = posDataList[posRowIndex].Driver_IO;
+                        worksheet.Cells[posRowIndex + 2, 6].Value = posDataList[posRowIndex].Depth_IO;
 
+                        //worksheet.Cells[posRowIndex + 1, 1].Value = posDataList[posRowIndex].Name;
                         package.Save();
                         package.Dispose();
                         GC.Collect();
@@ -102,15 +109,15 @@ namespace AutomaticScrewMachine.Utiles {
                     Console.WriteLine("CheckFilePath Fail");
                 }
             } catch (Exception ex) {
-                Trace.WriteLine("========== Exception ==========\nMethodName : " + (MethodBase.GetCurrentMethod().Name) + "\nException : " + ex);
+                Trace.WriteLine("========== Exception ==========\nMethodName : " + MethodBase.GetCurrentMethod().Name + "\nException : " + ex);
                 throw;
             }
 
         }
 
-        public static void Remove (string IsFolderName, string IsFileName, int worksheetIndex) {
+        public static void RemoveWorkSheet (string IsFolderName, string IsFileName, int worksheetIndex) {
 
-            Trace.WriteLine("==========   Start   ==========\nMethodName : " + (MethodBase.GetCurrentMethod().Name) + "\n");
+            Trace.WriteLine("==========   Start   ==========\nMethodName : " + MethodBase.GetCurrentMethod().Name + "\n");
             try {
 
                 string appPath = AppDomain.CurrentDomain.BaseDirectory;
@@ -130,13 +137,49 @@ namespace AutomaticScrewMachine.Utiles {
                     }
                 }
             } catch (Exception ex) {
-                Trace.WriteLine("========== Exception ==========\nMethodName : " + (MethodBase.GetCurrentMethod().Name) + "\nException : " + ex);
+                Trace.WriteLine("========== Exception ==========\nMethodName : " + MethodBase.GetCurrentMethod().Name + "\nException : " + ex);
                 throw;
             }
         }
 
+        public static void RemovePositionDataList (string IsFolderName, string IsFileName, int worksheetIndex, int rowIndex) {
+            Trace.WriteLine("==========   시작   ==========\n메서드명 : " + MethodBase.GetCurrentMethod().Name + "\n");
+            try {
+                string appPath = AppDomain.CurrentDomain.BaseDirectory;
+                string folderName = Path.Combine(appPath, IsFolderName);
+                string FilePath = Path.Combine(folderName, IsFileName);
+
+                using (var package = new ExcelPackage(new FileInfo(FilePath))) {
+                    ExcelWorksheets excelWorksheets = package.Workbook.Worksheets;
+
+                    if (worksheetIndex >= 0 && worksheetIndex < excelWorksheets.Count) {
+                        ExcelWorksheet worksheet = excelWorksheets[worksheetIndex]; // 인덱스는 1부터 시작하므로 +1
+
+                        // rowIndex가 유효한 범위 내에 있는지 확인
+                        if (rowIndex >= 2 && rowIndex <= worksheet.Dimension.Rows) {
+                            // 특정 행의 데이터를 지웁니다.
+
+                            worksheet.DeleteRow(rowIndex + 2);
+
+                            package.Save();
+                        } else {
+                            // 유효하지 않은 rowIndex
+                            Console.WriteLine("잘못된 행 인덱스");
+                        }
+                    } else {
+                        // 유효하지 않은 worksheetIndex
+                        Console.WriteLine("잘못된 워크시트 인덱스");
+                    }
+                }
+            } catch (Exception ex) {
+                Trace.WriteLine("========== 예외 발생 ==========\n메서드명 : " + MethodBase.GetCurrentMethod().Name + "\n예외 : " + ex);
+                throw;
+            }
+        }
+
+
         public static void Add (string IsFolderName, string IsFileName, string newWorksheetName, List<List<string>> dataList) {
-            Trace.WriteLine("==========   Start   ==========\nMethodName : " + (MethodBase.GetCurrentMethod().Name) + "\n");
+            Trace.WriteLine("==========   Start   ==========\nMethodName : " + MethodBase.GetCurrentMethod().Name + "\n");
             try {
                 string appPath = AppDomain.CurrentDomain.BaseDirectory;
                 string folderName = Path.Combine(appPath, IsFolderName);
@@ -172,7 +215,7 @@ namespace AutomaticScrewMachine.Utiles {
                     newWorksheetName = GenerateNewWorksheetName(newWorksheetName);
                     Add(IsFolderName, IsFileName, newWorksheetName, dataList);
                 } else {
-                    Trace.WriteLine("========== Exception ==========\nMethodName : " + (MethodBase.GetCurrentMethod().Name) + "\nException : " + ex);
+                    Trace.WriteLine("========== Exception ==========\nMethodName : " + MethodBase.GetCurrentMethod().Name + "\nException : " + ex);
                     throw;
                 }
             }

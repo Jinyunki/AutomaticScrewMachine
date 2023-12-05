@@ -29,7 +29,6 @@
             BorderBrush="White"
             BorderThickness="0.5"
             CornerRadius="25">
-
             <Grid HorizontalAlignment="Left" VerticalAlignment="Top">
                 <!--  Motion Main Body  -->
                 <Border
@@ -37,6 +36,9 @@
                     Height="100"
                     Margin="{Binding ScrewPosList, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                     CornerRadius="100">
+                    <Border.RenderTransform>
+                        <TranslateTransform />
+                    </Border.RenderTransform>
                     <Border.Background>
                         <ImageBrush ImageSource="../../../../Assets/btn_screw_mc.png" />
                     </Border.Background>
@@ -48,7 +50,11 @@
                     Height="15"
                     Margin="{Binding ScrewPosList, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                     Background="#FF39ACB4"
-                    CornerRadius="100" />
+                    CornerRadius="100">
+                    <Border.RenderTransform>
+                        <TranslateTransform />
+                    </Border.RenderTransform>
+                </Border>
 
                 <!--  Motion Screw Down Balance  -->
                 <Border
@@ -57,7 +63,11 @@
                     Margin="{Binding ScrewPosList, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                     Background="#FF611A1A"
                     CornerRadius="100"
-                    Opacity="{Binding ScrewMCForcus, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    Opacity="{Binding ScrewMCForcus, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                    <Border.RenderTransform>
+                        <TranslateTransform />
+                    </Border.RenderTransform>
+                </Border>
             </Grid>
         </Border>
     </Grid>

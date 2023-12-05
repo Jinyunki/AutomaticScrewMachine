@@ -11,22 +11,22 @@ using GalaSoft.MvvmLight.Command;
 
 namespace AutomaticScrewMachine.CurrentList._1.Jog.Model {
     public class JogData : ViewModelBase {
-        public enum DIOIndex : int{
+        public enum DIOIndex {
             STARTBTN = 0,
             RESETBTN = 1,
             EMGBTN = 2,
             START2BTN = 3,
-            
+
             IDK4 = 4,
             IDK5 = 5,
             IDK6 = 6,
-            
+
             ERRORMODEL = 7,
-            
+
             DRIVER = 8,
             DEPTH = 9,
             VACUUM = 10,
-            
+
             OK_LED_PORT1 = 11,
             OK_LED_PORT2 = 12,
             OK_LED_PORT3 = 13,
@@ -58,9 +58,9 @@ namespace AutomaticScrewMachine.CurrentList._1.Jog.Model {
             XPOSITION = 1,
             ZPOSITION = 2
         }
+        public static readonly string isFolderName = "Data";
+        public static readonly string isFileName = "JogData.xlsx";
 
-        public readonly string isFolderName = "Data";
-        public readonly string isFileName = "JogData.xlsx";
         private SequenceData _selectedSequenceItem;
         public SequenceData SelectedSequenceItem {
             get { return _selectedSequenceItem; }
@@ -71,10 +71,10 @@ namespace AutomaticScrewMachine.CurrentList._1.Jog.Model {
 
                     // 선택된 항목에 대한 처리 수행
                     if (_selectedSequenceItem != null) {
-                        int index = SequenceDataList.IndexOf(_selectedSequenceItem);
-                        Console.WriteLine("선택된 index : " + index);
-                        Console.WriteLine("Name : " + _selectedSequenceItem.Name);
-                        GetReadingData(index);
+                        SelectedSequenceIndex = SequenceDataList.IndexOf(_selectedSequenceItem);
+                        GetReadingData(SelectedSequenceIndex);
+                    } else {
+                        PositionDataList.Clear();
                     }
                 }
             }
@@ -93,8 +93,9 @@ namespace AutomaticScrewMachine.CurrentList._1.Jog.Model {
                         X = double.Parse(GetJogDataList[j][1]),
                         Y = double.Parse(GetJogDataList[j][2]),
                         Z = double.Parse(GetJogDataList[j][3]),
-                        Torq_IO = uint.Parse(GetJogDataList[j][4]),
-                        Depth_IO = uint.Parse(GetJogDataList[j][5])
+                        Driver_IO = uint.Parse(GetJogDataList[j][4]),
+                        Depth_IO = uint.Parse(GetJogDataList[j][5]),
+                        ChangePositionDataBtn = new RelayCommand(ChangePosTrigger)
                     };
 
                     PositionDataList.Add(posData);
@@ -102,8 +103,10 @@ namespace AutomaticScrewMachine.CurrentList._1.Jog.Model {
             }
         }
 
-
-
+        private void ChangePosTrigger()
+        {
+            UpdateSelectedPosData(SelectedPositionIndex);
+        }
 
         private PosData _selectedPositionItem;
         public PosData SelectedPositionItem {
@@ -115,20 +118,22 @@ namespace AutomaticScrewMachine.CurrentList._1.Jog.Model {
 
                     // 선택된 항목에 대한 처리 수행
                     if (_selectedPositionItem != null) {
-                        int index = PositionDataList.IndexOf(_selectedPositionItem);
-
-                        Console.WriteLine("선택된 index : " + index);
-                        Console.WriteLine("Name : " + _selectedPositionItem.Name);
-                        Console.WriteLine("X : " + _selectedPositionItem.X);
-                        Console.WriteLine("Y : " + _selectedPositionItem.Y);
-                        Console.WriteLine("Z : " + _selectedPositionItem.Z);
-                        Console.WriteLine("Torq : " + _selectedPositionItem.Torq_IO);
-                        Console.WriteLine("Depth : " + _selectedPositionItem.Depth_IO);
-
-                    }
+                        SelectedPositionIndex = PositionDataList.IndexOf(_selectedPositionItem);
+                        //UpdateSelectedPosData(SelectedPositionIndex);
+                    } 
                 }
             }
         }
+        
+        private void UpdateSelectedPosData (int index) {
+
+            PositionDataList[index].X = PositionValueX;
+            PositionDataList[index].Y = PositionValueY;
+            PositionDataList[index].Z = PositionValueZ;
+            PositionDataList[index].Driver_IO = DriverSignal;
+            PositionDataList[index].Depth_IO = DepthSignal;
+        }
+
         private Thickness _screwPosList;
         public Thickness ScrewPosList {
             get => _screwPosList;
@@ -139,16 +144,17 @@ namespace AutomaticScrewMachine.CurrentList._1.Jog.Model {
                 }
             }
         }
-        public bool MotionRock { get; set; }
+        public bool ControlRock { get; set; }
         public ICommand AddPosition { get; set; }
         public ICommand RemoveSequenceCommand { get; set; }
+        public ICommand RemovePositionCommand { get; set; }
         public ICommand SequenceStart { get; set; }
         public ICommand HomeCommand { get; set; }
         public ICommand EmergencyStopCommand { get; set; }
 
         public ICommand DriverIO { get; set; }
         public ICommand DepthIO { get; set; }
-        public ICommand AirIO { get; set; }
+        public ICommand VacuumIO { get; set; }
 
 
         public ICommand ReadRecipe { get; set; }
@@ -193,7 +199,31 @@ namespace AutomaticScrewMachine.CurrentList._1.Jog.Model {
                 MC_JogDcl = MC_JogSpeed * 10;
             }
         }
-
+        private int _selectedPositionIndex;
+        public int SelectedPositionIndex
+        {
+            get { return _selectedPositionIndex; }
+            set
+            {
+                if (_selectedPositionIndex != value)
+                {
+                    _selectedPositionIndex = value;
+                    RaisePropertyChanged(nameof(SelectedPositionIndex));
+                }
+            }
+        }
+        private int _selectedSequenceIndex;
+        public int SelectedSequenceIndex {
+            get { return _selectedSequenceIndex; }
+            set
+            {
+                if (_selectedSequenceIndex != value)
+                {
+                    _selectedSequenceIndex = value;
+                    RaisePropertyChanged(nameof(SelectedSequenceIndex));
+                }
+            }
+        }
         public double MC_JogSpeed { get; set; }
         public double MC_JogAcl { get; set; }
         public double MC_JogDcl { get; set; }
@@ -354,10 +384,10 @@ namespace AutomaticScrewMachine.CurrentList._1.Jog.Model {
         public uint yPosStateValue = 9;
         public uint zPosStateValue = 9;
 
+        public uint DriverSignal = 9;
+        public uint DepthSignal = 9;
+        public uint VacuumSignal = 9;
 
-        public uint torqS = 9;
-        public uint depthS = 9;
-        public uint airS = 9;
-
+        public DispatcherTimer _motionChecker;
     }
 }

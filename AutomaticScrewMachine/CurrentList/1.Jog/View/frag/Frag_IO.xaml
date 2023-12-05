@@ -173,7 +173,7 @@
                         Height="20"
                         HorizontalAlignment="Right"
                         Background="{Binding AirSig, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                        Command="{Binding AirIO}"
+                        Command="{Binding VacuumIO}"
                         Style="{StaticResource RoundedButtonStyle}" />
                 </Grid>
             </Grid>

@@ -42,7 +42,7 @@
                     FontSize="20"
                     FontWeight="Bold"
                     Foreground="{DynamicResource FontColor}"
-                    Text="Sequence Data Information" />
+                    Text="Position Data Information" />
                 <Grid Grid.Column="1">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition />
@@ -52,8 +52,8 @@
 
                     <Button
                         Grid.Column="0"
-                        Width="35"
-                        Height="35"
+                        Width="{Binding BtnSize}"
+                        Height="{Binding BtnSize}"
                         Command="{Binding AddPosition}"
                         Content="Add"
                         Style="{StaticResource RoundedButtonStyle}" />
@@ -62,22 +62,21 @@
                         Grid.Column="1"
                         Width="{Binding BtnSize}"
                         Height="{Binding BtnSize}"
-                        Command="{Binding AddRecipe}"
-                        Style="{StaticResource RoundedButtonStyle}">
-                        <Button.Background>
-                            <ImageBrush ImageSource="../../../../Assets/btn_addList.png" />
-                        </Button.Background>
-                    </Button>
-
-
-                    <Button
-                        Grid.Column="2"
-                        Width="35"
-                        Height="35"
                         Command="{Binding SavePosDataRecipe}"
                         Style="{StaticResource RoundedButtonStyle}">
                         <Button.Background>
                             <ImageBrush ImageSource="../../../../Assets/btn_save.png" />
+                        </Button.Background>
+                    </Button>
+
+                    <Button
+                        Grid.Column="2"
+                        Width="{Binding BtnSize}"
+                        Height="{Binding BtnSize}"
+                        Command="{Binding RemovePositionCommand}"
+                        Style="{StaticResource RoundedButtonStyle}">
+                        <Button.Background>
+                            <ImageBrush ImageSource="../../../../Assets/btn_delete.png" />
                         </Button.Background>
                     </Button>
 
@@ -104,7 +103,8 @@
                     FontSize="12"
                     FontWeight="Bold"
                     Foreground="{DynamicResource FontColor}"
-                    Text="SeqName" />
+                    Text="Position&#10;NameList"
+                    TextAlignment="Right" />
                 <TextBlock
                     Grid.Column="1"
                     HorizontalAlignment="Right"
@@ -112,7 +112,8 @@
                     FontSize="12"
                     FontWeight="Bold"
                     Foreground="{DynamicResource FontColor}"
-                    Text="X:PosValue" />
+                    Text="Position&#10;X-Value"
+                    TextAlignment="Right" />
                 <TextBlock
                     Grid.Column="2"
                     HorizontalAlignment="Right"
@@ -120,7 +121,8 @@
                     FontSize="12"
                     FontWeight="Bold"
                     Foreground="{DynamicResource FontColor}"
-                    Text="Y:PosValue" />
+                    Text="Position&#10;Y-Value"
+                    TextAlignment="Right" />
                 <TextBlock
                     Grid.Column="3"
                     HorizontalAlignment="Right"
@@ -128,7 +130,8 @@
                     FontSize="12"
                     FontWeight="Bold"
                     Foreground="{DynamicResource FontColor}"
-                    Text="Z:PosValue" />
+                    Text="Position&#10;Z-Value"
+                    TextAlignment="Right" />
                 <TextBlock
                     Grid.Column="4"
                     HorizontalAlignment="Right"
@@ -136,7 +139,8 @@
                     FontSize="12"
                     FontWeight="Bold"
                     Foreground="{DynamicResource FontColor}"
-                    Text="TorqIO" />
+                    Text="Driver&#10;IO"
+                    TextAlignment="Right" />
                 <TextBlock
                     Grid.Column="5"
                     HorizontalAlignment="Right"
@@ -144,10 +148,22 @@
                     FontSize="12"
                     FontWeight="Bold"
                     Foreground="{DynamicResource FontColor}"
-                    Text="DepthIO" />
+                    Text="Depth&#10;IO"
+                    TextAlignment="Right" />
+
+                <TextBlock
+                    Grid.Column="6"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Center"
+                    FontSize="12"
+                    FontWeight="Bold"
+                    Foreground="{DynamicResource FontColor}"
+                    Text="Change&#10;Position"
+                    TextAlignment="Right" />
             </Grid>
 
             <ListBox
+                x:Name="PosListBox"
                 Grid.Row="2"
                 HorizontalContentAlignment="Stretch"
                 Background="Transparent"
@@ -155,6 +171,7 @@
                 FontSize="12"
                 Foreground="{DynamicResource FontColor}"
                 ItemsSource="{Binding PositionDataList}"
+                MouseDown="PosListBox_MouseDown"
                 SelectedItem="{Binding SelectedPositionItem}">
                 <!--  우측의 명령어가 리스트의 가로 비율을 균일하게 배분  -->
                 <ListBox.ItemTemplate>
@@ -188,11 +205,24 @@
                             <TextBlock
                                 Grid.Column="4"
                                 HorizontalAlignment="Right"
-                                Text="{Binding Torq_IO}" />
+                                Text="{Binding Driver_IO}" />
                             <TextBlock
                                 Grid.Column="5"
                                 HorizontalAlignment="Right"
                                 Text="{Binding Depth_IO}" />
+                            <Button
+                                Grid.Column="6"
+                                Width="20"
+                                Height="20"
+                                HorizontalAlignment="Right"
+                                VerticalAlignment="Center"
+                                Command="{Binding ChangePositionDataBtn}"
+                                Style="{StaticResource RoundedButtonStyle}">
+                                <Button.Background>
+                                    <ImageBrush ImageSource="../../../../Assets/btn_change.png" />
+                                </Button.Background>
+
+                            </Button>
                         </Grid>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
