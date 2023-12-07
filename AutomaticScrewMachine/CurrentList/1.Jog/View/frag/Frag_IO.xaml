@@ -172,7 +172,7 @@
                         Width="20"
                         Height="20"
                         HorizontalAlignment="Right"
-                        Background="{Binding AirSig, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        Background="{Binding VacuumSig, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                         Command="{Binding VacuumIO}"
                         Style="{StaticResource RoundedButtonStyle}" />
                 </Grid>

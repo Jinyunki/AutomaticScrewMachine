@@ -111,9 +111,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="CurrentList\1.Jog\Base\JogBase.cs" />
     <Compile Include="CurrentList\1.Jog\Model\JogData.cs" />
     <Compile Include="CurrentList\1.Jog\Model\PosData.cs" />
     <Compile Include="CurrentList\1.Jog\Model\SequenceData.cs" />
+    <Compile Include="CurrentList\1.Jog\ViewModel\JogSystem.cs" />
     <Compile Include="CurrentList\1.Jog\ViewModel\JogViewModel.cs" />
     <Compile Include="CurrentList\1.Jog\View\frag\Frag_IO.xaml.cs">
       <DependentUpon>Frag_IO.xaml</DependentUpon>

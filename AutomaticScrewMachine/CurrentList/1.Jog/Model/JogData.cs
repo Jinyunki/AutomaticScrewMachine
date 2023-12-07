@@ -134,13 +134,13 @@ namespace AutomaticScrewMachine.CurrentList._1.Jog.Model {
             PositionDataList[index].Depth_IO = DepthSignal;
         }
 
-        private Thickness _screwPosList;
-        public Thickness ScrewPosList {
-            get => _screwPosList;
+        private Thickness _DriverPosList;
+        public Thickness DriverPosList {
+            get => _DriverPosList;
             set {
-                if (_screwPosList != value) {
-                    _screwPosList = value;
-                    RaisePropertyChanged(nameof(ScrewPosList));
+                if (_DriverPosList != value) {
+                    _DriverPosList = value;
+                    RaisePropertyChanged(nameof(DriverPosList));
                 }
             }
         }
@@ -351,12 +351,12 @@ namespace AutomaticScrewMachine.CurrentList._1.Jog.Model {
             }
         }
 
-        private Brush _airSig = Brushes.Gray;
-        public Brush AirSig {
-            get { return _airSig; }
+        private Brush _VacuumSig = Brushes.Gray;
+        public Brush VacuumSig {
+            get { return _VacuumSig; }
             set {
-                _airSig = value;
-                RaisePropertyChanged(nameof(AirSig));
+                _VacuumSig = value;
+                RaisePropertyChanged(nameof(VacuumSig));
             }
         }
 
