@@ -14,6 +14,7 @@ using GalaSoft.MvvmLight.Command;
 using System.Threading.Tasks;
 using System.ComponentModel;
 using System.Windows.Media;
+using static OfficeOpenXml.ExcelErrorValue;
 
 namespace AutomaticScrewMachine.CurrentList._1.Jog.ViewModel {
     public class JogViewModel : JogData {
@@ -97,7 +98,7 @@ namespace AutomaticScrewMachine.CurrentList._1.Jog.ViewModel {
                 PositionValueZ = ReturnPosValue(2);
                 
                 //DriverPosList = new Thickness(PositionValueX * 0.00098, PositionValueY * 0.0009, 0, 0);
-                DriverPosList = new Thickness(PositionValueX * 0.00185, PositionValueY * 0.0018, 0, 0);
+                DriverPosList = new Thickness(PositionValueX * 0.00155, PositionValueY * 0.00165, 0, 0);
                 ScrewMCForcus = PositionValueZ;
 
 
@@ -397,7 +398,6 @@ namespace AutomaticScrewMachine.CurrentList._1.Jog.ViewModel {
         private void GetSequenceStart () {
             Trace.WriteLine("==========   Start   ==========\nMethodName : " + MethodBase.GetCurrentMethod().Name + "\n");
             try {
-                //GetReadyPosition(SequenceReadyPosition); // XY 홈이동
 
                 _seqWorker = new BackgroundWorker {
                     WorkerSupportsCancellation = true
@@ -406,14 +406,6 @@ namespace AutomaticScrewMachine.CurrentList._1.Jog.ViewModel {
                 _seqWorker.RunWorkerCompleted += SEQ_RunWorkerCompleted;
                 _seqWorker.RunWorkerAsync();
 
-
-
-                
-                
-
-
-
-                //GetDownPosition(54000); // 하강
 
             } catch (Exception ex) {
                 Trace.WriteLine("========== Exception ==========\nMethodName : " + MethodBase.GetCurrentMethod().Name + "\nException : " + ex);
@@ -426,99 +418,81 @@ namespace AutomaticScrewMachine.CurrentList._1.Jog.ViewModel {
         }
 
         private void SEQ_DoWork (object sender, DoWorkEventArgs e) {
-            if (PositionValueZ > MoveAbleZPosition) {
-                CAXM.AxmMovePos((int)ServoIndex.ZPOSITION, MoveAbleZPosition, MC_JogSpeed, MC_JogAcl, MC_JogDcl);
-                while ((int)PositionValueZ != 54000) {
-                    Delay(1);
-                }
 
-                MultiMovePos(SequenceReadyPosition, MC_JogSpeed, MC_JogAcl, MC_JogDcl);
-            } else {
-                MultiMovePos(SequenceReadyPosition, MC_JogSpeed, MC_JogAcl, MC_JogDcl);
+            for (int i = 0; i < PositionDataList.Count; i++) {
+                double[] SeqXYHoldPos = new double[2] { PositionDataList[i].X, PositionDataList[i].Y };
+
+                MoveScrewSupplyPos(SequenceReadyPosition); //xy 공급기
+
+                MoveDownPos(SequenceReadyPosition, 50000); // z 스크류 공급
+
+                WriteOutport(true); // io 스크류 체득
+
+                MoveUpPos(10000); // z 이동을위한 업
+
+                MoveJIGPos(SeqXYHoldPos); // xy 지그 위치로 이동
+
+                MoveDownPos(SeqXYHoldPos, 30000); // 지그 구멍에 맞춰 체결할곳으로 하강
+                
+                Delay(700); // 차후 토크 컨트롤임
+
+                MoveUpPos(10000);
+
+                WriteOutport(false);
+
+
             }
 
-            while (!((int)SequenceReadyPosition[0] == (int)PositionValueX && (int)SequenceReadyPosition[1] == (int)PositionValueY)) { // XY 오차율이 10%이하 인지
-                Delay(1);
+            Delay(500); // 시퀀스 작업이 모두 종료후 0.5초동안 잠시 대기 후
+            MoveScrewSupplyPos(SequenceReadyPosition);
+        }
+
+        private void MoveJIGPos (double[] recipePosition) {
+            
+            if (!((int)recipePosition[0] == (int)PositionValueX && (int)recipePosition[1] == (int)PositionValueY)) {
+                MultiMovePos(recipePosition, MC_JogSpeed, MC_JogAcl, MC_JogDcl); // 포지션 위치 로 무빙 시작
+            }
+            while (!((int)recipePosition[0] == (int)PositionValueX && (int)recipePosition[1] == (int)PositionValueY)) { // XY 이동이 종료 될때까지
+                Delay(100);
             }
 
-            CAXM.AxmMoveStartPos(2, 54000, MC_JogSpeed, MC_JogAcl, MC_JogDcl);
+        }
 
-            while ((int)PositionValueZ != 54000) {
-                Delay(1);
-            }
-
-            CAXD.AxdoWriteOutport((int)DIOIndex.DRIVER, 1); // Driver Down
-            CAXD.AxdoWriteOutport((int)DIOIndex.VACUUM, 1); // Vaccum ON
+        private void WriteOutport (bool onOff) {
+            uint IO_onOff = onOff ? 1u : 0u;
+            CAXD.AxdoWriteOutport((int)DIOIndex.DRIVER, IO_onOff); // Driver Down
+            CAXD.AxdoWriteOutport((int)DIOIndex.VACUUM, IO_onOff); // Vaccum ON
 
             CAXD.AxdoReadOutport((int)DIOIndex.DRIVER, ref DriverBuzzerSignal); // IO Driver 값 수신
             CAXD.AxdoReadOutport((int)DIOIndex.VACUUM, ref VacuumBuzzerSignal); // IO Vaccum 값 수신
             Delay(500);
-            GetUpPosition(10000);
         }
 
-        private void GetUpPosition (double downPos) {
-            while (DriverBuzzerSignal != 1 && VacuumBuzzerSignal != 1) {
-                Delay(1);
+        private void MoveDownPos (double[] xyStatus, double downPos) {
+            while (!((int)xyStatus[0] == (int)PositionValueX && (int)xyStatus[1] == (int)PositionValueY)) { // XY 이동이 종료 될때까지
+                Delay(100);
             }
-            CAXM.AxmMoveStartPos(2, downPos, MC_JogSpeed, MC_JogAcl, MC_JogDcl);
+
+            if ((int)xyStatus[0] == (int)PositionValueX && (int)xyStatus[1] == (int)PositionValueY) { // XY 가 다시한번 정상인것을 확인 후 하강
+                CAXM.AxmMoveStartPos(2, downPos, MC_JogSpeed, MC_JogAcl, MC_JogDcl);
+            }
 
             while ((int)PositionValueZ != downPos) {
-                Delay(1);
+                Delay(100);
+            }
+
+        }
+        private void MoveUpPos (double downPos) {
+            CAXM.AxmMoveStartPos(2, downPos, MC_JogSpeed, MC_JogAcl, MC_JogDcl);
+            while ((int)PositionValueZ != downPos) {
+                Delay(100);
             }
         }
 
-
-        private void GetDownPosition (double downPos) {
-            var task = new Task(() => {
-                while (!((int)SequenceReadyPosition[0] == (int)PositionValueX && (int)SequenceReadyPosition[1] == (int)PositionValueY)) { // XY 오차율이 10%이하 인지
-                    Delay(1);
-                }
-                CAXM.AxmMoveStartPos(2, downPos, MC_JogSpeed, MC_JogAcl, MC_JogDcl);
-                
-                while ((int)PositionValueZ != (int)downPos) {
-                    Delay(1);
-                }
-                CAXD.AxdoWriteOutport((int)DIOIndex.DRIVER, 1); // Driver Down
-                CAXD.AxdoWriteOutport((int)DIOIndex.VACUUM, 1); // Vaccum ON
-
-                CAXD.AxdoReadOutport((int)DIOIndex.DRIVER, ref DriverBuzzerSignal); // IO Driver 값 수신
-                CAXD.AxdoReadOutport((int)DIOIndex.VACUUM, ref VacuumBuzzerSignal); // IO Vaccum 값 수신
-                Delay(700);
-
-                GetUpPosition(10000);
-
-                for (int i = 0; i < PositionDataList.Count; i++) {
-
-                    double[] SeqXYHoldPos = new double[2] { PositionDataList[i].X, PositionDataList[i].Y };
-                    MultiMovePos(SeqXYHoldPos, MC_JogSpeed, MC_JogAcl, MC_JogDcl); // 포지션 위치 로 무빙 시작
-
-                    while ((int)PositionDataList[i].X != (int)PositionValueX || (int)PositionDataList[i].Y != (int)PositionValueY) { // 해당 위치까지 도달하지못했을때
-                        Delay(100);
-                    }
-                    CAXM.AxmMoveStartPos(2, 15000, MC_JogSpeed, MC_JogAcl, MC_JogDcl);
-                    while ((int)PositionValueZ != 15000) { // 해당 위치까지 도달하지못했을때
-                        Delay(100);
-                    }
-
-                    /*MultiMovePos(SequenceReadyPosition, MC_JogSpeed, MC_JogAcl, MC_JogDcl);
-                    while ((int)SequenceReadyPosition[0] != (int)PositionValueX || (int)SequenceReadyPosition[1] != (int)PositionValueY) {
-                        Delay(1);
-                    }*/
-
-                }
-
-                /*while (DriverBuzzerSignal != 1 && VacuumBuzzerSignal != 1) {
-                    Delay(1);
-                }
-                CAXM.AxmMoveStartPos(2, 10000, MC_JogSpeed, MC_JogAcl, MC_JogDcl);*/
-
-
-            });
-
-            task.Start();
-        }
-        
-        private void GetReadyPosition (double[] XYHoldPos) {
+        private void MoveScrewSupplyPos (double[] XYHoldPos) {
+            if (DriverBuzzerSignal != 0 && VacuumBuzzerSignal != 0) {
+                DIO_OnOff(false);
+            }
             if (PositionValueZ > MoveAbleZPosition) {
                 CAXM.AxmMovePos((int)ServoIndex.ZPOSITION, MoveAbleZPosition, MC_JogSpeed, MC_JogAcl, MC_JogDcl);
                 MultiMovePos(XYHoldPos, MC_JogSpeed, MC_JogAcl, MC_JogDcl);

@@ -310,5 +310,15 @@
   <ItemGroup>
     <Resource Include="Assets\btn_change.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\ic_jig.png" />
+    <Resource Include="Assets\ic_screwSupply.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\AutoScrewView2D.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\2d.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

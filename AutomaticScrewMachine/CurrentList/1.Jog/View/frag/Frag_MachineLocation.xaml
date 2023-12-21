@@ -5,8 +5,8 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:AutomaticScrewMachine.CurrentList._1.Jog.View.frag"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    d:DesignHeight="700"
-    d:DesignWidth="700"
+    d:DesignHeight="670"
+    d:DesignWidth="645"
     Background="Transparent"
     DataContext="{Binding JogViewModel, Source={StaticResource Locator}}"
     mc:Ignorable="d">
@@ -17,6 +17,7 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </UserControl.Resources>
+    
     <Border
         Grid.Row="1"
         BorderBrush="White"
@@ -39,8 +40,8 @@
 
             <!--  Motion Screw  -->
             <Border
-                Width="15"
-                Height="15"
+                Width="12"
+                Height="12"
                 Margin="{Binding DriverPosList, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                 Background="#FF39ACB4"
                 CornerRadius="100">
@@ -51,8 +52,8 @@
 
             <!--  Motion Screw Down Balance  -->
             <Border
-                Width="15"
-                Height="15"
+                Width="12"
+                Height="12"
                 Margin="{Binding DriverPosList, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                 Background="#FF611A1A"
                 CornerRadius="100"
@@ -61,6 +62,8 @@
                     <TranslateTransform />
                 </Border.RenderTransform>
             </Border>
+
         </Grid>
+
     </Border>
 </UserControl>

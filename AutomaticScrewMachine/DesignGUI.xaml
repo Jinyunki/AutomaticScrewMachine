@@ -17,6 +17,28 @@
     </VisualBrush>
 
 
+    <GradientStopCollection x:Key="MyGlassGradientStopsResource">
+        <GradientStop Offset="0.2" Color="WhiteSmoke" />
+        <GradientStop Offset="0.4" Color="Transparent" />
+        <GradientStop Offset="0.5" Color="WhiteSmoke" />
+        <GradientStop Offset="0.75" Color="Transparent" />
+        <GradientStop Offset="0.9" Color="WhiteSmoke" />
+        <GradientStop Offset="1" Color="Transparent" />
+    </GradientStopCollection>
+    <LinearGradientBrush x:Key="MyGlassBrushResource" GradientStops="{StaticResource MyGlassGradientStopsResource}" Opacity="0.75" StartPoint="0,0" EndPoint="1,1" />
+
+
+
+    <GradientStopCollection x:Key="StainlessResource">
+        <GradientStop Offset="0.2" Color="#FF616161" />
+        <GradientStop Offset="0.4" Color="Transparent" />
+        <GradientStop Offset="0.5" Color="Silver" />
+        <GradientStop Offset="0.75" Color="Transparent" />
+        <GradientStop Offset="0.9" Color="Silver" />
+        <GradientStop Offset="1" Color="Transparent" />
+    </GradientStopCollection>
+    <LinearGradientBrush x:Key="MyStainlessBrushResource" GradientStops="{StaticResource StainlessResource}" Opacity="0.75" StartPoint="0,0" EndPoint="1,1" />
+
     <LinearGradientBrush x:Key="MainBackGroundColor" StartPoint="0,0" EndPoint="1,1">
         <GradientStop Offset="0.1" Color="#FF2B2B2B" />
         <GradientStop Offset="0.2" Color="#FF2E2E2E" />
