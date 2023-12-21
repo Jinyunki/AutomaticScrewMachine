@@ -17,22 +17,19 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </UserControl.Resources>
-    <Border
-        Grid.Row="0"
-        Margin="0,0,0,10"
-        Background="{DynamicResource DarkNavyGray}"
-        CornerRadius="15">
-        <Grid
-            Grid.Row="0"
-            Margin="10"
-            Background="Transparent"
-            ShowGridLines="False">
+    <Grid>
+        <Border
+            Margin="0"
+            Background="{DynamicResource DarkNavyGray}"
+            CornerRadius="15" />
+
+        <Grid Grid.Row="0" ShowGridLines="False">
             <Grid.RowDefinitions>
-                <RowDefinition Height="2*" />
-                <RowDefinition Height="8*" />
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="5*" />
             </Grid.RowDefinitions>
 
-            <Grid Grid.Row="0" Background="{DynamicResource DarkNavyGray}">
+            <Grid Grid.Row="0">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="1.5*" />
                     <ColumnDefinition Width="1*" />
@@ -41,7 +38,7 @@
                 <TextBlock
                     Grid.Column="0"
                     VerticalAlignment="Center"
-                    FontSize="20"
+                    FontSize="17"
                     FontWeight="Bold"
                     Foreground="{DynamicResource FontColor}"
                     Text="SEQUENCE LIST" />
@@ -94,7 +91,7 @@
                 HorizontalContentAlignment="Stretch"
                 Background="Transparent"
                 BorderThickness="0"
-                FontSize="20"
+                FontSize="17"
                 Foreground="{DynamicResource FontColor}"
                 ItemsSource="{Binding SequenceDataList}"
                 MouseDown="SeqListBox_MouseDown"
@@ -123,8 +120,8 @@
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
-
         </Grid>
-    </Border>
+    </Grid>
+
 
 </UserControl>

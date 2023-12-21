@@ -15,30 +15,16 @@ namespace AutomaticScrewMachine.CurrentList._1.Jog.View.frag {
             InitializeComponent();
         }
         private void JogStop_MouseDown (object sender, MouseButtonEventArgs e) {
-            Trace.WriteLine("==========   Start   ==========\nMethodName : " + MethodBase.GetCurrentMethod().Name + "\n");
-            try {
-                clickedBorder = sender as Border;
-                if (clickedBorder != null && e.LeftButton == MouseButtonState.Pressed) {
-                    StaticControllerSignal.ControllerSignalView(clickedBorder.Name);
-                }
-
-            } catch (Exception ex) {
-                Trace.WriteLine("========== Exception ==========\nMethodName : " + MethodBase.GetCurrentMethod().Name + "\nException : " + ex);
-                throw;
+            clickedBorder = sender as Border;
+            if (clickedBorder != null && e.LeftButton == MouseButtonState.Pressed) {
+                StaticControllerSignal.ControllerSignalView(clickedBorder.Name);
             }
         }
 
         private void JogStop_MouseUp (object sender, MouseButtonEventArgs e) {
-            Trace.WriteLine("==========   Start   ==========\nMethodName : " + MethodBase.GetCurrentMethod().Name + "\n");
-            try {
-                if (clickedBorder != null) {
-                    StaticControllerSignal.StopControllerSignalView();
-                }
-            } catch (Exception ex) {
-                Trace.WriteLine("========== Exception ==========\nMethodName : " + MethodBase.GetCurrentMethod().Name + "\nException : " + ex);
-                throw;
+            if (clickedBorder != null) {
+                StaticControllerSignal.StopControllerSignalView();
             }
-
         }
 
         private void JogControl_MouseLeave (object sender, MouseEventArgs e) {

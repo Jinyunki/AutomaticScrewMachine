@@ -11,22 +11,121 @@ using System.Threading;
 using System.Windows.Threading;
 using System.Windows;
 using GalaSoft.MvvmLight.Command;
-using static OfficeOpenXml.ExcelErrorValue;
+using System.Threading.Tasks;
+using System.ComponentModel;
+using System.Windows.Media;
 
 namespace AutomaticScrewMachine.CurrentList._1.Jog.ViewModel {
     public class JogViewModel : JogData {
+        private BackgroundWorker _DIOWorker ;
+        private BackgroundWorker _motionWorker ;
+        private BackgroundWorker _seqWorker ;
+
         public JogViewModel () {
-            DefaultSet();
+            DefaultSet(); // 기본
+
+            ThreadWorker();
             // EMERGENCY
             EmergencyStopCommand = new RelayCommand(EmergencyStop);
             // HOME
             HomeCommand = new RelayCommand(CmdHomeReturn);
-
-            // ServoMotor 제어 Thread Start
-            ServoMotorThread();
-
             // Button TriggerEvent
             SetButtonEvent();
+        }
+        public void DefaultSet () {
+            // 컨트롤락
+            ControlRock = false;
+            // 조그 이동 속도 기본 설정
+            JogMoveSpeed = 1;
+        }
+
+        
+        
+        public void ThreadWorker () {
+            Messenger.Default.Register<SignalMessage>(this, HandleSignalMessage); // 이벤트 관장 핸들러 메신저 Jog 컨트롤
+
+            _motionWorker = new BackgroundWorker {
+                WorkerSupportsCancellation = true
+            };
+            _motionWorker.DoWork += Motion_DoWork;
+            _motionWorker.RunWorkerCompleted += Motion_RunWorkerCompleted;
+            _motionWorker.RunWorkerAsync();
+
+
+            _DIOWorker = new BackgroundWorker {
+                WorkerSupportsCancellation = true
+            };
+            _DIOWorker.DoWork += DIO_DoWork;
+            _DIOWorker.RunWorkerCompleted += DIO_RunWorkerCompleted;
+            _DIOWorker.RunWorkerAsync();
+
+        }
+
+        private void DIO_RunWorkerCompleted (object sender, RunWorkerCompletedEventArgs e) {
+            Console.WriteLine("DIO Worker 종료");
+        }
+
+        private void DIO_DoWork (object sender, DoWorkEventArgs e) {
+            while (!_DIOWorker.CancellationPending) {
+                Delay(100);
+                DriverBuzzer = DIO_Brush(8);
+                DepthBuzzer = DIO_Brush(9);
+                VacuumBuzzer = DIO_Brush(10);
+            }
+        }
+
+        private void Motion_RunWorkerCompleted (object sender, RunWorkerCompletedEventArgs e) {
+            Console.WriteLine("Motion Worker 종료");
+        }
+
+        private void Motion_DoWork (object sender, DoWorkEventArgs e) {
+            // BackgroundWorker가 캔슬신호를 받기전까지 무한루프.
+            while (!_motionWorker.CancellationPending) {
+                CAXM.AxmSignalIsServoOn(1, ref valueX);
+                ServoX = RecevieSignalColor(ReturnServoState(1, valueX));
+                CAXM.AxmSignalIsServoOn(0, ref valueY);
+                ServoY = RecevieSignalColor(ReturnServoState(0, valueY));
+                CAXM.AxmSignalIsServoOn(2, ref valueZ);
+                ServoZ = RecevieSignalColor(ReturnServoState(2, valueZ));
+
+                BuzzerX = RecevieSignalColor(ReturnMotionState(1));
+                BuzzerY = RecevieSignalColor(ReturnMotionState(0));
+                BuzzerZ = RecevieSignalColor(ReturnMotionState(2));
+
+                PositionValueX = ReturnPosValue(1);
+                PositionValueY = ReturnPosValue(0);
+                PositionValueZ = ReturnPosValue(2);
+                
+                //DriverPosList = new Thickness(PositionValueX * 0.00098, PositionValueY * 0.0009, 0, 0);
+                DriverPosList = new Thickness(PositionValueX * 0.00185, PositionValueY * 0.0018, 0, 0);
+                ScrewMCForcus = PositionValueZ;
+
+
+                // X나 Y축이 움직이고있으면
+                if (BuzzerX.ToString() != "#FF808080" || BuzzerY.ToString() != "#FF808080") {
+                    XYMoveState = true;
+                    //Console.WriteLine("이동중");
+                    // 멈춰있으면
+                } else {
+                    XYMoveState = false;
+                    //Console.WriteLine("멈춰있습니다");
+                }
+
+                if (BuzzerZ.ToString() != "#FF808080") {
+                    ZMoveState = true;
+                } else {
+                    ZMoveState = false;
+                }
+
+
+            }
+        }
+        public bool XYMoveState = false;
+        public bool ZMoveState = false;
+        private Brush DIO_Brush (int indexIONumber) {
+            uint temp = 9;
+            CAXD.AxdoReadOutport(indexIONumber, ref temp);
+            return RecevieSignalColor(temp);
         }
 
         private void SetButtonEvent () {
@@ -34,26 +133,21 @@ namespace AutomaticScrewMachine.CurrentList._1.Jog.ViewModel {
             Trace.WriteLine("==========   Start   ==========\nMethodName : " + MethodBase.GetCurrentMethod().Name + "\n");
             try {
                 if (!ControlRock) {
-                    // 이벤트 관장 핸들러 메신저 Jog 컨트롤
-                    Messenger.Default.Register<SignalMessage>(this, HandleSignalMessage);
 
                     //SEQ BTN
                     AddPosition = new RelayCommand(AddPos); // Seq 추가
                     RemoveSequenceCommand = new RelayCommand(RemoveSelectedSequenceListItem); // SEQ삭제
                     RemovePositionCommand = new RelayCommand(RemoveSelectedPositionListItem); // POS삭제
                     SequenceStart = new RelayCommand(GetSequenceStart);
-
-                    
                     // Servo
                     ServoCheckX = new RelayCommand(() => SetServoState((int)ServoIndex.XPOSITION, valueX));
                     ServoCheckY = new RelayCommand(() => SetServoState((int)ServoIndex.YPOSITION, valueY));
                     ServoCheckZ = new RelayCommand(() => SetServoState((int)ServoIndex.ZPOSITION, valueZ));
-
-                    // Sylinder AND Air
-                    DriverIO = new RelayCommand(() => SetWriteOutport((int)DIOIndex.DRIVER, DriverSignal));
-                    DepthIO = new RelayCommand(() => SetWriteOutport((int)DIOIndex.DEPTH, DepthSignal));
-                    VacuumIO = new RelayCommand(() => SetWriteOutport((int)DIOIndex.VACUUM, VacuumSignal));
-
+                    // Sylinder IO
+                    DriverIO = new RelayCommand(() => DIO_WriteOutport((int)DIOIndex.DRIVER, DriverBuzzerSignal));
+                    DepthIO = new RelayCommand(() => DIO_WriteOutport((int)DIOIndex.DEPTH, DepthBuzzerSignal));
+                    VacuumIO = new RelayCommand(() => DIO_WriteOutport((int)DIOIndex.VACUUM, VacuumBuzzerSignal));
+                    // ExcelIO
                     ReadRecipe = new RelayCommand(ReadRecipeCommand);
                     AddRecipe = new RelayCommand(AddRecipeCommand);
                     SavePosDataRecipe = new RelayCommand(SaveRecipeCommand);
@@ -89,11 +183,6 @@ namespace AutomaticScrewMachine.CurrentList._1.Jog.ViewModel {
             SequenceDataList.Add(new SequenceData {
                 Name = "Recipe#" + (SequenceDataList.Count+1)
             });
-        }
-
-        public void DefaultSet () {
-            ControlRock = false;
-            JogMoveSpeed = 1;
         }
 
         private void SaveRecipeCommand () {
@@ -140,63 +229,6 @@ namespace AutomaticScrewMachine.CurrentList._1.Jog.ViewModel {
             }
         }
 
-
-        private void ServoMotorThread () {
-            Trace.WriteLine("==========   Start   ==========\nMethodName : " + MethodBase.GetCurrentMethod().Name + "\n");
-            try {
-                Motion_IO_Dispatcher = new DispatcherTimer {
-                    Interval = TimeSpan.FromMilliseconds(100)
-                };
-                Motion_IO_Dispatcher.Tick += Motion_Timer_Tick;
-                Motion_IO_Dispatcher.Start();
-            } catch (Exception ex) {
-                Trace.WriteLine("========== Exception ==========\nMethodName : " + MethodBase.GetCurrentMethod().Name + "\nException : " + ex);
-                throw;
-            }
-
-        }
-
-        public void Motion_Timer_Tick (object sender, EventArgs e) {
-            GetServoData();
-            GetPositionData();
-            GetBuzzerData();
-            GetSylinderData();
-        }
-
-        private void GetSylinderData () {
-            CAXD.AxdoReadOutport(8, ref DriverSignal);
-            TorqSig = RecevieSignalColor(DriverSignal);
-            CAXD.AxdoReadOutport(9, ref DepthSignal);
-            DepthSig = RecevieSignalColor(DepthSignal);
-            CAXD.AxdoReadOutport(10, ref VacuumSignal);
-            VacuumSig = RecevieSignalColor(VacuumSignal);
-        }
-        public void GetServoData () {
-            CAXM.AxmSignalIsServoOn(1, ref valueX);
-            ServoX = RecevieSignalColor(ReturnServoState(1, valueX));
-            CAXM.AxmSignalIsServoOn(0, ref valueY);
-            ServoY = RecevieSignalColor(ReturnServoState(0, valueY));
-            CAXM.AxmSignalIsServoOn(2, ref valueZ);
-            ServoZ = RecevieSignalColor(ReturnServoState(2, valueZ));
-        }
-        
-        public void GetPositionData () {
-            ReturnPosValue(1);
-            ReturnPosValue(0);
-            ReturnPosValue(2);
-            PositionValueX = ReturnPosValue(1);
-            PositionValueY = ReturnPosValue(0);
-            PositionValueZ = ReturnPosValue(2);
-
-            DriverPosList = new Thickness(PositionValueX * 0.00098, PositionValueY * 0.0009, 0, 0);
-            ScrewMCForcus = PositionValueZ;
-        }
-        public void GetBuzzerData () {
-            BuzzerX = RecevieSignalColor(ReturnMotionState(1));
-            BuzzerY = RecevieSignalColor(ReturnMotionState(0));
-            BuzzerZ = RecevieSignalColor(ReturnMotionState(2));
-        }
-
         private void SetServoState (int axis, uint value) {
             CAXM.AxmSignalServoOn(axis, (uint)(value == 0 ? 1 : 0));
             SetServoAlarm(axis, value);
@@ -218,16 +250,30 @@ namespace AutomaticScrewMachine.CurrentList._1.Jog.ViewModel {
                 CAXM.AxmSignalServoAlarmReset(axis, 1);
             }
         }
-        private void SetWriteOutport (int axis, uint value) {
+        private void DIO_WriteOutport (int axis, uint value) {
+            CAXD.AxdoReadOutport(axis, ref value);
             CAXD.AxdoWriteOutport(axis, (uint)(value == 0 ? 1 : 0));
+            switch (axis) {
+                case 8 :
+                    DriverBuzzer = RecevieSignalColor(value);
+                    break;
+                case 9 :
+                    DepthBuzzer = RecevieSignalColor(value);
+                    break;
+                case 10 :
+                    VacuumBuzzer = RecevieSignalColor(value);
+                    break;
+            }
         }
-
 
         private void HandleSignalMessage (SignalMessage message) {
             try {
                 var isPress = message.IsPress;
                 var isViewName = message.IsViewName;
                 if (!ControlRock) {
+                    /*if (PositionValueZ > 20000) {
+                        SetOff_DIO();
+                    }*/
                     switch (isViewName) {
                         // y 전후방
                         case string n when n == StaticControllerSignal.JOG_STRAIGHT:
@@ -264,7 +310,7 @@ namespace AutomaticScrewMachine.CurrentList._1.Jog.ViewModel {
                         CAXM.AxmMoveSStop(0);
                         CAXM.AxmMoveSStop(1);
                         CAXM.AxmMoveSStop(2);
-                    }
+                    } 
                 }
 
 
@@ -275,11 +321,8 @@ namespace AutomaticScrewMachine.CurrentList._1.Jog.ViewModel {
 
         }
 
-
-
         #region ListBoxConf
         private void AddPos () {
-
             Trace.WriteLine("==========   Start   ==========\nMethodName : " + MethodBase.GetCurrentMethod().Name + "\n");
             try {
                 TitleName = (PositionDataList.Count + 1).ToString();
@@ -289,8 +332,8 @@ namespace AutomaticScrewMachine.CurrentList._1.Jog.ViewModel {
                     X = PositionValueX,
                     Y = PositionValueY,
                     Z = PositionValueZ,
-                    Driver_IO = DriverSignal,
-                    Depth_IO = DepthSignal
+                    Driver_IO = DriverBuzzerSignal,
+                    Depth_IO = DepthBuzzerSignal
                 };
 
                 PositionDataList.Add(posData);
@@ -354,33 +397,23 @@ namespace AutomaticScrewMachine.CurrentList._1.Jog.ViewModel {
         private void GetSequenceStart () {
             Trace.WriteLine("==========   Start   ==========\nMethodName : " + MethodBase.GetCurrentMethod().Name + "\n");
             try {
-                /**/
-                _motionChecker = new DispatcherTimer {
-                    Interval = TimeSpan.FromMilliseconds(100),
+                //GetReadyPosition(SequenceReadyPosition); // XY 홈이동
+
+                _seqWorker = new BackgroundWorker {
+                    WorkerSupportsCancellation = true
                 };
-                _motionChecker.Tick += MotionChecker_Tick;
-                _motionChecker.Start();
-                /**/
+                _seqWorker.DoWork += SEQ_DoWork;
+                _seqWorker.RunWorkerCompleted += SEQ_RunWorkerCompleted;
+                _seqWorker.RunWorkerAsync();
 
 
-                /**
-                if (SelectedSequenceItem != null) {
-                    if (CheckServoOn()) {
-                        for (int i = 0; i < PositionDataList.Count; i++) {
-                            if (SeqStartHoldPosition()) {
-                                if (GetterScrewMotion()) { // Z POS스크류 습득
-                                    GetMoveXYPos(i); // XY POS
-                                }
-                                CAXM.AxmMovePos(2, 0, MC_JogSpeed, MC_JogAcl, MC_JogDcl); // Z UP
-                            } 
-                        }
-                        SeqStartHoldPosition();
-                    }
-                } else {
-                    MessageBox.Show("시퀀스가 선택 되어 있지 않습니다. 원점 이동을 시작합니다");
-                    CmdHomeReturn();
-                }
-                /**/
+
+                
+                
+
+
+
+                //GetDownPosition(54000); // 하강
 
             } catch (Exception ex) {
                 Trace.WriteLine("========== Exception ==========\nMethodName : " + MethodBase.GetCurrentMethod().Name + "\nException : " + ex);
@@ -388,138 +421,120 @@ namespace AutomaticScrewMachine.CurrentList._1.Jog.ViewModel {
             }
         }
 
-        private void MotionChecker_Tick (object sender, EventArgs e) {
-            Console.WriteLine("ReturnMotionState((int)ServoIndex.ZPOSITION) DATA ::::" + ReturnMotionState((int)ServoIndex.ZPOSITION));
+        private void SEQ_RunWorkerCompleted (object sender, RunWorkerCompletedEventArgs e) {
+            Console.WriteLine("FINISH");
+        }
 
-            if (ReturnMotionState((int)ServoIndex.YPOSITION) == 0 && ReturnMotionState((int)ServoIndex.XPOSITION) == 0) {
+        private void SEQ_DoWork (object sender, DoWorkEventArgs e) {
+            if (PositionValueZ > MoveAbleZPosition) {
+                CAXM.AxmMovePos((int)ServoIndex.ZPOSITION, MoveAbleZPosition, MC_JogSpeed, MC_JogAcl, MC_JogDcl);
+                while ((int)PositionValueZ != 54000) {
+                    Delay(1);
+                }
 
-                double[] XYHoldPos = new double[2] { 175000, 113122 };
-                MultiMovePos(XYHoldPos, MC_JogSpeed, MC_JogAcl, MC_JogDcl);
+                MultiMovePos(SequenceReadyPosition, MC_JogSpeed, MC_JogAcl, MC_JogDcl);
+            } else {
+                MultiMovePos(SequenceReadyPosition, MC_JogSpeed, MC_JogAcl, MC_JogDcl);
+            }
+
+            while (!((int)SequenceReadyPosition[0] == (int)PositionValueX && (int)SequenceReadyPosition[1] == (int)PositionValueY)) { // XY 오차율이 10%이하 인지
+                Delay(1);
+            }
+
+            CAXM.AxmMoveStartPos(2, 54000, MC_JogSpeed, MC_JogAcl, MC_JogDcl);
+
+            while ((int)PositionValueZ != 54000) {
+                Delay(1);
+            }
+
+            CAXD.AxdoWriteOutport((int)DIOIndex.DRIVER, 1); // Driver Down
+            CAXD.AxdoWriteOutport((int)DIOIndex.VACUUM, 1); // Vaccum ON
+
+            CAXD.AxdoReadOutport((int)DIOIndex.DRIVER, ref DriverBuzzerSignal); // IO Driver 값 수신
+            CAXD.AxdoReadOutport((int)DIOIndex.VACUUM, ref VacuumBuzzerSignal); // IO Vaccum 값 수신
+            Delay(500);
+            GetUpPosition(10000);
+        }
+
+        private void GetUpPosition (double downPos) {
+            while (DriverBuzzerSignal != 1 && VacuumBuzzerSignal != 1) {
+                Delay(1);
+            }
+            CAXM.AxmMoveStartPos(2, downPos, MC_JogSpeed, MC_JogAcl, MC_JogDcl);
+
+            while ((int)PositionValueZ != downPos) {
+                Delay(1);
+            }
+        }
+
+
+        private void GetDownPosition (double downPos) {
+            var task = new Task(() => {
+                while (!((int)SequenceReadyPosition[0] == (int)PositionValueX && (int)SequenceReadyPosition[1] == (int)PositionValueY)) { // XY 오차율이 10%이하 인지
+                    Delay(1);
+                }
+                CAXM.AxmMoveStartPos(2, downPos, MC_JogSpeed, MC_JogAcl, MC_JogDcl);
                 
-                // X,Y 축 지정 위치와, 지령 위치의 오차가 10%미만 일때
-                if ((int)XYHoldPos[0]*0.1 == (int)PositionValueX*0.1 && (int)XYHoldPos[1]*0.1 == (int)PositionValueY*0.1) {
+                while ((int)PositionValueZ != (int)downPos) {
+                    Delay(1);
+                }
+                CAXD.AxdoWriteOutport((int)DIOIndex.DRIVER, 1); // Driver Down
+                CAXD.AxdoWriteOutport((int)DIOIndex.VACUUM, 1); // Vaccum ON
 
-                    // Z축을 하강시킴
-                    CAXM.AxmMoveStartPos(2, 54000, MC_JogSpeed * 0.5, MC_JogAcl, MC_JogDcl);
+                CAXD.AxdoReadOutport((int)DIOIndex.DRIVER, ref DriverBuzzerSignal); // IO Driver 값 수신
+                CAXD.AxdoReadOutport((int)DIOIndex.VACUUM, ref VacuumBuzzerSignal); // IO Vaccum 값 수신
+                Delay(700);
 
-                    // Z축이 모두 하강하여 움직이고 있지않으면
-                    if (ReturnMotionState((int)ServoIndex.ZPOSITION) == 0) {
+                GetUpPosition(10000);
 
-                        CAXD.AxdoWriteOutport((int)DIOIndex.DRIVER, 1); // 1번 = 스위치 온
-                        CAXD.AxdoWriteOutport((int)DIOIndex.VACUUM, 1); // 1번 = 스위치 온
+                for (int i = 0; i < PositionDataList.Count; i++) {
 
-                        CAXD.AxdoReadOutport((int)DIOIndex.DRIVER, ref DriverSignal); // IO 토크
-                        CAXD.AxdoReadOutport((int)DIOIndex.VACUUM, ref VacuumSignal); // IO Air
+                    double[] SeqXYHoldPos = new double[2] { PositionDataList[i].X, PositionDataList[i].Y };
+                    MultiMovePos(SeqXYHoldPos, MC_JogSpeed, MC_JogAcl, MC_JogDcl); // 포지션 위치 로 무빙 시작
 
-                        if (DriverSignal == 1 && VacuumSignal == 1) {
-                            Thread.Sleep(500);
-                            CAXM.AxmMoveStartPos(2, 0, MC_JogSpeed * 0.5, MC_JogAcl, MC_JogDcl); // 스크류를 습득하여 올라가는것 까지 구현
-                            _motionChecker.Stop();
-                        }
-                        
-                    } 
-
-                    
-                    /*
-                   
-                    if (ReturnMotionState((int)ServoIndex.ZPOSITION) == 0) {
-                        Console.WriteLine("여기까진옴 zPOS<500");
-                        double[] XYHoldPos2 = new double[2] { PositionDataList[0].X, PositionDataList[0].Y }; // X/Y 리스트의 데이터를 참조
-                        MultiMovePos(XYHoldPos2, MC_JogSpeed, MC_JogAcl, MC_JogDcl);
-                        
-                        //if ((int)XYHoldPos2[0] * 0.1 == (int)PositionValueX * 0.1 && (int)XYHoldPos2[1] * 0.1 == (int)PositionValueY * 0.1) {
-                        //    Console.WriteLine("여기까진옴");
-                        //    _motionChecker.Stop();
-                        //}
-                        //CAXM.AxmMoveStartPos(2, 0, MC_JogSpeed * 0.5, MC_JogAcl, MC_JogDcl);
+                    while ((int)PositionDataList[i].X != (int)PositionValueX || (int)PositionDataList[i].Y != (int)PositionValueY) { // 해당 위치까지 도달하지못했을때
+                        Delay(100);
+                    }
+                    CAXM.AxmMoveStartPos(2, 15000, MC_JogSpeed, MC_JogAcl, MC_JogDcl);
+                    while ((int)PositionValueZ != 15000) { // 해당 위치까지 도달하지못했을때
+                        Delay(100);
                     }
 
-                    /**/
+                    /*MultiMovePos(SequenceReadyPosition, MC_JogSpeed, MC_JogAcl, MC_JogDcl);
+                    while ((int)SequenceReadyPosition[0] != (int)PositionValueX || (int)SequenceReadyPosition[1] != (int)PositionValueY) {
+                        Delay(1);
+                    }*/
 
                 }
 
-            } else {
-                Console.WriteLine("XXXXX : " + PositionValueX);
-                Console.WriteLine("YYYYY : " + PositionValueY);
-            }
+                /*while (DriverBuzzerSignal != 1 && VacuumBuzzerSignal != 1) {
+                    Delay(1);
+                }
+                CAXM.AxmMoveStartPos(2, 10000, MC_JogSpeed, MC_JogAcl, MC_JogDcl);*/
 
+
+            });
+
+            task.Start();
         }
-        private void MultiMovePos (double[] positionList, double jogSpeed, double jogAcl, double jogDcl) {
+        
+        private void GetReadyPosition (double[] XYHoldPos) {
+            if (PositionValueZ > MoveAbleZPosition) {
+                CAXM.AxmMovePos((int)ServoIndex.ZPOSITION, MoveAbleZPosition, MC_JogSpeed, MC_JogAcl, MC_JogDcl);
+                MultiMovePos(XYHoldPos, MC_JogSpeed, MC_JogAcl, MC_JogDcl);
+            } else {
+                MultiMovePos(XYHoldPos, MC_JogSpeed, MC_JogAcl, MC_JogDcl);
+            }
+        }
 
+        private void MultiMovePos (double[] positionList, double jogSpeed, double jogAcl, double jogDcl) {
             int[] jogList = { 1, 0 }; // X,Y
             double[] speedList = { jogSpeed, jogSpeed };
             double[] aclList = { jogAcl, jogAcl };
             double[] dclList = { jogDcl, jogDcl };
-            //CAXM.AxmMoveMultiPos(2, jogList, positionList, speedList, aclList, dclList);
-            CAXM.AxmMoveStartMultiPos(2, jogList, positionList, speedList, aclList, dclList); 
-
+            CAXM.AxmMoveStartMultiPos(2, jogList, positionList, speedList, aclList, dclList); //AxmMoveMultiPos
         }
 
-        /// <summary>
-        /// 시퀀스 시작전 대기 장소 (스크류공급기 위치)
-        /// </summary>
-        private bool SeqStartHoldPosition () {
-            Trace.WriteLine("==========   Start   ==========\nMethodName : " + MethodBase.GetCurrentMethod().Name + "\n");
-            try {
-                // DI/O OffSet
-                CAXD.AxdoWriteOutport((int)DIOIndex.DRIVER, 0);
-                CAXD.AxdoWriteOutport((int)DIOIndex.DEPTH, 0);
-                CAXD.AxdoWriteOutport((int)DIOIndex.VACUUM, 0);
-
-                double[] XYHoldPos = new double[2] { 175000, 113122 }; // X/Y 대기 장소
-                CAXM.AxmMovePos((int)ServoIndex.ZPOSITION, 0, MC_JogSpeed * 0.5, MC_JogAcl, MC_JogDcl); // 후순위 탈출
-                //CAXM.AxmMoveStartPos((int)ServoIndex.ZPOSITION, 0, MC_JogSpeed * 0.5, MC_JogAcl, MC_JogDcl); // 명령 즉시 탈출
-                MultiMovePos(XYHoldPos, MC_JogSpeed, MC_JogAcl, MC_JogDcl);
-
-                if (XYHoldPos[0] == ReturnPosValue((int)ServoIndex.XPOSITION) && XYHoldPos[1] == ReturnPosValue((int)ServoIndex.YPOSITION) && ReturnPosValue((int)ServoIndex.ZPOSITION) < 1000) {
-                    return true;
-                } else {
-                    return false;
-                }
-            } catch (Exception ex) {
-                Trace.WriteLine("========== Exception ==========\nMethodName : " + MethodBase.GetCurrentMethod().Name + "\nException : " + ex);
-                throw;
-            }
-        }
-
-        private void GetMoveXYPos (int index) {
-
-            Trace.WriteLine("==========   Start   ==========\nMethodName : " + MethodBase.GetCurrentMethod().Name + "\n");
-            try {
-                double[] XYHoldPos = new double[2] { PositionDataList[index].X, PositionDataList[index].Y }; // X/Y 리스트의 데이터를 참조
-                MultiMovePos(XYHoldPos, MC_JogSpeed, MC_JogAcl, MC_JogDcl);
-            } catch (Exception ex) {
-                Trace.WriteLine("========== Exception ==========\nMethodName : " + MethodBase.GetCurrentMethod().Name + "\nException : " + ex);
-                throw;
-            }
-
-        }
-
-        private bool CheckServoOn () {
-            if (valueX != 0 && valueY != 0 && valueZ != 0) {
-                return true;
-            } else {
-                return false;
-            }
-        }
-        private bool GetterScrewMotion () {
-            CAXM.AxmMovePos(2, 54000, MC_JogSpeed * 0.5, MC_JogAcl, MC_JogDcl);
-            //CAXM.AxmMoveStartPos(2, 54000, MC_JogSpeed * 0.5, MC_JogAcl, MC_JogDcl);
-            CAXD.AxdoReadOutport((int)DIOIndex.DRIVER,ref DriverSignal); // IO 토크
-            SetWriteOutport((int)DIOIndex.DRIVER, DriverSignal);
-            CAXD.AxdoReadOutport((int)DIOIndex.VACUUM, ref VacuumSignal); // IO Air
-            SetWriteOutport((int)DIOIndex.VACUUM, VacuumSignal);
-
-            Thread.Sleep(500);
-            CAXM.AxmMovePos(2, 0, MC_JogSpeed * 0.5, MC_JogAcl, MC_JogDcl);
-            //CAXM.AxmMoveStartPos(2, 0, MC_JogSpeed * 0.5, MC_JogAcl, MC_JogDcl);
-
-            if (PositionValueZ < 500) {
-                return true;
-            } else {
-                return false;
-            }
-        }
 
         private double ReturnPosValue(int index) {
             double dp = 9;
@@ -529,7 +544,6 @@ namespace AutomaticScrewMachine.CurrentList._1.Jog.ViewModel {
         private uint ReturnMotionState (int index) {
             uint movingSignal = 9;
             CAXM.AxmStatusReadInMotion(index, ref movingSignal);
-
             return movingSignal;
         }
         private uint ReturnServoState (int index, uint value) {
@@ -538,11 +552,11 @@ namespace AutomaticScrewMachine.CurrentList._1.Jog.ViewModel {
             return value;
         }
         #endregion
-
+        
         private void EmergencyStop () {
             Trace.WriteLine("==========   Start   ==========\nMethodName : " + MethodBase.GetCurrentMethod().Name + "\n");
-            try {
-
+            try { 
+                
                 CAXM.AxmMoveEStop(0);
                 CAXM.AxmMoveEStop(1);
                 CAXM.AxmMoveEStop(2);
@@ -551,63 +565,74 @@ namespace AutomaticScrewMachine.CurrentList._1.Jog.ViewModel {
                 CAXM.AxmSignalServoOn(1, (uint)(valueX == 0 ? 1 : 0));
                 CAXM.AxmSignalServoOn(0, (uint)(valueY == 0 ? 1 : 0));
 
+                DIO_OnOff(false);
+
+
             } catch (Exception ex) {
                 Trace.WriteLine("========== Exception ==========\nMethodName : " + MethodBase.GetCurrentMethod().Name + "\nException : " + ex);
                 throw;
             }
 
+        }
+
+
+        /// <summary>
+        /// DI/O 를 모두 종료 시킵니다
+        /// </summary>
+        /// <param name="OnOff"> True = On, False = Off </param>
+        private void DIO_OnOff (bool OnOff) {
+            uint returnOnof = OnOff ? 1u : 0u;
+            CAXD.AxdoWriteOutport((int)DIOIndex.DRIVER, returnOnof);
+            CAXD.AxdoWriteOutport((int)DIOIndex.DEPTH, returnOnof);
+            CAXD.AxdoWriteOutport((int)DIOIndex.VACUUM, returnOnof);
+        }
+        /// <summary>
+        /// Home원점 복귀 시 속도를 지정합니다.
+        /// </summary>
+        /// <param name="moveSpeed"></param>
+        private void SetHomeReturnSpeed (double moveSpeed) {
+            CAXM.AxmHomeSetVel(2, moveSpeed, moveSpeed / 4, moveSpeed / 8, moveSpeed / 16, moveSpeed * 10, moveSpeed * 10);
+            CAXM.AxmHomeSetVel(0, moveSpeed, moveSpeed / 4, moveSpeed / 8, moveSpeed / 16, moveSpeed * 10, moveSpeed * 10);
+            CAXM.AxmHomeSetVel(1, moveSpeed, moveSpeed / 4, moveSpeed / 8, moveSpeed / 16, moveSpeed * 10, moveSpeed * 10);
         }
         private void CmdHomeReturn () {
-
             Trace.WriteLine("==========   Start   ==========\nMethodName : " + MethodBase.GetCurrentMethod().Name + "\n");
             try {
-
                 ControlRock = true;
-                // DI/O ZeroSet
-                SetWriteOutport((int)DIOIndex.DRIVER, 1);
-                SetWriteOutport((int)DIOIndex.DEPTH, 1);
-                SetWriteOutport((int)DIOIndex.VACUUM, 1);
-
-                double homeSetSpeed = 80000;
-
-                CAXM.AxmHomeSetVel(2, homeSetSpeed, homeSetSpeed / 4, homeSetSpeed / 8, homeSetSpeed / 16, homeSetSpeed * 10, homeSetSpeed * 10);
-                CAXM.AxmHomeSetVel(0, homeSetSpeed, homeSetSpeed / 4, homeSetSpeed / 8, homeSetSpeed / 16, homeSetSpeed * 10, homeSetSpeed * 10);
-                CAXM.AxmHomeSetVel(1, homeSetSpeed, homeSetSpeed / 4, homeSetSpeed / 8, homeSetSpeed / 16, homeSetSpeed * 10, homeSetSpeed * 10);
+                DIO_OnOff(false);
+                SetHomeReturnSpeed(100000);
 
                 CAXM.AxmHomeSetStart(2); // Z
-                Thread.Sleep(1000);
-
+                Delay(1000);
                 CAXM.AxmHomeSetStart(0); // Y
                 CAXM.AxmHomeSetStart(1); // X
-                if (zPosStateValue != 1 || yPosStateValue != 1 || xPosStateValue != 1) {
-                    _positionDipatcher = new DispatcherTimer {
+
+                if (GetHomeReturnStateValue((int)ServoIndex.ZPOSITION) != 1 || GetHomeReturnStateValue((int)ServoIndex.YPOSITION) != 1 || GetHomeReturnStateValue((int)ServoIndex.XPOSITION) != 1) {
+                    _HomeReturnDipatcher = new DispatcherTimer {
                         Interval = TimeSpan.FromMilliseconds(100)
                     };
-                    _positionDipatcher.Tick += Pos_Timer_Tick;
-                    _positionDipatcher.Start();
-                }
+                    _HomeReturnDipatcher.Tick += HomeReturn_Timer_Tick;
+                    _HomeReturnDipatcher.Start();
+                } 
             } catch (Exception ex) {
                 Trace.WriteLine("========== Exception ==========\nMethodName : " + MethodBase.GetCurrentMethod().Name + "\nException : " + ex);
                 throw;
             }
 
         }
-        
-        public void Pos_Timer_Tick (object sender, EventArgs e) {
-            zPosStateValue = AxinStateControll((int)ServoIndex.ZPOSITION);// PositionValueZ
-            yPosStateValue = AxinStateControll((int)ServoIndex.YPOSITION);// PositionValueY
-            xPosStateValue = AxinStateControll((int)ServoIndex.XPOSITION);// PositionValueX
-
-            if (zPosStateValue == 1 && yPosStateValue == 1 && xPosStateValue == 1) {
+        public void HomeReturn_Timer_Tick (object sender, EventArgs e) {
+            if (GetHomeReturnStateValue((int)ServoIndex.ZPOSITION) == 1 && GetHomeReturnStateValue((int)ServoIndex.YPOSITION) == 1 && GetHomeReturnStateValue((int)ServoIndex.XPOSITION) == 1) {
                 ControlRock = false;
-                _positionDipatcher.Stop();
-                zPosStateValue = 9;
-                yPosStateValue = 9;
-                xPosStateValue = 9;
+                _HomeReturnDipatcher.Stop();
             }
         }
 
-        public uint AxinStateControll (int MotionIndexNum) {
+        /// <summary>
+        /// 반환값 : 1이면 정상적으로 홈포지션 성공
+        /// </summary>
+        /// <param name="MotionIndexNum"></param>
+        /// <returns></returns>
+        public uint GetHomeReturnStateValue (int MotionIndexNum) {
             uint posStateValue = 9;
             CAXM.AxmHomeGetResult(MotionIndexNum, ref posStateValue);
             return posStateValue;

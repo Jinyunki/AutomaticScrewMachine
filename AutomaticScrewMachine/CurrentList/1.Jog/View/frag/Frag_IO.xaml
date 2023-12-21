@@ -25,10 +25,9 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition />
                 <ColumnDefinition />
-                <ColumnDefinition />
             </Grid.ColumnDefinitions>
 
-            <Grid Grid.Column="1">
+            <Grid Grid.Column="0">
                 <Grid.RowDefinitions>
                     <RowDefinition />
                     <RowDefinition />
@@ -43,7 +42,7 @@
                         Grid.Column="0"
                         HorizontalAlignment="Right"
                         VerticalAlignment="Center"
-                        FontSize="10"
+                        FontSize="8"
                         Foreground="{DynamicResource FontColor}"
                         Text="Servo X" />
                     <Button
@@ -65,7 +64,7 @@
                         Grid.Column="0"
                         HorizontalAlignment="Right"
                         VerticalAlignment="Center"
-                        FontSize="10"
+                        FontSize="8"
                         Foreground="{DynamicResource FontColor}"
                         Text="Servo Y" />
                     <Button
@@ -88,7 +87,7 @@
                         Grid.Column="0"
                         HorizontalAlignment="Right"
                         VerticalAlignment="Center"
-                        FontSize="10"
+                        FontSize="8"
                         Foreground="{DynamicResource FontColor}"
                         Text="Servo Z" />
                     <Button
@@ -102,7 +101,7 @@
                 </Grid>
             </Grid>
 
-            <Grid Grid.Column="2" Margin="10,00,0,0">
+            <Grid Grid.Column="1" Margin="5,0,0,0">
                 <Grid.RowDefinitions>
                     <RowDefinition />
                     <RowDefinition />
@@ -118,15 +117,15 @@
                         Grid.Column="0"
                         HorizontalAlignment="Right"
                         VerticalAlignment="Center"
-                        FontSize="10"
+                        FontSize="8"
                         Foreground="{DynamicResource FontColor}"
-                        Text="Torq DIO" />
+                        Text="Driver DIO" />
                     <Button
                         Grid.Column="1"
                         Width="20"
                         Height="20"
                         HorizontalAlignment="Right"
-                        Background="{Binding TorqSig, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        Background="{Binding DriverBuzzer, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                         Command="{Binding DriverIO}"
                         Style="{StaticResource RoundedButtonStyle}" />
                 </Grid>
@@ -140,7 +139,7 @@
                         Grid.Column="0"
                         HorizontalAlignment="Right"
                         VerticalAlignment="Center"
-                        FontSize="10"
+                        FontSize="8"
                         Foreground="{DynamicResource FontColor}"
                         Text="Depth DIO" />
                     <Button
@@ -148,7 +147,7 @@
                         Width="20"
                         Height="20"
                         HorizontalAlignment="Right"
-                        Background="{Binding DepthSig, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        Background="{Binding DepthBuzzer, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                         Command="{Binding DepthIO}"
                         Style="{StaticResource RoundedButtonStyle}" />
 
@@ -164,7 +163,7 @@
                         Grid.Column="0"
                         HorizontalAlignment="Right"
                         VerticalAlignment="Center"
-                        FontSize="10"
+                        FontSize="8"
                         Foreground="{DynamicResource FontColor}"
                         Text="Air DIO" />
                     <Button
@@ -172,7 +171,7 @@
                         Width="20"
                         Height="20"
                         HorizontalAlignment="Right"
-                        Background="{Binding VacuumSig, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        Background="{Binding VacuumBuzzer, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                         Command="{Binding VacuumIO}"
                         Style="{StaticResource RoundedButtonStyle}" />
                 </Grid>

@@ -8,6 +8,10 @@ using System.Windows.Threading;
 using System.Windows;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
+using System.Runtime.InteropServices;
+using System.Threading.Tasks;
+using System.Threading;
+using System.Diagnostics;
 
 namespace AutomaticScrewMachine.CurrentList._1.Jog.Model {
     public class JogData : ViewModelBase {
@@ -130,8 +134,8 @@ namespace AutomaticScrewMachine.CurrentList._1.Jog.Model {
             PositionDataList[index].X = PositionValueX;
             PositionDataList[index].Y = PositionValueY;
             PositionDataList[index].Z = PositionValueZ;
-            PositionDataList[index].Driver_IO = DriverSignal;
-            PositionDataList[index].Depth_IO = DepthSignal;
+            PositionDataList[index].Driver_IO = DriverBuzzerSignal;
+            PositionDataList[index].Depth_IO = DepthBuzzerSignal;
         }
 
         private Thickness _DriverPosList;
@@ -190,7 +194,9 @@ namespace AutomaticScrewMachine.CurrentList._1.Jog.Model {
         }
         private double _jogMoveSpeed = 1;
         public double JogMoveSpeed {
-            get { return _jogMoveSpeed; }
+            get { 
+                return _jogMoveSpeed; 
+            }
             set {
                 _jogMoveSpeed = value;
                 RaisePropertyChanged(nameof(JogMoveSpeed));
@@ -280,7 +286,7 @@ namespace AutomaticScrewMachine.CurrentList._1.Jog.Model {
                 RaisePropertyChanged(nameof(PositionValueY));
             }
         }
-
+        public double[] SequenceReadyPosition = new double[2] { 175000, 113122 };
         private Brush _buzzerY = Brushes.Gray;
         public Brush BuzzerY {
             get { return _buzzerY; }
@@ -333,31 +339,64 @@ namespace AutomaticScrewMachine.CurrentList._1.Jog.Model {
             }
         }
 
-        private Brush _torqSig = Brushes.Gray;
-        public Brush TorqSig {
-            get { return _torqSig; }
+        private Brush _driverBuzzer = Brushes.Gray;
+        public Brush DriverBuzzer {
+            get { return _driverBuzzer; }
             set {
-                _torqSig = value;
-                RaisePropertyChanged(nameof(TorqSig));
+                _driverBuzzer = value;
+                RaisePropertyChanged(nameof(DriverBuzzer));
             }
         }
 
-        private Brush _depthSig = Brushes.Gray;
-        public Brush DepthSig {
-            get { return _depthSig; }
+        private Brush _depthBuzzer = Brushes.Gray;
+        public Brush DepthBuzzer {
+            get { return _depthBuzzer; }
             set {
-                _depthSig = value;
-                RaisePropertyChanged(nameof(DepthSig));
+                _depthBuzzer = value;
+                RaisePropertyChanged(nameof(DepthBuzzer));
             }
         }
 
-        private Brush _VacuumSig = Brushes.Gray;
-        public Brush VacuumSig {
-            get { return _VacuumSig; }
+        private Brush _vacuumBuzzer = Brushes.Gray;
+        public Brush VacuumBuzzer {
+            get { return _vacuumBuzzer; }
             set {
-                _VacuumSig = value;
-                RaisePropertyChanged(nameof(VacuumSig));
+                _vacuumBuzzer = value;
+                RaisePropertyChanged(nameof(VacuumBuzzer));
             }
+        }
+        public DateTime Delay (int MS) {
+
+            DateTime thisMoment = DateTime.Now;
+            TimeSpan duration = new TimeSpan(0, 0, 0, 0, MS);
+            DateTime afterMoment = thisMoment.Add(duration);
+
+            while (afterMoment >= thisMoment) {
+                Application.Current?.Dispatcher.Invoke(DispatcherPriority.Background, new Action(delegate { }));
+                thisMoment = DateTime.Now;
+            }
+            return DateTime.Now;
+        }
+
+
+
+
+        public void FrameDelay (int waitMS) {
+            Stopwatch timer = new Stopwatch();
+            timer.Start ();
+            do {
+                DoEvents();
+            } while (timer.ElapsedMilliseconds < waitMS);
+        }
+
+        private void DoEvents () {
+            DispatcherFrame f = new DispatcherFrame();
+            Dispatcher.CurrentDispatcher.BeginInvoke(DispatcherPriority.Background,
+                new Action<object>((arg) => {
+                    DispatcherFrame fr = arg as DispatcherFrame;
+                    fr.Continue = false;
+                }), f);
+            Dispatcher.PushFrame(f);
         }
 
         public Brush RecevieSignalColor (uint signalCode) {
@@ -370,24 +409,20 @@ namespace AutomaticScrewMachine.CurrentList._1.Jog.Model {
 
             return ReturnBrush;
         }
-
-        // ServoCheckList
-        public DispatcherTimer Motion_IO_Dispatcher;
+        public double MoveAbleZPosition = 10000;
         public uint valueX = 9;
         public uint valueY = 9;
         public uint valueZ = 9;
         public bool ServoSignal = false;
 
         // ControllCheckList
-        public DispatcherTimer _positionDipatcher;
-        public uint xPosStateValue = 9;
-        public uint yPosStateValue = 9;
-        public uint zPosStateValue = 9;
+        public DispatcherTimer _HomeReturnDipatcher;
 
-        public uint DriverSignal = 9;
-        public uint DepthSignal = 9;
-        public uint VacuumSignal = 9;
+        public uint DriverBuzzerSignal = 9;
+        public uint DepthBuzzerSignal = 9;
+        public uint VacuumBuzzerSignal = 9;
 
-        public DispatcherTimer _motionChecker;
+
+
     }
 }
