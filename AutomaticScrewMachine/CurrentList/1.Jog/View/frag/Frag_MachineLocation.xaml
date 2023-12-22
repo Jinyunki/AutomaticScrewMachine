@@ -6,7 +6,7 @@
     xmlns:local="clr-namespace:AutomaticScrewMachine.CurrentList._1.Jog.View.frag"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     d:DesignHeight="670"
-    d:DesignWidth="645"
+    d:DesignWidth="650"
     Background="Transparent"
     DataContext="{Binding JogViewModel, Source={StaticResource Locator}}"
     mc:Ignorable="d">
@@ -17,53 +17,317 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </UserControl.Resources>
-    
-    <Border
-        Grid.Row="1"
-        BorderBrush="White"
-        BorderThickness="0.5"
-        CornerRadius="25">
-        <Grid HorizontalAlignment="Left" VerticalAlignment="Top">
-            <!--  Motion Main Body  -->
-            <Border
-                Width="100"
-                Height="100"
-                Margin="{Binding DriverPosList, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                CornerRadius="100">
-                <Border.RenderTransform>
-                    <TranslateTransform />
-                </Border.RenderTransform>
-                <Border.Background>
-                    <ImageBrush ImageSource="../../../../Assets/btn_screw_mc.png" />
-                </Border.Background>
-            </Border>
 
-            <!--  Motion Screw  -->
-            <Border
-                Width="12"
-                Height="12"
-                Margin="{Binding DriverPosList, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                Background="#FF39ACB4"
-                CornerRadius="100">
-                <Border.RenderTransform>
-                    <TranslateTransform />
-                </Border.RenderTransform>
-            </Border>
+    <Grid>
+        <Border
+            Panel.ZIndex="2"
+            BorderBrush="White"
+            BorderThickness="0.5"
+            CornerRadius="25">
+            <Grid HorizontalAlignment="Left" VerticalAlignment="Top">
+                <!--  Motion Main Body  -->
+                <Border
+                    Width="100"
+                    Height="100"
+                    Margin="{Binding DriverPosList, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                    CornerRadius="100"
+                    Opacity="0.7">
+                    <Border.RenderTransform>
+                        <TranslateTransform />
+                    </Border.RenderTransform>
+                    <Border.Background>
+                        <ImageBrush ImageSource="../../../../Assets/btn_screw_mc.png" />
+                    </Border.Background>
+                </Border>
 
-            <!--  Motion Screw Down Balance  -->
-            <Border
-                Width="12"
-                Height="12"
-                Margin="{Binding DriverPosList, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                Background="#FF611A1A"
-                CornerRadius="100"
-                Opacity="{Binding ScrewMCForcus, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-                <Border.RenderTransform>
-                    <TranslateTransform />
-                </Border.RenderTransform>
-            </Border>
+                <!--  Motion Screw  -->
+                <Border
+                    Width="22"
+                    Height="22"
+                    Margin="{Binding DriverPosList, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                    Background="#FF39ACB4"
+                    CornerRadius="10">
+                    <Border.RenderTransform>
+                        <TranslateTransform />
+                    </Border.RenderTransform>
+                </Border>
 
+                <!--  Motion Screw Down Balance  -->
+                <Border
+                    Width="22"
+                    Height="22"
+                    Margin="{Binding DriverPosList, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                    Background="#FF0D2B2D"
+                    CornerRadius="10"
+                    Opacity="{Binding ScrewMCForcus, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                    <Border.RenderTransform>
+                        <TranslateTransform />
+                    </Border.RenderTransform>
+                </Border>
+            </Grid>
+        </Border>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="16*" />
+                <ColumnDefinition Width="80*" />
+                <ColumnDefinition Width="3*" />
+            </Grid.ColumnDefinitions>
+
+            <Grid Grid.Column="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="31.85*" />
+                    <RowDefinition Height="13*" />
+                    <RowDefinition Height="11*" />
+                </Grid.RowDefinitions>
+
+                <Grid Grid.Row="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="29*" />
+                        <ColumnDefinition Width="41*" />
+                        <ColumnDefinition Width="40*" />
+                    </Grid.ColumnDefinitions>
+
+                    <Grid Grid.Column="1">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="40*" />
+                            <RowDefinition Height="20*" />
+                        </Grid.RowDefinitions>
+
+                        <Grid Grid.Row="0" Background="#FFF5F5DE">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="5" />
+                                <ColumnDefinition />
+                                <ColumnDefinition Width="5" />
+                            </Grid.ColumnDefinitions>
+                            <Grid Grid.Column="0" Background="DimGray" />
+                            <Grid Grid.Column="2" Background="DimGray" />
+
+                            <Grid Grid.Column="1">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="1*" />
+                                    <RowDefinition Height="5*" />
+                                    <RowDefinition Height="1*" />
+                                    <RowDefinition Height="1.5*" />
+                                </Grid.RowDefinitions>
+                                <Grid Grid.Row="1" Background="DimGray" />
+                                <Grid Grid.Row="3">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="1*" />
+                                        <ColumnDefinition Width="2*" />
+                                        <ColumnDefinition Width="1*" />
+                                        <ColumnDefinition Width="1*" />
+                                    </Grid.ColumnDefinitions>
+
+                                    <Grid Grid.Column="1" Grid.ColumnSpan="2">
+                                        <Rectangle Fill="DimGray" />
+                                    </Grid>
+                                    <Border
+                                        Grid.Column="1"
+                                        Grid.ColumnSpan="2"
+                                        Width="40"
+                                        Height="40"
+                                        Margin="5"
+                                        HorizontalAlignment="Center"
+                                        VerticalAlignment="Bottom"
+                                        Background="#FF464E56"
+                                        CornerRadius="100" />
+                                    <Grid
+                                        Grid.Column="1"
+                                        Grid.ColumnSpan="2"
+                                        HorizontalAlignment="Center">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="2*" />
+                                            <RowDefinition Height="1*" />
+                                        </Grid.RowDefinitions>
+
+
+                                        <Viewbox Grid.Row="0">
+                                            <Path Fill="SlateGray" Opacity="0.7">
+                                                <Path.Data>
+                                                    <PathGeometry>
+                                                        <PathGeometry.Figures>
+                                                            <PathFigureCollection>
+                                                                <PathFigure StartPoint="0,0">
+                                                                    <PathFigure.Segments>
+                                                                        <PathSegmentCollection>
+                                                                            <LineSegment Point="10,0" />
+                                                                            <LineSegment Point="10,10" />
+                                                                            <LineSegment Point="5,10" />
+                                                                            <LineSegment Point="5,5" />
+                                                                        </PathSegmentCollection>
+                                                                    </PathFigure.Segments>
+                                                                </PathFigure>
+                                                            </PathFigureCollection>
+                                                        </PathGeometry.Figures>
+                                                    </PathGeometry>
+                                                </Path.Data>
+                                            </Path>
+                                        </Viewbox>
+
+                                    </Grid>
+                                </Grid>
+                            </Grid>
+                        </Grid>
+                    </Grid>
+                </Grid>
+
+                <Grid Grid.Row="1">
+                    <Rectangle
+                        HorizontalAlignment="Stretch"
+                        Panel.ZIndex="0"
+                        Fill="{StaticResource MyGlassBrushResource}"
+                        Opacity="0.5" />
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="10*" />
+                            <RowDefinition Height="10*" />
+                            <RowDefinition Height="10*" />
+                        </Grid.RowDefinitions>
+
+                        <Grid Grid.Row="1">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1.1*" />
+                                <ColumnDefinition Width="2.1*" />
+                                <ColumnDefinition Width="2.1*" />
+                                <ColumnDefinition Width="2.1*" />
+                                <ColumnDefinition Width="2.1*" />
+                                <ColumnDefinition Width="2.1*" />
+                                <ColumnDefinition Width="0.8*" />
+                            </Grid.ColumnDefinitions>
+
+                            <Grid
+                                Grid.Column="1"
+                                Width="80"
+                                Background="Gray">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="10*" />
+                                    <ColumnDefinition Width="3*" />
+                                    <ColumnDefinition Width="10*" />
+                                </Grid.ColumnDefinitions>
+                                <Border
+                                    Grid.Column="0"
+                                    Width="15"
+                                    Height="15"
+                                    HorizontalAlignment="Right"
+                                    Background="Black"
+                                    CornerRadius="100" />
+                                <Border
+                                    Grid.Column="2"
+                                    Width="15"
+                                    Height="15"
+                                    HorizontalAlignment="Left"
+                                    Background="Black"
+                                    CornerRadius="100" />
+                            </Grid>
+
+
+                            <Grid
+                                Grid.Column="2"
+                                Width="80"
+                                Background="Gray">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="10*" />
+                                    <ColumnDefinition Width="3*" />
+                                    <ColumnDefinition Width="10*" />
+                                </Grid.ColumnDefinitions>
+                                <Border
+                                    Grid.Column="0"
+                                    Width="15"
+                                    Height="15"
+                                    HorizontalAlignment="Right"
+                                    Background="Black"
+                                    CornerRadius="100" />
+                                <Border
+                                    Grid.Column="2"
+                                    Width="15"
+                                    Height="15"
+                                    HorizontalAlignment="Left"
+                                    Background="Black"
+                                    CornerRadius="100" />
+                            </Grid>
+
+                            <Grid
+                                Grid.Column="3"
+                                Width="80"
+                                Background="Gray">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="10*" />
+                                    <ColumnDefinition Width="3*" />
+                                    <ColumnDefinition Width="10*" />
+                                </Grid.ColumnDefinitions>
+                                <Border
+                                    Grid.Column="0"
+                                    Width="15"
+                                    Height="15"
+                                    HorizontalAlignment="Right"
+                                    Background="Black"
+                                    CornerRadius="100" />
+                                <Border
+                                    Grid.Column="2"
+                                    Width="15"
+                                    Height="15"
+                                    HorizontalAlignment="Left"
+                                    Background="Black"
+                                    CornerRadius="100" />
+                            </Grid>
+
+                            <Grid
+                                Grid.Column="4"
+                                Width="80"
+                                Background="Gray">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="10*" />
+                                    <ColumnDefinition Width="3*" />
+                                    <ColumnDefinition Width="10*" />
+                                </Grid.ColumnDefinitions>
+                                <Border
+                                    Grid.Column="0"
+                                    Width="15"
+                                    Height="15"
+                                    HorizontalAlignment="Right"
+                                    Background="Black"
+                                    CornerRadius="100" />
+                                <Border
+                                    Grid.Column="2"
+                                    Width="15"
+                                    Height="15"
+                                    HorizontalAlignment="Left"
+                                    Background="Black"
+                                    CornerRadius="100" />
+                            </Grid>
+
+                            <Grid
+                                Grid.Column="5"
+                                Width="80"
+                                Background="Gray">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="10*" />
+                                    <ColumnDefinition Width="3*" />
+                                    <ColumnDefinition Width="10*" />
+                                </Grid.ColumnDefinitions>
+                                <Border
+                                    Grid.Column="0"
+                                    Width="15"
+                                    Height="15"
+                                    HorizontalAlignment="Right"
+                                    Background="Black"
+                                    CornerRadius="100" />
+                                <Border
+                                    Grid.Column="2"
+                                    Width="15"
+                                    Height="15"
+                                    HorizontalAlignment="Left"
+                                    Background="Black"
+                                    CornerRadius="100" />
+                            </Grid>
+
+                        </Grid>
+
+                    </Grid>
+                </Grid>
+
+            </Grid>
         </Grid>
+    </Grid>
 
-    </Border>
 </UserControl>

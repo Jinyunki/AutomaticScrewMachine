@@ -168,7 +168,7 @@
                 HorizontalContentAlignment="Stretch"
                 Background="Transparent"
                 BorderThickness="0"
-                FontSize="12"
+                FontSize="9"
                 Foreground="{DynamicResource FontColor}"
                 ItemsSource="{Binding PositionDataList}"
                 MouseDown="PosListBox_MouseDown"

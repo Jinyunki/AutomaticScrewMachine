@@ -4,8 +4,9 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:fragList="clr-namespace:AutomaticScrewMachine.CurrentList._1.Jog.View.frag"
+    xmlns:fragMain="clr-namespace:AutomaticScrewMachine.CurrentList._1.Jog.View"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    d:DesignHeight="800"
+    d:DesignHeight="900"
     d:DesignWidth="1600"
     Background="Transparent"
     DataContext="{Binding JogViewModel, Source={StaticResource Locator}}"
@@ -26,34 +27,11 @@
             <ColumnDefinition Width="1*" />
         </Grid.ColumnDefinitions>
 
-        <Grid Grid.Column="0" Margin="0,0,10,0"
-              Background="{StaticResource MyStainlessBrushResource}">
-            <!--<Grid.Background>
-    <ImageBrush ImageSource="../../../Assets/2d.png" />
-</Grid.Background>-->
-            
+        <Grid Grid.Column="0" Margin="0,0,10,0">
             <fragList:Frag_MachineLocation Width="600" Height="670" />
+            <!--<fragList:TestThreeDView Width="600" Height="670" />-->
 
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="15.5*" />
-                    <ColumnDefinition Width="40*" />
-                    <ColumnDefinition Width="9*" />
-                </Grid.ColumnDefinitions>
 
-                <Grid Grid.Column="1">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="25*" />
-                        <RowDefinition Height="10*" />
-                        <RowDefinition Height="10*" />
-                    </Grid.RowDefinitions>
-                    <Rectangle
-                        Grid.Row="1"
-                        HorizontalAlignment="Stretch"
-                        Fill="{StaticResource MyGlassBrushResource}" />
-                </Grid>
-
-            </Grid>
         </Grid>
 
         <Grid Grid.Column="1">

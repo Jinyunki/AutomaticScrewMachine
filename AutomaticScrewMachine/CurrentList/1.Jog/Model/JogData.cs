@@ -286,7 +286,7 @@ namespace AutomaticScrewMachine.CurrentList._1.Jog.Model {
                 RaisePropertyChanged(nameof(PositionValueY));
             }
         }
-        public double[] SequenceReadyPosition = new double[2] { 175000, 113122 };
+        public double[] SequenceReadyPosition = new double[2] { 167119, 117239 };
         private Brush _buzzerY = Brushes.Gray;
         public Brush BuzzerY {
             get { return _buzzerY; }
