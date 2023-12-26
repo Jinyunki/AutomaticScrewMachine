@@ -41,7 +41,7 @@
                     FontSize="17"
                     FontWeight="Bold"
                     Foreground="{DynamicResource FontColor}"
-                    Text="SEQUENCE LIST" />
+                    Text=" SEQUENCE LIST" />
 
                 <Grid Grid.Column="1">
                     <Grid.ColumnDefinitions>

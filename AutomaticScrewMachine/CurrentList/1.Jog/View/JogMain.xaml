@@ -27,9 +27,42 @@
             <ColumnDefinition Width="1*" />
         </Grid.ColumnDefinitions>
 
-        <Grid Grid.Column="0" Margin="0,0,10,0">
-            <fragList:Frag_MachineLocation Width="600" Height="670" />
-            <!--<fragList:TestThreeDView Width="600" Height="670" />-->
+        <Grid
+            Grid.Column="0"
+            Margin="0,0,10,0"
+            Background="{DynamicResource MainStainless}">
+            <fragList:Frag_MachineLocation Width="750" Height="770" />
+
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="8.5*" />
+                    <RowDefinition Height="2*" />
+                </Grid.RowDefinitions>
+                <Grid
+                    Opacity="0.3"
+                    Grid.Row="1"
+                    Height="35"
+                    VerticalAlignment="Top"
+                    Background="{Binding EmgLine}" />
+                
+                <Border
+                    CornerRadius="10"
+                    Grid.Row="1"
+                    Height="35"
+                    Width="35"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Background="Gray" />
+                
+                <Border
+                    CornerRadius="10"
+                    Grid.Row="1"
+                    Height="35"
+                    Width="35"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Top"
+                    Background="Gray" />
+            </Grid>
 
 
         </Grid>
@@ -72,6 +105,9 @@
                     <fragList:Frag_joystick Grid.Row="1" Grid.Column="0" />
 
                     <fragList:Frag_IO Grid.Row="1" Grid.Column="1" />
+
+                    <!--<fragList:Frag_InputPosition Grid.Row="2" Grid.Column="0"/>-->
+                    
                 </Grid>
             </Border>
         </Grid>

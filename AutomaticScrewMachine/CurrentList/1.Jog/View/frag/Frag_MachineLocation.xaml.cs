@@ -1,4 +1,7 @@
-﻿using System.Windows.Controls;
+﻿using System.Windows;
+using System;
+using System.Windows.Controls;
+using System.Windows.Input;
 
 namespace AutomaticScrewMachine.CurrentList._1.Jog.View.frag {
     /// <summary>
@@ -8,5 +11,6 @@ namespace AutomaticScrewMachine.CurrentList._1.Jog.View.frag {
         public Frag_MachineLocation () {
             InitializeComponent();
         }
+
     }
 }

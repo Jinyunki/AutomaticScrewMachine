@@ -117,6 +117,9 @@
     <Compile Include="CurrentList\1.Jog\Model\SequenceData.cs" />
     <Compile Include="CurrentList\1.Jog\ViewModel\JogBind.cs" />
     <Compile Include="CurrentList\1.Jog\ViewModel\JogViewModel.cs" />
+    <Compile Include="CurrentList\1.Jog\View\frag\Frag_InputPosition.xaml.cs">
+      <DependentUpon>Frag_InputPosition.xaml</DependentUpon>
+    </Compile>
     <Compile Include="CurrentList\1.Jog\View\frag\Frag_IO.xaml.cs">
       <DependentUpon>Frag_IO.xaml</DependentUpon>
     </Compile>
@@ -135,8 +138,17 @@
     <Compile Include="CurrentList\1.Jog\View\frag\Frag_signal.xaml.cs">
       <DependentUpon>Frag_signal.xaml</DependentUpon>
     </Compile>
-    <Compile Include="CurrentList\1.Jog\View\frag\TestThreeDView.xaml.cs">
-      <DependentUpon>TestThreeDView.xaml</DependentUpon>
+    <Compile Include="CurrentList\1.Jog\View\frag\parts\Parts_Button.xaml.cs">
+      <DependentUpon>Parts_Button.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="CurrentList\1.Jog\View\frag\parts\Parts_JigScrewHole.xaml.cs">
+      <DependentUpon>Parts_JigScrewHole.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="CurrentList\1.Jog\View\frag\parts\Parts_OkNgSensor.xaml.cs">
+      <DependentUpon>Parts_OkNgSensor.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="CurrentList\1.Jog\View\frag\parts\Parts_ScrewSupply.xaml.cs">
+      <DependentUpon>Parts_ScrewSupply.xaml</DependentUpon>
     </Compile>
     <Compile Include="CurrentList\1.Jog\View\JogMain.xaml.cs">
       <DependentUpon>JogMain.xaml</DependentUpon>
@@ -157,6 +169,10 @@
     <Compile Include="Utiles\ExcelAdapter.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />
+    <Page Include="CurrentList\1.Jog\View\frag\Frag_InputPosition.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="CurrentList\1.Jog\View\frag\Frag_IO.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -181,7 +197,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="CurrentList\1.Jog\View\frag\TestThreeDView.xaml">
+    <Page Include="CurrentList\1.Jog\View\frag\parts\Parts_Button.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="CurrentList\1.Jog\View\frag\parts\Parts_JigScrewHole.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="CurrentList\1.Jog\View\frag\parts\Parts_OkNgSensor.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="CurrentList\1.Jog\View\frag\parts\Parts_ScrewSupply.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -320,12 +348,6 @@
   <ItemGroup>
     <Resource Include="Assets\ic_jig.png" />
     <Resource Include="Assets\ic_screwSupply.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Assets\AutoScrewView2D.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Assets\2d.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

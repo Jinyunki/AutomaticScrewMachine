@@ -5,8 +5,9 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:AutomaticScrewMachine.CurrentList._1.Jog.View.frag"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    d:DesignHeight="670"
-    d:DesignWidth="650"
+    xmlns:parts="clr-namespace:AutomaticScrewMachine.CurrentList._1.Jog.View.frag.parts"
+    d:DesignHeight="770"
+    d:DesignWidth="800"
     Background="Transparent"
     DataContext="{Binding JogViewModel, Source={StaticResource Locator}}"
     mc:Ignorable="d">
@@ -19,315 +20,286 @@
     </UserControl.Resources>
 
     <Grid>
-        <Border
-            Panel.ZIndex="2"
-            BorderBrush="White"
-            BorderThickness="0.5"
-            CornerRadius="25">
-            <Grid HorizontalAlignment="Left" VerticalAlignment="Top">
-                <!--  Motion Main Body  -->
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="100" />
+            <ColumnDefinition Width="1*" />
+            <ColumnDefinition Width="50" />
+        </Grid.ColumnDefinitions>
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="100" />
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="0">
                 <Border
-                    Width="100"
-                    Height="100"
-                    Margin="{Binding DriverPosList, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                    CornerRadius="100"
-                    Opacity="0.7">
-                    <Border.RenderTransform>
-                        <TranslateTransform />
-                    </Border.RenderTransform>
-                    <Border.Background>
-                        <ImageBrush ImageSource="../../../../Assets/btn_screw_mc.png" />
-                    </Border.Background>
+                    Panel.ZIndex="2"
+                    BorderBrush="Gray"
+                    BorderThickness="0.5"
+                    CornerRadius="25">
+                    <Grid HorizontalAlignment="Left" VerticalAlignment="Top">
+                        <!--  Motion Main Body  -->
+                        <Border
+                            Width="100"
+                            Height="100"
+                            Margin="{Binding DriverPosList, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                            CornerRadius="100"
+                            Opacity="0.7">
+                            <Border.RenderTransform>
+                                <TranslateTransform />
+                            </Border.RenderTransform>
+                            <Border.Background>
+                                <ImageBrush ImageSource="../../../../Assets/btn_screw_mc.png" />
+                            </Border.Background>
+                        </Border>
+
+                        <!--  Motion Screw  -->
+                        <Button
+                            Width="15"
+                            Height="15"
+                            Margin="{Binding DriverPosList, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                            Background="LightBlue"
+                            Command="{Binding DriverIO}"
+                            Style="{DynamicResource RoundedButtonStyle}" />
+
+                        <Grid
+                            Width="100"
+                            Height="100"
+                            Margin="{Binding DriverPosList, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition />
+                                <RowDefinition />
+                            </Grid.RowDefinitions>
+
+                            <Border
+                                Grid.Row="0"
+                                Grid.Column="0"
+                                Width="100"
+                                Height="100"
+                                HorizontalAlignment="Right"
+                                VerticalAlignment="Top"
+                                BorderBrush="{Binding VacuumBuzzer}"
+                                BorderThickness="3"
+                                CornerRadius="100"
+                                Opacity="0.5" />
+                        </Grid>
+                        <!--  Driver IO  -->
+                        <Button
+                            Width="25"
+                            Height="25"
+                            Margin="{Binding DriverPosList, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Background="{Binding DriverBuzzer, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                            Command="{Binding DriverIO}"
+                            Opacity="0.5"
+                            Style="{DynamicResource RoundedButtonStyle}" />
+
+
+
+                        <!--  Motion Screw Down Balance  -->
+                        <Border
+                            Width="15"
+                            Height="15"
+                            Margin="{Binding DriverPosList, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                            Background="#FF0D2B2D"
+                            CornerRadius="10"
+                            Opacity="{Binding ScrewMCForcus, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                            <Border.RenderTransform>
+                                <TranslateTransform />
+                            </Border.RenderTransform>
+                        </Border>
+
+
+                        <Grid Margin="{Binding DriverPosList, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                            <!--  Depth IO  -->
+                            <Button
+                                Grid.Column="1"
+                                Width="12"
+                                Height="12"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                Background="{Binding DepthBuzzer, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                Command="{Binding DepthIO}"
+                                Opacity="0.5"
+                                Style="{DynamicResource RoundedButtonStyle}" />
+                        </Grid>
+
+                    </Grid>
                 </Border>
-
-                <!--  Motion Screw  -->
-                <Border
-                    Width="22"
-                    Height="22"
-                    Margin="{Binding DriverPosList, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                    Background="#FF39ACB4"
-                    CornerRadius="10">
-                    <Border.RenderTransform>
-                        <TranslateTransform />
-                    </Border.RenderTransform>
-                </Border>
-
-                <!--  Motion Screw Down Balance  -->
-                <Border
-                    Width="22"
-                    Height="22"
-                    Margin="{Binding DriverPosList, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                    Background="#FF0D2B2D"
-                    CornerRadius="10"
-                    Opacity="{Binding ScrewMCForcus, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-                    <Border.RenderTransform>
-                        <TranslateTransform />
-                    </Border.RenderTransform>
-                </Border>
-            </Grid>
-        </Border>
-        <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="16*" />
-                <ColumnDefinition Width="80*" />
-                <ColumnDefinition Width="3*" />
-            </Grid.ColumnDefinitions>
-
-            <Grid Grid.Column="1">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="31.85*" />
-                    <RowDefinition Height="13*" />
-                    <RowDefinition Height="11*" />
-                </Grid.RowDefinitions>
-
-                <Grid Grid.Row="0">
+                <Grid>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="29*" />
-                        <ColumnDefinition Width="41*" />
-                        <ColumnDefinition Width="40*" />
+                        <ColumnDefinition Width="16*" />
+                        <ColumnDefinition Width="80*" />
+                        <ColumnDefinition Width="3*" />
                     </Grid.ColumnDefinitions>
 
                     <Grid Grid.Column="1">
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="40*" />
-                            <RowDefinition Height="20*" />
+                            <RowDefinition Height="31.85*" />
+                            <RowDefinition Height="13*" />
+                            <RowDefinition Height="11*" />
                         </Grid.RowDefinitions>
 
-                        <Grid Grid.Row="0" Background="#FFF5F5DE">
+                        <Grid Grid.Row="0" />
+                        <Grid Grid.Row="0">
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="5" />
-                                <ColumnDefinition />
-                                <ColumnDefinition Width="5" />
+                                <ColumnDefinition Width="29*" />
+                                <ColumnDefinition Width="41*" />
+                                <ColumnDefinition Width="40*" />
                             </Grid.ColumnDefinitions>
-                            <Grid Grid.Column="0" Background="DimGray" />
-                            <Grid Grid.Column="2" Background="DimGray" />
 
                             <Grid Grid.Column="1">
                                 <Grid.RowDefinitions>
-                                    <RowDefinition Height="1*" />
-                                    <RowDefinition Height="5*" />
-                                    <RowDefinition Height="1*" />
-                                    <RowDefinition Height="1.5*" />
+                                    <RowDefinition Height="40*" />
+                                    <RowDefinition Height="20*" />
                                 </Grid.RowDefinitions>
-                                <Grid Grid.Row="1" Background="DimGray" />
-                                <Grid Grid.Row="3">
+
+                                <parts:Parts_ScrewSupply />
+
+                            </Grid>
+                        </Grid>
+
+
+
+                        <!--  토크 체결 지그 위치  -->
+                        <Grid Grid.Row="1">
+                            <Rectangle
+                                HorizontalAlignment="Stretch"
+                                Panel.ZIndex="0"
+                                Fill="Transparent"
+                                Opacity="0.5" />
+                            <!--  Fill="{StaticResource MyGlassBrushResource}"  -->
+
+
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="10*" />
+                                    <RowDefinition Height="10*" />
+                                    <RowDefinition Height="10*" />
+                                </Grid.RowDefinitions>
+
+                                <Grid Grid.Row="1">
                                     <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="1*" />
-                                        <ColumnDefinition Width="2*" />
-                                        <ColumnDefinition Width="1*" />
+                                        <ColumnDefinition Width="1.0*" />
+                                        <ColumnDefinition Width="2.1*" />
+                                        <ColumnDefinition Width="2.1*" />
+                                        <ColumnDefinition Width="2.1*" />
+                                        <ColumnDefinition Width="2.05*" />
+                                        <ColumnDefinition Width="2.0*" />
                                         <ColumnDefinition Width="1*" />
                                     </Grid.ColumnDefinitions>
 
-                                    <Grid Grid.Column="1" Grid.ColumnSpan="2">
-                                        <Rectangle Fill="DimGray" />
-                                    </Grid>
-                                    <Border
-                                        Grid.Column="1"
-                                        Grid.ColumnSpan="2"
-                                        Width="40"
-                                        Height="40"
-                                        Margin="5"
-                                        HorizontalAlignment="Center"
-                                        VerticalAlignment="Bottom"
-                                        Background="#FF464E56"
-                                        CornerRadius="100" />
                                     <Grid
                                         Grid.Column="1"
-                                        Grid.ColumnSpan="2"
-                                        HorizontalAlignment="Center">
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition Height="2*" />
-                                            <RowDefinition Height="1*" />
-                                        </Grid.RowDefinitions>
-
-
-                                        <Viewbox Grid.Row="0">
-                                            <Path Fill="SlateGray" Opacity="0.7">
-                                                <Path.Data>
-                                                    <PathGeometry>
-                                                        <PathGeometry.Figures>
-                                                            <PathFigureCollection>
-                                                                <PathFigure StartPoint="0,0">
-                                                                    <PathFigure.Segments>
-                                                                        <PathSegmentCollection>
-                                                                            <LineSegment Point="10,0" />
-                                                                            <LineSegment Point="10,10" />
-                                                                            <LineSegment Point="5,10" />
-                                                                            <LineSegment Point="5,5" />
-                                                                        </PathSegmentCollection>
-                                                                    </PathFigure.Segments>
-                                                                </PathFigure>
-                                                            </PathFigureCollection>
-                                                        </PathGeometry.Figures>
-                                                    </PathGeometry>
-                                                </Path.Data>
-                                            </Path>
-                                        </Viewbox>
-
+                                        Width="80"
+                                        Background="Transparent">
+                                        <parts:Parts_JigScrewHole />
+                                        <Border
+                                            Width="50"
+                                            Height="40"
+                                            Background="{Binding JigP1}"
+                                            CornerRadius="10"
+                                            Opacity="0.4" />
                                     </Grid>
+
+                                    <Grid
+                                        Grid.Column="2"
+                                        Width="80"
+                                        Background="Transparent">
+                                        <parts:Parts_JigScrewHole />
+                                        <Border
+                                            Width="50"
+                                            Height="40"
+                                            Background="{Binding JigP2}"
+                                            CornerRadius="10"
+                                            Opacity="0.4" />
+                                    </Grid>
+
+                                    <Grid
+                                        Grid.Column="3"
+                                        Width="80"
+                                        Background="Transparent">
+                                        <parts:Parts_JigScrewHole />
+                                        <Border
+                                            Width="50"
+                                            Height="40"
+                                            Background="{Binding JigP3}"
+                                            CornerRadius="10"
+                                            Opacity="0.4" />
+                                    </Grid>
+
+                                    <Grid
+                                        Grid.Column="4"
+                                        Width="80"
+                                        Background="Transparent">
+                                        <parts:Parts_JigScrewHole />
+                                        <Border
+                                            Width="50"
+                                            Height="40"
+                                            Background="{Binding JigP4}"
+                                            CornerRadius="10"
+                                            Opacity="0.4" />
+                                    </Grid>
+
+                                    <Grid
+                                        Grid.Column="5"
+                                        Width="80"
+                                        Background="Transparent">
+                                        <parts:Parts_JigScrewHole />
+                                        <Border
+                                            Width="50"
+                                            Height="40"
+                                            Background="{Binding JigP5}"
+                                            CornerRadius="10"
+                                            Opacity="0.4" />
+                                    </Grid>
+
                                 </Grid>
-                            </Grid>
-                        </Grid>
-                    </Grid>
-                </Grid>
 
-                <Grid Grid.Row="1">
-                    <Rectangle
-                        HorizontalAlignment="Stretch"
-                        Panel.ZIndex="0"
-                        Fill="{StaticResource MyGlassBrushResource}"
-                        Opacity="0.5" />
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="10*" />
-                            <RowDefinition Height="10*" />
-                            <RowDefinition Height="10*" />
-                        </Grid.RowDefinitions>
-
-                        <Grid Grid.Row="1">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="1.1*" />
-                                <ColumnDefinition Width="2.1*" />
-                                <ColumnDefinition Width="2.1*" />
-                                <ColumnDefinition Width="2.1*" />
-                                <ColumnDefinition Width="2.1*" />
-                                <ColumnDefinition Width="2.1*" />
-                                <ColumnDefinition Width="0.8*" />
-                            </Grid.ColumnDefinitions>
-
-                            <Grid
-                                Grid.Column="1"
-                                Width="80"
-                                Background="Gray">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="10*" />
-                                    <ColumnDefinition Width="3*" />
-                                    <ColumnDefinition Width="10*" />
-                                </Grid.ColumnDefinitions>
-                                <Border
-                                    Grid.Column="0"
-                                    Width="15"
-                                    Height="15"
-                                    HorizontalAlignment="Right"
-                                    Background="Black"
-                                    CornerRadius="100" />
-                                <Border
-                                    Grid.Column="2"
-                                    Width="15"
-                                    Height="15"
-                                    HorizontalAlignment="Left"
-                                    Background="Black"
-                                    CornerRadius="100" />
                             </Grid>
 
-
-                            <Grid
-                                Grid.Column="2"
-                                Width="80"
-                                Background="Gray">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="10*" />
-                                    <ColumnDefinition Width="3*" />
-                                    <ColumnDefinition Width="10*" />
-                                </Grid.ColumnDefinitions>
-                                <Border
-                                    Grid.Column="0"
-                                    Width="15"
-                                    Height="15"
-                                    HorizontalAlignment="Right"
-                                    Background="Black"
-                                    CornerRadius="100" />
-                                <Border
-                                    Grid.Column="2"
-                                    Width="15"
-                                    Height="15"
-                                    HorizontalAlignment="Left"
-                                    Background="Black"
-                                    CornerRadius="100" />
-                            </Grid>
-
-                            <Grid
-                                Grid.Column="3"
-                                Width="80"
-                                Background="Gray">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="10*" />
-                                    <ColumnDefinition Width="3*" />
-                                    <ColumnDefinition Width="10*" />
-                                </Grid.ColumnDefinitions>
-                                <Border
-                                    Grid.Column="0"
-                                    Width="15"
-                                    Height="15"
-                                    HorizontalAlignment="Right"
-                                    Background="Black"
-                                    CornerRadius="100" />
-                                <Border
-                                    Grid.Column="2"
-                                    Width="15"
-                                    Height="15"
-                                    HorizontalAlignment="Left"
-                                    Background="Black"
-                                    CornerRadius="100" />
-                            </Grid>
-
-                            <Grid
-                                Grid.Column="4"
-                                Width="80"
-                                Background="Gray">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="10*" />
-                                    <ColumnDefinition Width="3*" />
-                                    <ColumnDefinition Width="10*" />
-                                </Grid.ColumnDefinitions>
-                                <Border
-                                    Grid.Column="0"
-                                    Width="15"
-                                    Height="15"
-                                    HorizontalAlignment="Right"
-                                    Background="Black"
-                                    CornerRadius="100" />
-                                <Border
-                                    Grid.Column="2"
-                                    Width="15"
-                                    Height="15"
-                                    HorizontalAlignment="Left"
-                                    Background="Black"
-                                    CornerRadius="100" />
-                            </Grid>
-
-                            <Grid
-                                Grid.Column="5"
-                                Width="80"
-                                Background="Gray">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="10*" />
-                                    <ColumnDefinition Width="3*" />
-                                    <ColumnDefinition Width="10*" />
-                                </Grid.ColumnDefinitions>
-                                <Border
-                                    Grid.Column="0"
-                                    Width="15"
-                                    Height="15"
-                                    HorizontalAlignment="Right"
-                                    Background="Black"
-                                    CornerRadius="100" />
-                                <Border
-                                    Grid.Column="2"
-                                    Width="15"
-                                    Height="15"
-                                    HorizontalAlignment="Left"
-                                    Background="Black"
-                                    CornerRadius="100" />
-                            </Grid>
 
                         </Grid>
 
+                        <!--  OK NG Sensor  -->
+                        <Grid Grid.Row="2">
+                            <parts:Parts_OkNgSensor />
+                        </Grid>
                     </Grid>
                 </Grid>
+            </Grid>
 
+            <Grid Grid.Row="1">
+                <parts:Parts_Button />
             </Grid>
         </Grid>
+        <Grid Grid.Column="1" Grid.ColumnSpan="2">
+            <Grid
+                Width="50"
+                Height="30"
+                Margin="0,0,50,10"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Bottom">
+
+                <Border
+                    Background="{Binding NGBOX}"
+                    BorderBrush="#FF751111"
+                    BorderThickness="5"
+                    CornerRadius="10" />
+            </Grid>
+
+        </Grid>
     </Grid>
+
+
+
 
 </UserControl>
