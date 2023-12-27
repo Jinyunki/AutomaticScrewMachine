@@ -1,14 +1,15 @@
 ﻿
 using GalaSoft.MvvmLight.Messaging;
-using System;
-using System.Windows.Threading;
+using System.ComponentModel;
 
-namespace AutomaticScrewMachine.Bases
-{
+namespace AutomaticScrewMachine.Bases {
     public static class StaticControllerSignal
     {
-        private static readonly int ThreadSignalTimer = 10;
-        private static DispatcherTimer _dispatcherTimer ;
+        /*private static readonly int ThreadSignalTimer = 10;
+        private static DispatcherTimer _dispatcherTimer ;*/
+        private static BackgroundWorker _joystickWorker ;
+
+        public static bool ControlRock = false;
 
         public static bool IsPress = false;
         public static string IsViewName = "";
@@ -38,25 +39,41 @@ namespace AutomaticScrewMachine.Bases
         {
             IsPress = true;
             IsViewName = clickBorderName;
-            _dispatcherTimer = new DispatcherTimer
+            /*_dispatcherTimer = new DispatcherTimer
             {
                 Interval = TimeSpan.FromMilliseconds(ThreadSignalTimer)
             };
             _dispatcherTimer.Tick += DispatcherTimer_Tick;
-            _dispatcherTimer.Start();
+            _dispatcherTimer.Start();*/
+
+
+            _joystickWorker = new BackgroundWorker {
+                WorkerSupportsCancellation = true
+            };
+            _joystickWorker.DoWork += JoyStick_DoWork;
+            //_joystickWorker.RunWorkerCompleted += JoyStick_RunWorkerCompleted;
+            _joystickWorker.RunWorkerAsync();
+
+        }
+
+        private static void JoyStick_DoWork (object sender, DoWorkEventArgs e) {
+            while (!_joystickWorker.CancellationPending) {
+                Messenger.Default.Send(new SignalMessage(IsViewName, IsPress));
+            }
         }
 
         public static void StopControllerSignalView()
         {
             IsPress = false;
             Messenger.Default.Send(new SignalMessage(IsViewName, IsPress));
-            _dispatcherTimer.Stop();
+            _joystickWorker.CancelAsync();
+            //_dispatcherTimer.Stop();
         }
 
-        public static void DispatcherTimer_Tick(object sender, EventArgs e)
+        /*public static void DispatcherTimer_Tick(object sender, EventArgs e)
         {
+
             Messenger.Default.Send(new SignalMessage(IsViewName, IsPress));
-            
-        }
+        }*/
     }
 }

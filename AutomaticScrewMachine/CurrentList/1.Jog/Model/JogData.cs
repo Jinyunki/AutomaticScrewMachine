@@ -149,7 +149,6 @@ namespace AutomaticScrewMachine.CurrentList._1.Jog.Model {
                 }
             }
         }
-        public bool ControlRock { get; set; }
         public ICommand AddPosition { get; set; }
         public ICommand RemoveSequenceCommand { get; set; }
         public ICommand RemovePositionCommand { get; set; }
@@ -611,6 +610,35 @@ namespace AutomaticScrewMachine.CurrentList._1.Jog.Model {
                 RaisePropertyChanged(nameof(EmgLine));
             }
         }
+         
+        private Brush _buzzerAlarmOK = Brushes.Gray;
+        public Brush BuzzerAlarmOK {
+            get { return _buzzerAlarmOK; }
+            set {
+                _buzzerAlarmOK = value;
+                RaisePropertyChanged(nameof(BuzzerAlarmOK));
+            }
+        }
+        
+         
+        private Brush _buzzerAlarmERR = Brushes.Gray;
+        public Brush BuzzerAlarmERR {
+            get { return _buzzerAlarmERR; }
+            set {
+                _buzzerAlarmERR = value;
+                RaisePropertyChanged(nameof(BuzzerAlarmERR));
+            }
+        }
+        
+         
+        private Brush _buzzerAlarmNG = Brushes.Gray;
+        public Brush BuzzerAlarmNG {
+            get { return _buzzerAlarmNG; }
+            set {
+                _buzzerAlarmNG = value;
+                RaisePropertyChanged(nameof(BuzzerAlarmNG));
+            }
+        }
         
 
         public DateTime Delay (int MS) {
@@ -697,7 +725,7 @@ namespace AutomaticScrewMachine.CurrentList._1.Jog.Model {
         public bool ServoSignal = false;
 
         // ControllCheckList
-        public DispatcherTimer _HomeReturnDipatcher;
+        /*public DispatcherTimer _HomeReturnDipatcher;*/
 
         public uint DriverBuzzerSignal = 9;
         public uint DepthBuzzerSignal = 9;
