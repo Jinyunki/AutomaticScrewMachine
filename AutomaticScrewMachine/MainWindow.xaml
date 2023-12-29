@@ -12,6 +12,8 @@
     AllowsTransparency="True"
     Background="Transparent"
     DataContext="{Binding Main, Source={StaticResource Locator}}"
+    KeyDown="Jog_KeyDown"
+    KeyUp="Jog_KeyUp"
     MouseDown="Window_MouseDown"
     MouseMove="Window_MouseMove"
     WindowState="{Binding WindowState}"
@@ -45,9 +47,7 @@
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="200" />
                     <ColumnDefinition />
-                    <ColumnDefinition Width="30" />
-                    <ColumnDefinition Width="30" />
-                    <ColumnDefinition Width="30" />
+                    <ColumnDefinition Width="90" />
                     <ColumnDefinition Width="30" />
                 </Grid.ColumnDefinitions>
 
@@ -61,35 +61,43 @@
                     Style="{StaticResource CustomSliderStyle}"
                     Value="{Binding TransparentValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
-                <Button
-                    Grid.Column="2"
-                    Width="25"
-                    Height="25"
-                    Background="DarkGreen"
-                    Command="{Binding BtnMinmize}"
-                    Content="ㅡ"
-                    FontSize="12"
-                    Style="{StaticResource RoundedButtonStyle}" />
+                <Grid Grid.Column="2">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="30" />
+                        <ColumnDefinition Width="30" />
+                        <ColumnDefinition Width="30" />
+                    </Grid.ColumnDefinitions>
+                    <Button
+                        Grid.Column="0"
+                        Width="25"
+                        Height="25"
+                        Background="#FF074807"
+                        Command="{Binding BtnMinmize}"
+                        Content="ㅡ"
+                        FontSize="12"
+                        Style="{StaticResource RoundedButtonStyle}" />
 
-                <Button
-                    Grid.Column="3"
-                    Width="25"
-                    Height="25"
-                    Background="Yellow"
-                    Command="{Binding BtnMaxsize}"
-                    Content="O"
-                    FontSize="12"
-                    Style="{StaticResource RoundedButtonStyle}" />
+                    <Button
+                        Grid.Column="1"
+                        Width="25"
+                        Height="25"
+                        Background="#FF8C8C13"
+                        Command="{Binding BtnMaxsize}"
+                        Content="O"
+                        FontSize="12"
+                        Style="{StaticResource RoundedButtonStyle}" />
 
-                <Button
-                    Grid.Column="4"
-                    Width="25"
-                    Height="25"
-                    Background="DarkRed"
-                    Command="{Binding BtnClose}"
-                    Content="X"
-                    FontSize="12"
-                    Style="{StaticResource RoundedButtonStyle}" />
+                    <Button
+                        Grid.Column="2"
+                        Width="25"
+                        Height="25"
+                        Background="#FF791919"
+                        Command="{Binding BtnClose}"
+                        Content="X"
+                        FontSize="12"
+                        Style="{StaticResource RoundedButtonStyle}" />
+                </Grid>
+
             </Grid>
         </Border>
 

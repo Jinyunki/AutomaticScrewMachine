@@ -30,8 +30,7 @@
             <Grid Grid.Row="3">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="1*" />
-                    <ColumnDefinition Width="2*" />
-                    <ColumnDefinition Width="1*" />
+                    <ColumnDefinition Width="3*" />
                     <ColumnDefinition Width="1*" />
                 </Grid.ColumnDefinitions>
                 <Grid Grid.Column="0" VerticalAlignment="Top">
@@ -47,54 +46,68 @@
                         Background="{Binding ScrewSupplyINOUT}"
                         CornerRadius="50" />
                 </Grid>
-                <Grid Grid.Column="1" Grid.ColumnSpan="2">
-                    <Rectangle Fill="DimGray" />
-                </Grid>
-                <Border
-                    Grid.Column="1"
-                    Grid.ColumnSpan="2"
-                    Width="40"
-                    Height="40"
-                    Margin="5"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Bottom"
-                    Background="#FF464E56"
-                    CornerRadius="100" />
                 <Grid
                     Grid.Column="1"
-                    Grid.ColumnSpan="2"
-                    HorizontalAlignment="Center">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="2*" />
-                        <RowDefinition Height="1*" />
-                    </Grid.RowDefinitions>
+                    Margin="0,0,0,7"
+                    Background="DimGray">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1*" />
+                        <ColumnDefinition Width="2*" />
+                        <ColumnDefinition Width="1*" />
+                    </Grid.ColumnDefinitions>
+                    <Border
+                        Grid.Column="1"
+                        Width="30"
+                        Height="30"
+                        Margin="1"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Background="#FF464E56"
+                        CornerRadius="30" />
 
 
-                    <Viewbox Grid.Row="0">
-                        <Path Fill="SlateGray" Opacity="0.7">
-                            <Path.Data>
-                                <PathGeometry>
-                                    <PathGeometry.Figures>
-                                        <PathFigureCollection>
-                                            <PathFigure StartPoint="0,0">
-                                                <PathFigure.Segments>
-                                                    <PathSegmentCollection>
-                                                        <LineSegment Point="10,0" />
-                                                        <LineSegment Point="10,10" />
-                                                        <LineSegment Point="5,10" />
-                                                        <LineSegment Point="5,5" />
-                                                    </PathSegmentCollection>
-                                                </PathFigure.Segments>
-                                            </PathFigure>
-                                        </PathFigureCollection>
-                                    </PathGeometry.Figures>
-                                </PathGeometry>
-                            </Path.Data>
-                        </Path>
-                    </Viewbox>
+                    <Grid Grid.Column="1" HorizontalAlignment="Center">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="2*" />
+                            <RowDefinition Height="1*" />
+                        </Grid.RowDefinitions>
+                        <Button
+                            Grid.Row="0"
+                            Grid.RowSpan="2"
+                            Panel.ZIndex="2"
+                            Background="Transparent"
+                            BorderThickness="0"
+                            Command="{Binding MovePositionSupply}" />
 
+                        <Viewbox Grid.Row="0">
+                            <Path Fill="SlateGray" Opacity="0.7">
+                                <Path.Data>
+                                    <PathGeometry>
+                                        <PathGeometry.Figures>
+                                            <PathFigureCollection>
+                                                <PathFigure StartPoint="0,0">
+                                                    <PathFigure.Segments>
+                                                        <PathSegmentCollection>
+                                                            <LineSegment Point="10,0" />
+                                                            <LineSegment Point="10,10" />
+                                                            <LineSegment Point="5,10" />
+                                                            <LineSegment Point="5,5" />
+                                                        </PathSegmentCollection>
+                                                    </PathFigure.Segments>
+                                                </PathFigure>
+                                            </PathFigureCollection>
+                                        </PathGeometry.Figures>
+                                    </PathGeometry>
+                                </Path.Data>
+                            </Path>
+                        </Viewbox>
+
+
+                    </Grid>
 
                 </Grid>
+
+
 
                 <Grid Grid.Column="3">
                     <Border

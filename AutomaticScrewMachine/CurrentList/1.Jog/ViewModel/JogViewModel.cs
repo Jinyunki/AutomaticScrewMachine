@@ -7,7 +7,6 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Diagnostics;
 using System.Reflection;
-using System.Windows.Threading;
 using System.Windows;
 using GalaSoft.MvvmLight.Command;
 using System.ComponentModel;
@@ -38,7 +37,6 @@ namespace AutomaticScrewMachine.CurrentList._1.Jog.ViewModel {
             JogMoveSpeed = 1;
 
         }
-
 
 
         public void ThreadWorker () {
@@ -161,6 +159,7 @@ namespace AutomaticScrewMachine.CurrentList._1.Jog.ViewModel {
                 DepthBuzzer = ReadOutportBrush(9);
                 VacuumBuzzer = ReadOutportBrush(10);
 
+                // 머신 상단 알람 부저
                 BuzzerAlarmOK = ReadOutportBrush(23);
                 BuzzerAlarmERR = ReadOutportBrush(22);
                 BuzzerAlarmNG = ReadOutportBrush(21);
@@ -212,12 +211,23 @@ namespace AutomaticScrewMachine.CurrentList._1.Jog.ViewModel {
         private Brush ReadOutportBrush (int indexIONumber) {
             uint temp = 9;
             CAXD.AxdoReadOutport(indexIONumber, ref temp);
+            switch (indexIONumber) {
+                case 8:
+                    DriverBuzzerSignal = temp;
+                    break;
+                case 9:
+                    DepthBuzzerSignal = temp;
+                    break;
+                case 10:
+                    VacuumBuzzerSignal = temp;
+                    break;
+                default:
+                    break;
+            }
             //23 green 22 org 21 red
             if (indexIONumber == 22) {
                 indexIONumber = 1;
-            } else if (indexIONumber == 21) {
-                indexIONumber = 2;
-            } 
+            }
             Brush returnBrs;
             switch (indexIONumber) {
                 case 1:
@@ -228,6 +238,11 @@ namespace AutomaticScrewMachine.CurrentList._1.Jog.ViewModel {
                     break;
                 case 4:
                     returnBrs = temp == 0 ? Brushes.Gray : Brushes.Red;
+                    break;
+                case 21:
+                    returnBrs = temp == 0 ? Brushes.Gray : Brushes.Red;
+                    CAXD.AxdoWriteOutport(24, temp);
+                    
                     break;
                 case 23:
                     returnBrs = temp == 0 ? Brushes.Gray : Brushes.Green;
@@ -278,6 +293,14 @@ namespace AutomaticScrewMachine.CurrentList._1.Jog.ViewModel {
                     AddRecipe = new RelayCommand(AddRecipeCommand);
                     SavePosDataRecipe = new RelayCommand(SaveRecipeCommand);
 
+                    // GetMovePosition
+                    MovePosition1 = new RelayCommand(() => MovePosBackground(0));
+                    MovePosition2 = new RelayCommand(() => MovePosBackground(GetPortInterval));
+                    MovePosition3 = new RelayCommand(() => MovePosBackground(GetPortInterval * 2));
+                    MovePosition4 = new RelayCommand(() => MovePosBackground(GetPortInterval * 3));
+                    MovePosition5 = new RelayCommand(() => MovePosBackground(GetPortInterval * 4));
+                    MovePositionSupply = new RelayCommand(() => MoveScrewSupplyPos(SupplyPosition));
+
                     //상세 컨트롤
                     //SetMovePosition = new RelayCommand(SetMovePosCommand);
 
@@ -289,14 +312,28 @@ namespace AutomaticScrewMachine.CurrentList._1.Jog.ViewModel {
 
 
         }
+        private int _tabCnt = 1;
+        public int TabCnt {
+            get { return _tabCnt; }
+            set {
+                _tabCnt = value;
+                RaisePropertyChanged(nameof(TabCnt));
+            }
+        }
+        private void MovePosBackground (double intaval) {
+            if (TabCnt == 1) {
+                Interval = intaval/* + GetTabInterval*/;
+                Port1Position = new double[2] { StartPortXPos + Interval, StartPortYPos };
+                MoveScrewSupplyPos(Port1Position);
+                TabCnt++;
+            } else {
+                Interval = intaval/* + GetTabInterval*/;
+                Port1Position = new double[2] { StartPortXPos + Interval + GetTabInterval, StartPortYPos };
+                MoveScrewSupplyPos(Port1Position);
+                TabCnt--;
+            }
+            
 
-        private void SetMovePosCommand () {
-
-            InputPositionValueX = PositionValueX;
-            InputPositionValueY = PositionValueY;
-
-            //double[] movePos = new double[2] { InputPositionValueX, InputPositionValueY };
-            //MultiMovePos(movePos, MC_JogSpeed, MC_JogAcl, MC_JogDcl);
         }
 
         private void AddRecipeCommand () {
@@ -556,7 +593,7 @@ namespace AutomaticScrewMachine.CurrentList._1.Jog.ViewModel {
 
         private void SEQ_RunWorkerCompleted (object sender, RunWorkerCompletedEventArgs e) {
             Console.WriteLine("FINISH");
-            MoveScrewSupplyPos(SequenceReadyPosition);
+            MoveScrewSupplyPos(SupplyPosition);
         }
 
         private void SEQ_DoWork (object sender, DoWorkEventArgs e) {
@@ -564,9 +601,9 @@ namespace AutomaticScrewMachine.CurrentList._1.Jog.ViewModel {
             for (int i = 0; i < PositionDataList.Count; i++) {
                 double[] SeqXYHoldPos = new double[2] { PositionDataList[i].X, PositionDataList[i].Y };
 
-                MoveScrewSupplyPos(SequenceReadyPosition); //xy 공급기
+                MoveScrewSupplyPos(SupplyPosition); //xy 공급기
 
-                MoveDownPos(SequenceReadyPosition, 50000); // z 스크류 공급
+                MoveDownPos(SupplyPosition, 50000); // z 스크류 공급
 
                 WriteOutport(true); // io 스크류 체득
 

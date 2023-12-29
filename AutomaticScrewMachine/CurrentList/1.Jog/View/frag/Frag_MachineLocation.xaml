@@ -52,12 +52,12 @@
                             </Border.Background>
                         </Border>
 
-                        <!--  Motion Screw  -->
+                        <!--  Motion Screw  LightBlue  -->
                         <Button
                             Width="15"
                             Height="15"
                             Margin="{Binding DriverPosList, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                            Background="LightBlue"
+                            Background="Transparent"
                             Command="{Binding DriverIO}"
                             Style="{DynamicResource RoundedButtonStyle}" />
 
@@ -181,20 +181,20 @@
 
                             <Grid>
                                 <Grid.RowDefinitions>
-                                    <RowDefinition Height="10*" />
+                                    <RowDefinition Height="10.5*" />
                                     <RowDefinition Height="10*" />
                                     <RowDefinition Height="10*" />
                                 </Grid.RowDefinitions>
 
                                 <Grid Grid.Row="1">
                                     <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="1.0*" />
-                                        <ColumnDefinition Width="2.1*" />
-                                        <ColumnDefinition Width="2.1*" />
-                                        <ColumnDefinition Width="2.1*" />
-                                        <ColumnDefinition Width="2.05*" />
-                                        <ColumnDefinition Width="2.0*" />
-                                        <ColumnDefinition Width="1*" />
+                                        <ColumnDefinition Width="10*" />
+                                        <ColumnDefinition Width="20.5*" />
+                                        <ColumnDefinition Width="20.5*" />
+                                        <ColumnDefinition Width="20.5*" />
+                                        <ColumnDefinition Width="20.5*" />
+                                        <ColumnDefinition Width="20.5*" />
+                                        <ColumnDefinition Width="9.5*" />
                                     </Grid.ColumnDefinitions>
 
                                     <Grid
@@ -202,11 +202,11 @@
                                         Width="80"
                                         Background="Transparent">
                                         <parts:Parts_JigScrewHole />
-                                        <Border
+                                        <Button
                                             Width="50"
                                             Height="40"
                                             Background="{Binding JigP1}"
-                                            CornerRadius="10"
+                                            Command="{Binding MovePosition1}"
                                             Opacity="0.4" />
                                     </Grid>
 
@@ -215,11 +215,11 @@
                                         Width="80"
                                         Background="Transparent">
                                         <parts:Parts_JigScrewHole />
-                                        <Border
+                                        <Button
                                             Width="50"
                                             Height="40"
                                             Background="{Binding JigP2}"
-                                            CornerRadius="10"
+                                            Command="{Binding MovePosition2}"
                                             Opacity="0.4" />
                                     </Grid>
 
@@ -228,11 +228,11 @@
                                         Width="80"
                                         Background="Transparent">
                                         <parts:Parts_JigScrewHole />
-                                        <Border
+                                        <Button
                                             Width="50"
                                             Height="40"
                                             Background="{Binding JigP3}"
-                                            CornerRadius="10"
+                                            Command="{Binding MovePosition3}"
                                             Opacity="0.4" />
                                     </Grid>
 
@@ -241,11 +241,11 @@
                                         Width="80"
                                         Background="Transparent">
                                         <parts:Parts_JigScrewHole />
-                                        <Border
+                                        <Button
                                             Width="50"
                                             Height="40"
                                             Background="{Binding JigP4}"
-                                            CornerRadius="10"
+                                            Command="{Binding MovePosition4}"
                                             Opacity="0.4" />
                                     </Grid>
 
@@ -254,11 +254,11 @@
                                         Width="80"
                                         Background="Transparent">
                                         <parts:Parts_JigScrewHole />
-                                        <Border
+                                        <Button
                                             Width="50"
                                             Height="40"
                                             Background="{Binding JigP5}"
-                                            CornerRadius="10"
+                                            Command="{Binding MovePosition5}"
                                             Opacity="0.4" />
                                     </Grid>
 

@@ -65,7 +65,6 @@ namespace AutomaticScrewMachine.CurrentList._1.Jog.Model {
         }
         public static readonly string isFolderName = "Data";
         public static readonly string isFileName = "JogData.xlsx";
-
         private SequenceData _selectedSequenceItem;
         public SequenceData SelectedSequenceItem {
             get { return _selectedSequenceItem; }
@@ -176,6 +175,12 @@ namespace AutomaticScrewMachine.CurrentList._1.Jog.Model {
         public ICommand ServoCheckX { get; set; }
         public ICommand ServoCheckY { get; set; }
         public ICommand ServoCheckZ { get; set; }
+        public ICommand MovePosition1 { get; set; }
+        public ICommand MovePosition2 { get; set; }
+        public ICommand MovePosition3 { get; set; }
+        public ICommand MovePosition4 { get; set; }
+        public ICommand MovePosition5 { get; set; }
+        public ICommand MovePositionSupply { get; set; }
 
         private ObservableCollection<PosData> _posDataList = new ObservableCollection<PosData>();
         public ObservableCollection<PosData> PositionDataList {
@@ -404,7 +409,13 @@ namespace AutomaticScrewMachine.CurrentList._1.Jog.Model {
                 RaisePropertyChanged(nameof(PositionValueY));
             }
         }
-        public double[] SequenceReadyPosition = new double[2] { 167119, 117239 };
+        public double StartPortXPos = 73800;
+        public double StartPortYPos = 249100;
+        public double GetPortInterval = 53000;
+        public double GetTabInterval = 14000;
+        public double Interval { get; set; }
+        public double[] SupplyPosition = new double[2] { 167119, 117239 };
+        public double[] Port1Position /*= new double[2] { 73800, 249100 }*/;
         private Brush _buzzerY = Brushes.Gray;
         public Brush BuzzerY {
             get { return _buzzerY; }
@@ -727,9 +738,9 @@ namespace AutomaticScrewMachine.CurrentList._1.Jog.Model {
         // ControllCheckList
         /*public DispatcherTimer _HomeReturnDipatcher;*/
 
-        public uint DriverBuzzerSignal = 9;
-        public uint DepthBuzzerSignal = 9;
-        public uint VacuumBuzzerSignal = 9;
+        public uint DriverBuzzerSignal = 9; //8
+        public uint DepthBuzzerSignal = 9; //9
+        public uint VacuumBuzzerSignal = 9; //10
 
 
 

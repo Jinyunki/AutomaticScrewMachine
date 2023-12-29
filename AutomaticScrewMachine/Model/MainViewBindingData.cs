@@ -11,6 +11,7 @@ using AutomaticScrewMachine.ViewModel;
 namespace AutomaticScrewMachine.Model {
     public class MainViewBindingData  : ViewModelBase {
 
+
         public static string szFilePath = @"D:\WindowsFormsApp1\WindowsFormsApp1\Teaching\motor_para.mot";
         public ViewModelLocator _locator = new ViewModelLocator();
         private ViewModelBase _currentViewModel;

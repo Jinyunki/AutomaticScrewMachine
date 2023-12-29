@@ -45,10 +45,32 @@
                     <ColumnDefinition />
                 </Grid.ColumnDefinitions>
 
-                <Border Grid.ColumnSpan="5" CornerRadius="10" Background="Silver" Opacity="0.7"/>
-                <Border Grid.Column="1" CornerRadius="5" Height="35" Background="{Binding BuzzerAlarmOK}" Opacity="0.7" Margin="1"/>
-                <Border Grid.Column="2" CornerRadius="5" Height="35" Background="{Binding BuzzerAlarmERR}" Opacity="0.7" Margin="1"/>
-                <Border Grid.Column="3" CornerRadius="5" Height="35" Background="{Binding BuzzerAlarmNG}" Opacity="0.7" Margin="1"/>
+                <Border
+                    Grid.ColumnSpan="5"
+                    Background="Silver"
+                    CornerRadius="10"
+                    Opacity="0.7" />
+                <Border
+                    Grid.Column="1"
+                    Height="35"
+                    Margin="1"
+                    Background="{Binding BuzzerAlarmOK}"
+                    CornerRadius="5"
+                    Opacity="0.7" />
+                <Border
+                    Grid.Column="2"
+                    Height="35"
+                    Margin="1"
+                    Background="{Binding BuzzerAlarmERR}"
+                    CornerRadius="5"
+                    Opacity="0.7" />
+                <Border
+                    Grid.Column="3"
+                    Height="35"
+                    Margin="1"
+                    Background="{Binding BuzzerAlarmNG}"
+                    CornerRadius="5"
+                    Opacity="0.7" />
             </Grid>
             <Grid>
                 <Grid.RowDefinitions>
