@@ -166,7 +166,7 @@ namespace AutomaticScrewMachine.CurrentList._1.Jog.Model {
 
 
         public ICommand JogSpeedUp => new RelayCommand(() => JogMoveSpeed += 0.5);
-        public ICommand JogSpeedDown => new RelayCommand(SpeedDown);
+        public ICommand JogSpeedDown => new RelayCommand(() => JogMoveSpeed = Math.Max(0.101, JogMoveSpeed - (JogMoveSpeed < 1.1 ? 0.1 : 0.5)));
         public ICommand SetMovePosition {get; set;}
         private void SpeedDown () {
             JogMoveSpeed = Math.Max(0.101, JogMoveSpeed - (JogMoveSpeed < 1.1 ? 0.1 : 0.5));
@@ -174,7 +174,8 @@ namespace AutomaticScrewMachine.CurrentList._1.Jog.Model {
 
         public ICommand ServoCheckX { get; set; }
         public ICommand ServoCheckY { get; set; }
-        public ICommand ServoCheckZ { get; set; }
+        public ICommand ServoCheckZ { get; set; } 
+        
         public ICommand MovePosition1 { get; set; }
         public ICommand MovePosition2 { get; set; }
         public ICommand MovePosition3 { get; set; }
@@ -666,77 +667,15 @@ namespace AutomaticScrewMachine.CurrentList._1.Jog.Model {
         }
 
 
-
-
-        public void FrameDelay (int waitMS) {
-            Stopwatch timer = new Stopwatch();
-            timer.Start ();
-            do {
-                DoEvents();
-            } while (timer.ElapsedMilliseconds < waitMS);
-        }
-
-        private void DoEvents () {
-            DispatcherFrame f = new DispatcherFrame();
-            Dispatcher.CurrentDispatcher.BeginInvoke(DispatcherPriority.Background,
-                new Action<object>((arg) => {
-                    DispatcherFrame fr = arg as DispatcherFrame;
-                    fr.Continue = false;
-                }), f);
-            Dispatcher.PushFrame(f);
-        }
-
         public Brush RecevieSignalColor (uint signalCode) {
             Brush ReturnBrush;
-            if (signalCode == 1) {
-                ReturnBrush = Brushes.Green;
-            } else {
-                ReturnBrush = Brushes.Gray;
-            }
-
+            ReturnBrush = signalCode == 1 ? Brushes.Green : Brushes.Gray;
             return ReturnBrush;
         }
-
-        public Brush RecevieSignalColorRed (uint signalCode) {
-            Brush ReturnBrush;
-            if (signalCode == 1) {
-                ReturnBrush = Brushes.Red;
-            } else {
-                ReturnBrush = Brushes.Gray;
-            }
-
-            return ReturnBrush;
-        }
-        
-        public Brush RecevieSignalColorEmg (uint signalCode) {
-            Brush ReturnBrush;
-            if (signalCode != 1) {
-                ReturnBrush = Brushes.Red;
-            } else {
-                ReturnBrush = Brushes.Transparent;
-            }
-
-            return ReturnBrush;
-        }
-
-        public Brush RecevieSignalNGBox (uint signalCode) {
-            Brush ReturnBrush;
-            if (signalCode == 1) {
-                ReturnBrush = Brushes.Transparent;
-            } else {
-                ReturnBrush = Brushes.Gray;
-            }
-
-            return ReturnBrush;
-        }
-        public double MoveAbleZPosition = 10000;
         public uint valueX = 9;
         public uint valueY = 9;
         public uint valueZ = 9;
         public bool ServoSignal = false;
-
-        // ControllCheckList
-        /*public DispatcherTimer _HomeReturnDipatcher;*/
 
         public uint DriverBuzzerSignal = 9; //8
         public uint DepthBuzzerSignal = 9; //9

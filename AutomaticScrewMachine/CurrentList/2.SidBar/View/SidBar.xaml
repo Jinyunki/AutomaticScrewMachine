@@ -1,0 +1,37 @@
+﻿<UserControl
+    x:Class="AutomaticScrewMachine.CurrentList._2.SidBar.View.SidBar"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:AutomaticScrewMachine.CurrentList._2.SidBar.View"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    d:DesignHeight="900"
+    d:DesignWidth="200"
+    Background="Transparent"
+    DataContext="{Binding Main, Source={StaticResource Locator}}"
+    mc:Ignorable="d">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../../../DesignGUI.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <Grid >
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
+        <Button Grid.Row="0" Content="MOTION VIEW" Margin="10" Command="{Binding CurrentJogView}"
+                Foreground="Silver"
+                Style="{DynamicResource RoundedButtonStyle}" Background="{DynamicResource DeepNaby}"/>
+    </Grid>
+</UserControl>

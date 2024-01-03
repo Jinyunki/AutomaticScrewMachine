@@ -153,6 +153,9 @@
     <Compile Include="CurrentList\1.Jog\View\JogMain.xaml.cs">
       <DependentUpon>JogMain.xaml</DependentUpon>
     </Compile>
+    <Compile Include="CurrentList\2.SidBar\View\SidBar.xaml.cs">
+      <DependentUpon>SidBar.xaml</DependentUpon>
+    </Compile>
     <Compile Include="LibContorller\AXA.cs" />
     <Compile Include="LibContorller\AXC.cs" />
     <Compile Include="LibContorller\AXD.cs" />
@@ -214,6 +217,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="CurrentList\1.Jog\View\JogMain.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="CurrentList\2.SidBar\View\SidBar.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -340,6 +347,7 @@
     <Resource Include="Assets\btn_right_white.png" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="CurrentList\2.SidBar\ViewModel\" />
     <Folder Include="View\" />
   </ItemGroup>
   <ItemGroup>

@@ -103,61 +103,14 @@ namespace AutomaticScrewMachine.Model {
         }
 
         #region Window Viewing Btn
-        public ICommand BtnMinmize { get; private set; }
-        public ICommand BtnMaxsize { get; private set; }
-        public ICommand BtnClose { get; private set; }
+        public ICommand BtnMinmize { get; set; }
+        public ICommand BtnMaxsize { get;  set; }
+        public ICommand BtnClose { get; set; }
+        public ICommand CurrentJogView { get; set; }
         #endregion
 
 
 
-        public void WinBtnEvent () {
-
-            Trace.WriteLine("==========   Start   ==========\nMethodName : " + MethodBase.GetCurrentMethod().Name + "\n");
-            try {
-                BtnMinmize = new RelayCommand(WinMinmize);
-                BtnMaxsize = new RelayCommand(WinMaxSize);
-                BtnClose = new RelayCommand(WindowClose);
-                WindowBtnOpacity = 0.5;
-            } catch (Exception ex) {
-                Trace.WriteLine("========== Exception ==========\nMethodName : " + MethodBase.GetCurrentMethod().Name + "\nException : " + ex);
-                throw;
-            }
-
-        }
-        // Window Minimize
-        private void WinMinmize () {
-            Trace.WriteLine("==========   Start   ==========\nMethodName : " + MethodBase.GetCurrentMethod().Name + "\n");
-            try {
-                WindowState = WindowState.Minimized;
-            } catch (Exception ex) {
-                Trace.WriteLine("========== Exception ==========\nMethodName : " + MethodBase.GetCurrentMethod().Name + "\nException : " + ex);
-                throw;
-            }
-        }
-
-        // Window Size
-        private void WinMaxSize () {
-
-            Trace.WriteLine("==========   Start   ==========\nMethodName : " + MethodBase.GetCurrentMethod().Name + "\n");
-            try {
-                WindowState = (WindowState == WindowState.Normal) ? WindowState.Maximized : WindowState.Normal;
-            } catch (Exception ex) {
-                Trace.WriteLine("========== Exception ==========\nMethodName : " + MethodBase.GetCurrentMethod().Name + "\nException : " + ex);
-                throw;
-            }
-
-        }
-        private void WindowClose () {
-
-            Trace.WriteLine("==========   Start   ==========\nMethodName : " + MethodBase.GetCurrentMethod().Name + "\n");
-            try {
-                Application.Current.Shutdown();
-
-            } catch (Exception ex) {
-                Trace.WriteLine("========== Exception ==========\nMethodName : " + MethodBase.GetCurrentMethod().Name + "\nException : " + ex);
-                throw;
-            }
-
-        }
+        
     }
 }

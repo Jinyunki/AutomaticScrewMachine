@@ -39,8 +39,8 @@
                     <Grid HorizontalAlignment="Left" VerticalAlignment="Top">
                         <!--  Motion Main Body  -->
                         <Border
-                            Width="100"
-                            Height="100"
+                            Width="50"
+                            Height="50"
                             Margin="{Binding DriverPosList, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                             CornerRadius="100"
                             Opacity="0.7">
@@ -77,10 +77,10 @@
                             <Border
                                 Grid.Row="0"
                                 Grid.Column="0"
-                                Width="100"
-                                Height="100"
+                                Width="25"
+                                Height="25"
                                 HorizontalAlignment="Right"
-                                VerticalAlignment="Top"
+                                VerticalAlignment="Center"
                                 BorderBrush="{Binding VacuumBuzzer}"
                                 BorderThickness="3"
                                 CornerRadius="100"

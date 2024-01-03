@@ -30,26 +30,54 @@ namespace AutomaticScrewMachine
         }
 
         private void Jog_KeyDown (object sender, KeyEventArgs e) {
-            if (e.IsRepeat)
+
+            if (e.IsRepeat) {
                 return;
-            switch (e.Key) {
-                case Key.Left:
-                    StaticControllerSignal.ControllerSignalView("JogLeftBtn");
-                    break;
-                case Key.Right:
-                    StaticControllerSignal.ControllerSignalView("JogRightBtn");
-                    break;
-                case Key.Up:
-                    StaticControllerSignal.ControllerSignalView("JogStraightBtn");
-                    break;
-                case Key.Down:
-                    StaticControllerSignal.ControllerSignalView("JogBackBtn");
-                    break;
-                default:
-                    break;
             }
 
+            // Left Ctr + @
+            if (Keyboard.Modifiers == ModifierKeys.Control) {
+                // Ctrl 키를 누른 상태에서 다른 키를 처리
+                switch (e.Key) {
+                    case Key.Up:
+                        StaticControllerSignal.ControllerSignalView("JogUpBtn");
+                        break;
+                    case Key.Down:
+                        StaticControllerSignal.ControllerSignalView("JogDownBtn");
+                        break;
+                        
+                    default :
+                        break;
+                }
 
+                // 단독 key event
+            } else {
+                switch (e.Key) {
+                    case Key.Left:
+                        StaticControllerSignal.ControllerSignalView("JogLeftBtn");
+                        break;
+                    case Key.Right:
+                        StaticControllerSignal.ControllerSignalView("JogRightBtn");
+                        break;
+                    case Key.Up:
+                        StaticControllerSignal.ControllerSignalView("JogStraightBtn");
+                        break;
+                    case Key.Down:
+                        StaticControllerSignal.ControllerSignalView("JogBackBtn");
+                        break;
+                    case Key.F1:
+                        StaticControllerSignal.ControllerSignalView("F1");
+                        break;
+                    case Key.F2:
+                        StaticControllerSignal.ControllerSignalView("F2");
+                        break;
+                    case Key.F3:
+                        StaticControllerSignal.ControllerSignalView("F3");
+                        break;
+                    default:
+                        break;
+                }
+            }
         }
 
         private void Jog_KeyUp (object sender, KeyEventArgs e) {

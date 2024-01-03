@@ -33,6 +33,11 @@ namespace AutomaticScrewMachine.Bases {
 
         // Rollback
         public static readonly string JOG_RETURN = "JogReturnBtn";
+
+        // KeyDownEvent
+        public static readonly string IO_SERVO_X = "F1";
+        public static readonly string IO_SERVO_Y = "F2";
+        public static readonly string IO_SERVO_Z = "F3";
         #endregion
 
         public static void ControllerSignalView(string clickBorderName)
@@ -66,7 +71,9 @@ namespace AutomaticScrewMachine.Bases {
         {
             IsPress = false;
             Messenger.Default.Send(new SignalMessage(IsViewName, IsPress));
-            _joystickWorker.CancelAsync();
+            if (_joystickWorker != null) {
+                _joystickWorker.CancelAsync();
+            }
             //_dispatcherTimer.Stop();
         }
 
