@@ -37,7 +37,7 @@ namespace AutomaticScrewMachine.ViewModel {
                 BtnClose = new RelayCommand(WindowClose);
                 // CurrentViewControl
                 CurrentJogView = new RelayCommand(() => CurrentViewModel = _locator.JogViewModel);
-                CurrentMainView = new RelayCommand(() => SerialPortAdapter.WriteTorqSerial());
+                //CurrentMainView = new RelayCommand(() => SerialPortAdapter.WriteTorqSerial());
 
                 WindowBtnOpacity = 0.5;
             } catch (Exception ex) {

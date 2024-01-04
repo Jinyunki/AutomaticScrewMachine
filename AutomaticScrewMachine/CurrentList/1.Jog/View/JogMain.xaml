@@ -31,7 +31,7 @@
             Grid.Column="0"
             Margin="0,0,10,0"
             Background="{DynamicResource MainStainless}">
-            <fragList:Frag_MachineLocation Width="750" Height="770" />
+            <fragList:Frag_MachineLocation Width="750" Height="770"  MouseDown="Grid_MouseDown"/>
             <Grid
                 Width="120"
                 Height="50"
@@ -150,8 +150,6 @@
                 </Grid>
             </Border>
         </Grid>
-
-
         <Grid Grid.Column="2">
             <Grid.RowDefinitions>
                 <RowDefinition />

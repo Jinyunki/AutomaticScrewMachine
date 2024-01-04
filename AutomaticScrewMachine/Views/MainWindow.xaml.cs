@@ -14,7 +14,6 @@ namespace AutomaticScrewMachine
         {
             InitializeComponent();
             Cursor = C1;
-            WinBtn.Visibility = Visibility.Hidden;
         }
 
         private void Window_MouseDown(object sender, MouseButtonEventArgs e)
@@ -83,15 +82,6 @@ namespace AutomaticScrewMachine
 
         private void Jog_KeyUp (object sender, KeyEventArgs e) {
             StaticControllerSignal.StopControllerSignalView();
-        }
-
-
-        private void Grid_MouseEnter (object sender, MouseEventArgs e) {
-            WinBtn.Visibility = Visibility.Visible;
-        }
-
-        private void Grid_MouseLeave (object sender, MouseEventArgs e) {
-            WinBtn.Visibility = Visibility.Hidden;
         }
     }
 }

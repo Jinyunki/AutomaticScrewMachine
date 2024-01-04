@@ -20,8 +20,8 @@ namespace AutomaticScrewMachine.CurrentList._1.Jog.ViewModel {
         private BackgroundWorker _homeReturnWorker;
 
         public JogViewModel () {
-            SerialPortAdapter.ConnectedSerial();
-            SerialPortAdapter.WriteTorqSerial();
+            //SerialPortAdapter.ConnectedSerial();
+            //SerialPortAdapter.WriteTorqSerial();
             DefaultSet(); // 기본
 
             ThreadWorker();
@@ -714,7 +714,6 @@ namespace AutomaticScrewMachine.CurrentList._1.Jog.ViewModel {
         }
         private uint ReturnServoState (int index, uint value) {
             CAXM.AxmSignalIsServoOn(index, ref value);
-
             return value;
         }
         #endregion

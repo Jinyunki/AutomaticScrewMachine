@@ -108,6 +108,7 @@ namespace AutomaticScrewMachine.Model {
         public ICommand BtnClose { get; set; }
         public ICommand CurrentJogView { get; set; }
         public ICommand CurrentMainView { get; set; }
+        public ICommand CurrentIO { get; set; }
         #endregion
 
 
