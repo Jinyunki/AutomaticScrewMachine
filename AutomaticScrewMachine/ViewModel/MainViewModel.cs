@@ -1,4 +1,5 @@
 using AutomaticScrewMachine.Model;
+using AutomaticScrewMachine.Utiles;
 using GalaSoft.MvvmLight.Command;
 using System;
 using System.Diagnostics;
@@ -9,6 +10,9 @@ namespace AutomaticScrewMachine.ViewModel {
     public class MainViewModel : MainViewBindingData {
         public MainViewModel()
         {
+
+            SerialPortAdapter.ConnectedSerial();
+            
             WinBtnEvent();
             RealTime();
             Docking();
@@ -33,6 +37,7 @@ namespace AutomaticScrewMachine.ViewModel {
                 BtnClose = new RelayCommand(WindowClose);
                 // CurrentViewControl
                 CurrentJogView = new RelayCommand(() => CurrentViewModel = _locator.JogViewModel);
+                CurrentMainView = new RelayCommand(() => SerialPortAdapter.WriteTorqSerial());
 
                 WindowBtnOpacity = 0.5;
             } catch (Exception ex) {

@@ -203,11 +203,12 @@
                                         Background="Transparent">
                                         <parts:Parts_JigScrewHole />
                                         <Button
-                                            Width="50"
-                                            Height="40"
+                                            Width="60"
+                                            Height="50"
                                             Background="{Binding JigP1}"
                                             Command="{Binding MovePosition1}"
-                                            Opacity="0.4" />
+                                            Opacity="0.4"
+                                            Style="{DynamicResource RoundedButtonStyle}" />
                                     </Grid>
 
                                     <Grid
@@ -216,11 +217,12 @@
                                         Background="Transparent">
                                         <parts:Parts_JigScrewHole />
                                         <Button
-                                            Width="50"
-                                            Height="40"
+                                            Width="60"
+                                            Height="50"
                                             Background="{Binding JigP2}"
                                             Command="{Binding MovePosition2}"
-                                            Opacity="0.4" />
+                                            Opacity="0.4"
+                                            Style="{DynamicResource RoundedButtonStyle}" />
                                     </Grid>
 
                                     <Grid
@@ -229,11 +231,12 @@
                                         Background="Transparent">
                                         <parts:Parts_JigScrewHole />
                                         <Button
-                                            Width="50"
-                                            Height="40"
+                                            Width="60"
+                                            Height="50"
                                             Background="{Binding JigP3}"
                                             Command="{Binding MovePosition3}"
-                                            Opacity="0.4" />
+                                            Opacity="0.4"
+                                            Style="{DynamicResource RoundedButtonStyle}" />
                                     </Grid>
 
                                     <Grid
@@ -242,11 +245,12 @@
                                         Background="Transparent">
                                         <parts:Parts_JigScrewHole />
                                         <Button
-                                            Width="50"
-                                            Height="40"
+                                            Width="60"
+                                            Height="50"
                                             Background="{Binding JigP4}"
                                             Command="{Binding MovePosition4}"
-                                            Opacity="0.4" />
+                                            Opacity="0.4"
+                                            Style="{DynamicResource RoundedButtonStyle}" />
                                     </Grid>
 
                                     <Grid
@@ -255,11 +259,12 @@
                                         Background="Transparent">
                                         <parts:Parts_JigScrewHole />
                                         <Button
-                                            Width="50"
-                                            Height="40"
+                                            Width="60"
+                                            Height="50"
                                             Background="{Binding JigP5}"
                                             Command="{Binding MovePosition5}"
-                                            Opacity="0.4" />
+                                            Opacity="0.4"
+                                            Style="{DynamicResource RoundedButtonStyle}" />
                                     </Grid>
 
                                 </Grid>

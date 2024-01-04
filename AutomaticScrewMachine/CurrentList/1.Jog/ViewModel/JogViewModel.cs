@@ -20,6 +20,8 @@ namespace AutomaticScrewMachine.CurrentList._1.Jog.ViewModel {
         private BackgroundWorker _homeReturnWorker;
 
         public JogViewModel () {
+            SerialPortAdapter.ConnectedSerial();
+            SerialPortAdapter.WriteTorqSerial();
             DefaultSet(); // 기본
 
             ThreadWorker();
@@ -255,12 +257,12 @@ namespace AutomaticScrewMachine.CurrentList._1.Jog.ViewModel {
             CAXD.AxdoReadOutport(indexIONumber, ref temp);
             switch (indexIONumber) {
                 case 7:
-                    // 하단 메서드와 일치화 시킬예정.
+                    returnValue = temp == 1 ? Brushes.Transparent : Brushes.Gray;
                     break;
                 default:
+                    returnValue = temp == 1 ? Brushes.Red : Brushes.Gray;
                     break;
             }
-            returnValue = temp == 1 ? Brushes.Red : Brushes.Gray;
             return returnValue;
         }
         private Brush DIO_BrushNG (int indexIONumber) {
@@ -314,6 +316,7 @@ namespace AutomaticScrewMachine.CurrentList._1.Jog.ViewModel {
 
 
         }
+
         //TODO : TABCOUNT 구조 변경해야함
         private int _tabCnt = 1;
         public int TabCnt {
@@ -325,12 +328,12 @@ namespace AutomaticScrewMachine.CurrentList._1.Jog.ViewModel {
         }
         private void CommandMoveJIG (double intaval) {
             if (TabCnt == 1) {
-                Interval = intaval/* + GetTabInterval*/;
+                Interval = intaval;
                 Port1Position = new double[2] { StartPortXPos + Interval, StartPortYPos };
                 GetMoveMultiPosition(Port1Position);
                 TabCnt++;
             } else {
-                Interval = intaval/* + GetTabInterval*/;
+                Interval = intaval;
                 Port1Position = new double[2] { StartPortXPos + Interval + GetTabInterval, StartPortYPos };
                 GetMoveMultiPosition(Port1Position);
                 TabCnt--;

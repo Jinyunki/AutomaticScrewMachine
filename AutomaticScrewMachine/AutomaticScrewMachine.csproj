@@ -170,6 +170,7 @@
     <Compile Include="Bases\SignalMessage.cs" />
     <Compile Include="Bases\StaticControllerSignal.cs" />
     <Compile Include="Utiles\ExcelAdapter.cs" />
+    <Compile Include="Utiles\SerialPortAdapter.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />
     <Page Include="CurrentList\1.Jog\View\frag\Frag_InputPosition.xaml">
@@ -259,7 +260,6 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <Resource Include="Fonts\Cafe24OhsquareAir-v2.0.ttf" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -348,7 +348,8 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="CurrentList\2.SidBar\ViewModel\" />
-    <Folder Include="View\" />
+    <Folder Include="CurrentList\3.Torq\" />
+    <Folder Include="Views\" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Assets\btn_change.png" />

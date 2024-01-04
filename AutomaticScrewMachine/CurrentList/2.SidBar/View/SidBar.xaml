@@ -17,21 +17,35 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </UserControl.Resources>
-    <Grid >
+    <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition/>
-            <RowDefinition/>
-            <RowDefinition/>
-            <RowDefinition/>
-            <RowDefinition/>
-            <RowDefinition/>
-            <RowDefinition/>
-            <RowDefinition/>
-            <RowDefinition/>
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
         </Grid.RowDefinitions>
 
-        <Button Grid.Row="0" Content="MOTION VIEW" Margin="10" Command="{Binding CurrentJogView}"
-                Foreground="Silver"
-                Style="{DynamicResource RoundedButtonStyle}" Background="{DynamicResource DeepNaby}"/>
+        <Button
+            Grid.Row="0"
+            Margin="10"
+            Background="{DynamicResource DeepNaby}"
+            Command="{Binding CurrentMainView}"
+            Content="MAIN"
+            Foreground="Silver"
+            Style="{DynamicResource RoundedButtonStyle}" />
+
+        <Button
+            Grid.Row="1"
+            Margin="10"
+            Background="{DynamicResource DeepNaby}"
+            Command="{Binding CurrentJogView}"
+            Content="MOTION VIEW"
+            Foreground="Silver"
+            Style="{DynamicResource RoundedButtonStyle}" />
     </Grid>
 </UserControl>
