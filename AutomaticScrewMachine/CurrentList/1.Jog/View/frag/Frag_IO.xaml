@@ -52,11 +52,7 @@
                         HorizontalAlignment="Right"
                         Background="{Binding ServoX, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                         Command="{Binding ServoCheckX}"
-                        Style="{StaticResource RoundedButtonStyle}">
-                        <Button.InputBindings>
-                            <KeyBinding Key="F1" Command="{Binding ServoF1CheckX}" />
-                        </Button.InputBindings>
-                    </Button>
+                        Style="{StaticResource RoundedButtonStyle}" />
                 </Grid>
 
                 <Grid Grid.Row="1">

@@ -141,6 +141,20 @@
                         <ColumnDefinition Width="3*" />
                     </Grid.ColumnDefinitions>
 
+                    <Button
+                        Grid.Column="0"
+                        Width="80"
+                        Height="80"
+                        Margin="10"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top"
+                        Command="{Binding HomeCommand}"
+                        Style="{DynamicResource RoundedButtonStyle}">
+                        <Button.Background>
+                            <ImageBrush ImageSource="../../../../Assets/btn_home.png" />
+                        </Button.Background>
+                    </Button>
+
                     <Grid Grid.Column="1">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="31.85*" />
@@ -148,7 +162,6 @@
                             <RowDefinition Height="11*" />
                         </Grid.RowDefinitions>
 
-                        <Grid Grid.Row="0" />
                         <Grid Grid.Row="0">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="29*" />
@@ -171,14 +184,6 @@
 
                         <!--  토크 체결 지그 위치  -->
                         <Grid Grid.Row="1">
-                            <Rectangle
-                                HorizontalAlignment="Stretch"
-                                Panel.ZIndex="0"
-                                Fill="Transparent"
-                                Opacity="0.5" />
-                            <!--  Fill="{StaticResource MyGlassBrushResource}"  -->
-
-
                             <Grid>
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="10.5*" />

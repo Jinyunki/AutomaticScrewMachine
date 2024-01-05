@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 using System.Threading;
 using System.Diagnostics;
 using System.Windows.Data;
+using AutomaticScrewMachine.Bases;
 
 namespace AutomaticScrewMachine.CurrentList._1.Jog.Model {
     public class JogData : ViewModelBase {
@@ -134,8 +135,8 @@ namespace AutomaticScrewMachine.CurrentList._1.Jog.Model {
             PositionDataList[index].X = PositionValueX;
             PositionDataList[index].Y = PositionValueY;
             PositionDataList[index].Z = PositionValueZ;
-            PositionDataList[index].Driver_IO = DriverBuzzerSignal;
-            PositionDataList[index].Depth_IO = DepthBuzzerSignal;
+            PositionDataList[index].Driver_IO = StatusReciver.OUTPORT_SCREW_DRIVER;
+            PositionDataList[index].Depth_IO = StatusReciver.OUTPORT_DEPTH_CHECKER;
         }
 
         private Thickness _DriverPosList;
@@ -175,6 +176,7 @@ namespace AutomaticScrewMachine.CurrentList._1.Jog.Model {
         public ICommand ServoCheckX { get; set; }
         public ICommand ServoCheckY { get; set; }
         public ICommand ServoCheckZ { get; set; } 
+        public ICommand NGBoxCommand { get; set; } 
         
         public ICommand MovePosition1 { get; set; }
         public ICommand MovePosition2 { get; set; }
@@ -672,16 +674,6 @@ namespace AutomaticScrewMachine.CurrentList._1.Jog.Model {
             ReturnBrush = signalCode == 1 ? Brushes.Green : Brushes.Gray;
             return ReturnBrush;
         }
-        public uint valueX = 9;
-        public uint valueY = 9;
-        public uint valueZ = 9;
-        public bool ServoSignal = false;
-
-        public uint DriverBuzzerSignal = 9; //8
-        public uint DepthBuzzerSignal = 9; //9
-        public uint VacuumBuzzerSignal = 9; //10
-
-
 
     }
 }

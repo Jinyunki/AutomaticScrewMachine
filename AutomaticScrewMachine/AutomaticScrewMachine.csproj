@@ -111,6 +111,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Bases\StatusReciver.cs" />
     <Compile Include="CurrentList\1.Jog\Base\JogBase.cs" />
     <Compile Include="CurrentList\1.Jog\Model\JogData.cs" />
     <Compile Include="CurrentList\1.Jog\Model\PosData.cs" />
