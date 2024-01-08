@@ -14,9 +14,12 @@ using System.Threading;
 using System.Diagnostics;
 using System.Windows.Data;
 using AutomaticScrewMachine.Bases;
+using System.Net.NetworkInformation;
 
 namespace AutomaticScrewMachine.CurrentList._1.Jog.Model {
     public class JogData : ViewModelBase {
+        public Dictionary<int, Brush> _callBackBrush = new Dictionary<int, Brush>();
+
         public enum DIOIndex {
             STARTBTN = 0,
             RESETBTN = 1,
@@ -27,7 +30,7 @@ namespace AutomaticScrewMachine.CurrentList._1.Jog.Model {
             IDK5 = 5,
             IDK6 = 6,
 
-            ERRORMODEL = 7,
+            NGBOX = 7,
 
             DRIVER = 8,
             DEPTH = 9,
@@ -66,52 +69,9 @@ namespace AutomaticScrewMachine.CurrentList._1.Jog.Model {
         }
         public static readonly string isFolderName = "Data";
         public static readonly string isFileName = "JogData.xlsx";
-        private SequenceData _selectedSequenceItem;
-        public SequenceData SelectedSequenceItem {
-            get { return _selectedSequenceItem; }
-            set {
-                if (_selectedSequenceItem != value) {
-                    _selectedSequenceItem = value;
-                    RaisePropertyChanged(nameof(_selectedSequenceItem));
 
-                    // 선택된 항목에 대한 처리 수행
-                    if (_selectedSequenceItem != null) {
-                        SelectedSequenceIndex = SequenceDataList.IndexOf(_selectedSequenceItem);
-                        GetReadingData(SelectedSequenceIndex);
-                    } else {
-                        PositionDataList.Clear();
-                    }
-                }
-            }
-        }
-
-        public void GetReadingData (int workSheetIndex) {
-            PositionDataList?.Clear();
-            ObservableCollection<List<string>> GetJogDataList;
-
-            GetJogDataList = ExcelAdapter.GetReadData(isFolderName, isFileName, workSheetIndex);
-            if (GetJogDataList != null) {
-                for (int j = 1; j < GetJogDataList.Count; j++) // j = 0 CategoryList 그래서 1부터 시작
-                {
-                    PosData posData = new PosData {
-                        Name = GetJogDataList[j][0].ToString(),
-                        X = double.Parse(GetJogDataList[j][1]),
-                        Y = double.Parse(GetJogDataList[j][2]),
-                        Z = double.Parse(GetJogDataList[j][3]),
-                        Driver_IO = uint.Parse(GetJogDataList[j][4]),
-                        Depth_IO = uint.Parse(GetJogDataList[j][5]),
-                        ChangePositionDataBtn = new RelayCommand(ChangePosTrigger)
-                    };
-
-                    PositionDataList.Add(posData);
-                }
-            }
-        }
-
-        private void ChangePosTrigger()
-        {
-            UpdateSelectedPosData(SelectedPositionIndex);
-        }
+        public const uint SignalON = 1u;
+        public const uint SignalOFF = 0;
 
         private PosData _selectedPositionItem;
         public PosData SelectedPositionItem {
@@ -125,18 +85,19 @@ namespace AutomaticScrewMachine.CurrentList._1.Jog.Model {
                     if (_selectedPositionItem != null) {
                         SelectedPositionIndex = PositionDataList.IndexOf(_selectedPositionItem);
                         //UpdateSelectedPosData(SelectedPositionIndex);
-                    } 
+                    }
                 }
             }
         }
-        
-        private void UpdateSelectedPosData (int index) {
 
-            PositionDataList[index].X = PositionValueX;
-            PositionDataList[index].Y = PositionValueY;
-            PositionDataList[index].Z = PositionValueZ;
-            PositionDataList[index].Driver_IO = StatusReciver.OUTPORT_SCREW_DRIVER;
-            PositionDataList[index].Depth_IO = StatusReciver.OUTPORT_DEPTH_CHECKER;
+        //TODO : TABCOUNT 구조 변경해야함
+        private int _tabCnt = 1;
+        public int TabCnt {
+            get { return _tabCnt; }
+            set {
+                _tabCnt = value;
+                RaisePropertyChanged(nameof(TabCnt));
+            }
         }
 
         private Thickness _DriverPosList;
@@ -169,9 +130,6 @@ namespace AutomaticScrewMachine.CurrentList._1.Jog.Model {
         public ICommand JogSpeedUp => new RelayCommand(() => JogMoveSpeed += 0.5);
         public ICommand JogSpeedDown => new RelayCommand(() => JogMoveSpeed = Math.Max(0.101, JogMoveSpeed - (JogMoveSpeed < 1.1 ? 0.1 : 0.5)));
         public ICommand SetMovePosition {get; set;}
-        private void SpeedDown () {
-            JogMoveSpeed = Math.Max(0.101, JogMoveSpeed - (JogMoveSpeed < 1.1 ? 0.1 : 0.5));
-        }
 
         public ICommand ServoCheckX { get; set; }
         public ICommand ServoCheckY { get; set; }
@@ -395,11 +353,11 @@ namespace AutomaticScrewMachine.CurrentList._1.Jog.Model {
         #endregion
 
         private Brush _buzzerX = Brushes.Gray;
-        public Brush BuzzerX {
+        public Brush ServoMoveCheckX {
             get { return _buzzerX; }
             set {
                 _buzzerX = value;
-                RaisePropertyChanged(nameof(BuzzerX));
+                RaisePropertyChanged(nameof(ServoMoveCheckX));
             }
         }
 
@@ -420,11 +378,11 @@ namespace AutomaticScrewMachine.CurrentList._1.Jog.Model {
         public double[] SupplyPosition = new double[2] { 167119, 117239 };
         public double[] Port1Position /*= new double[2] { 73800, 249100 }*/;
         private Brush _buzzerY = Brushes.Gray;
-        public Brush BuzzerY {
+        public Brush ServoMoveCheckY {
             get { return _buzzerY; }
             set {
                 _buzzerY = value;
-                RaisePropertyChanged(nameof(BuzzerY));
+                RaisePropertyChanged(nameof(ServoMoveCheckY));
             }
         }
 
@@ -438,36 +396,36 @@ namespace AutomaticScrewMachine.CurrentList._1.Jog.Model {
         }
 
         private Brush _buzzerZ = Brushes.Gray;
-        public Brush BuzzerZ {
+        public Brush ServoMoveCheckZ {
             get { return _buzzerZ; }
             set {
                 _buzzerZ = value;
-                RaisePropertyChanged(nameof(BuzzerZ));
+                RaisePropertyChanged(nameof(ServoMoveCheckZ));
             }
         }
 
         private Brush _servoX = Brushes.Gray;
-        public Brush ServoX {
+        public Brush ServoStatusX {
             get { return _servoX; }
             set {
                 _servoX = value;
-                RaisePropertyChanged(nameof(ServoX));
+                RaisePropertyChanged(nameof(ServoStatusX));
             }
         }
         private Brush _servoY = Brushes.Gray;
-        public Brush ServoY {
+        public Brush ServoStatusY {
             get { return _servoY; }
             set {
                 _servoY = value;
-                RaisePropertyChanged(nameof(ServoY));
+                RaisePropertyChanged(nameof(ServoStatusY));
             }
         }
         private Brush _servoZ = Brushes.Gray;
-        public Brush ServoZ {
+        public Brush ServoStatusZ {
             get { return _servoZ; }
             set {
                 _servoZ = value;
-                RaisePropertyChanged(nameof(ServoZ));
+                RaisePropertyChanged(nameof(ServoStatusZ));
             }
         }
 

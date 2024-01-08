@@ -96,7 +96,7 @@
                     Height="35"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"
-                    Background="{Binding BuzzerX}"
+                    Background="{Binding ServoMoveCheckX}"
                     CornerRadius="50" />
             </Grid>
 
@@ -128,7 +128,7 @@
                     Height="35"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"
-                    Background="{Binding BuzzerY}"
+                    Background="{Binding ServoMoveCheckY}"
                     CornerRadius="50" />
             </Grid>
 
@@ -160,7 +160,7 @@
                     Height="35"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"
-                    Background="{Binding BuzzerZ}"
+                    Background="{Binding ServoMoveCheckZ}"
                     CornerRadius="50" />
             </Grid>
 

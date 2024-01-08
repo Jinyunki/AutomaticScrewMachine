@@ -112,11 +112,9 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Bases\StatusReciver.cs" />
-    <Compile Include="CurrentList\1.Jog\Base\JogBase.cs" />
     <Compile Include="CurrentList\1.Jog\Model\JogData.cs" />
     <Compile Include="CurrentList\1.Jog\Model\PosData.cs" />
     <Compile Include="CurrentList\1.Jog\Model\SequenceData.cs" />
-    <Compile Include="CurrentList\1.Jog\ViewModel\JogBind.cs" />
     <Compile Include="CurrentList\1.Jog\ViewModel\JogViewModel.cs" />
     <Compile Include="CurrentList\1.Jog\View\frag\Frag_InputPosition.xaml.cs">
       <DependentUpon>Frag_InputPosition.xaml</DependentUpon>
@@ -355,6 +353,7 @@
     <Resource Include="Assets\btn_right_white.png" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="CurrentList\1.Jog\Base\" />
     <Folder Include="CurrentList\2.SidBar\ViewModel\" />
     <Folder Include="CurrentList\3.IO\ViewModel\" />
     <Folder Include="Views\" />

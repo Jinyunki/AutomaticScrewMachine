@@ -50,7 +50,7 @@
                         Width="20"
                         Height="20"
                         HorizontalAlignment="Right"
-                        Background="{Binding ServoX, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        Background="{Binding ServoStatusX, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                         Command="{Binding ServoCheckX}"
                         Style="{StaticResource RoundedButtonStyle}" />
                 </Grid>
@@ -72,7 +72,7 @@
                         Width="20"
                         Height="20"
                         HorizontalAlignment="Right"
-                        Background="{Binding ServoY, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        Background="{Binding ServoStatusY, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                         Command="{Binding ServoCheckY}"
                         Style="{StaticResource RoundedButtonStyle}" />
                 </Grid>
@@ -95,7 +95,7 @@
                         Width="20"
                         Height="20"
                         HorizontalAlignment="Right"
-                        Background="{Binding ServoZ, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        Background="{Binding ServoStatusZ, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                         Command="{Binding ServoCheckZ}"
                         Style="{StaticResource RoundedButtonStyle}" />
                 </Grid>
