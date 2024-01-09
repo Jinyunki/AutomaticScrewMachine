@@ -7,18 +7,17 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Threading;
 
 namespace AutomaticScrewMachine.Utiles {
     public static class SerialPortAdapter {
         public static SerialPort _serialPort;
+        public static string ReadData;
         static SerialPortAdapter () {
             //ConnectedSerial();
         }
 
         public static void ConnectedSerial () {
-
-            
-            // 기본 시리얼 포트 설정
             _serialPort = new SerialPort {
                 PortName = "COM1",
                 BaudRate = 57600,
@@ -43,100 +42,51 @@ namespace AutomaticScrewMachine.Utiles {
         public static int receiveStep = 0;
         public static bool readComplete = false;
         private static void Torq_SerialPort_DataReceived (object sender, SerialDataReceivedEventArgs e) {
-            int readCount = 0;
-            byte[] readData;
+            // DataReceived 이벤트 핸들러에서 수신된 데이터를 처리하는 코드를 추가
+            SerialPort serialPort = (SerialPort)sender;
+            string receivedData = serialPort.ReadExisting();
 
-            readComplete = false;
+            ReadData = receivedData;
+            Console.WriteLine($"수신된 메시지: {receivedData}");
 
-            readCount = _serialPort.BytesToRead;
-            readData = new byte[readCount];
 
-            _serialPort.Read(readData, 0, readCount);
-            Console.WriteLine("_serialPort.Read(readData, 0, readCount)  ::: " + _serialPort.Read(readData, 0, readCount));
+            // UI 업데이트를 Dispatcher를 통해 수행 *Dispatcher ISSUE
+            /*Dispatcher.Invoke(() => {
+                ReadData = receivedData;
+                Console.WriteLine($"수신된 메시지: {receivedData}");
+            });*/
         }
+        private static void SendData (string inputData) {
+            string inputString = inputData;
 
-        public static void WriteTorqSerial () {
-            //SendPacket(_serialPort,1,'#',"STX",);
-            string asc = "STX";
-            byte ASCII_STX = 0x02;
+            // 입력된 문자열을 정수로 변환
+            if (int.TryParse(inputString, out int inputValue)) {
+                // 3자리로 표현하고 앞을 0으로 채움
+                string formattedInput = "P" + inputValue.ToString("D3");
 
-            List<byte> listValue = new List<byte>();
+                int sum = 0;
 
-            listValue.Add(ASCII_STX);
-
-            listValue.Add(0x01);
-            //listValue.Add(0x01);
-
-            listValue.Add(0x23);
-
-            listValue.AddRange(Encoding.UTF8.GetBytes("SET"));
-
-            listValue.Add(0x00);
-            //listValue.Add(0x00);
-            //listValue.Add(0x00);
-
-            listValue.Add(0x3A);
-
-            listValue.Add(0x42);
-
-            listValue.Add(0x03);
-
-
-            _serialPort.Write(listValue.ToArray(), 0, listValue.Count);
-            
-        }
-        static void SendPacket (SerialPort serialPort, ushort deviceId, char direction, string command, byte[] data) {
-            MemoryStream stream = new MemoryStream();
-            BinaryWriter writer = new BinaryWriter(stream);
-
-            // 패킷 생성
-            writer.Write((byte)':');
-            writer.Write(deviceId);
-            writer.Write(direction);
-            writer.Write(Encoding.ASCII.GetBytes(command.PadRight(3, ' '))); // Command은 3바이트로 맞추고 공백으로 채움
-            if (data != null && data.Length > 0)
-                writer.Write(data);
-            writer.Write((byte)':');
-            writer.Write((byte)0xB5);
-
-            // 시리얼 포트를 통해 데이터 전송
-            serialPort.Write(stream.ToArray(), 0, (int)stream.Length);
-        }
-
-
-        private static bool make_CheckSum (List<byte> writeData, ref byte ckH, ref byte ckL) {
-
-            byte temp_byte = 0;
-            string checkSum = "";
-            for (int i = 1; i < writeData.Count; i++) {
-                temp_byte = (byte)(temp_byte + writeData[i]);
-            }
-
-            checkSum = temp_byte.ToString("X2");
-
-            ckH = ((byte)checkSum[0]);
-            ckL = ((byte)checkSum[1]);
-
-            return true;
-
-        }
-
-        private static bool get_CheckSum (List<byte> readData, ref byte ckH, ref byte ckL) {
-           
-                byte temp_byte = 0;
-                string checkSum = "";
-                for (int i = 0; i < readData.Count - 2; i++) {
-                    temp_byte = (byte)(temp_byte + readData[i]);
+                foreach (char c in formattedInput) {
+                    int asciiValue = (int)c;
+                    sum += asciiValue;
                 }
 
-                checkSum = temp_byte.ToString("X2");
+                char stxChar = (char)2; // STX를 나타내는 ASCII 코드 2
+                char etxChar = (char)3; // ETX를 나타내는 ASCII 코드 3
 
-                ckH = ((byte)checkSum[0]);
-                ckL = ((byte)checkSum[1]);
+                // 16진수로 변환된 마지막 자리 계산
+                string hexSum = sum.ToString("X");
+                char lastDigit = hexSum[hexSum.Length - 1];
 
-                return true;
+                string messageToSend = $"{stxChar}{formattedInput}{lastDigit}{etxChar}";
+
+                // 실제로 SerialPort를 통해 데이터를 전송합니다.
+                _serialPort.Write(messageToSend);
+
+                Console.WriteLine($"전송한 메시지: {messageToSend}");
+            } else {
+                Console.WriteLine("유효한 숫자가 아닙니다.");
+            }
         }
-
-
     }
 }
