@@ -12,6 +12,7 @@ using GalaSoft.MvvmLight.Command;
 using System.ComponentModel;
 using System.Windows.Media;
 using System.Collections.ObjectModel;
+using static OfficeOpenXml.ExcelErrorValue;
 
 namespace AutomaticScrewMachine.CurrentList._1.Jog.ViewModel {
     public class JogViewModel : JogData {
@@ -139,7 +140,7 @@ namespace AutomaticScrewMachine.CurrentList._1.Jog.ViewModel {
 
                 // 시퀀스 시작 트리거
                 if (SelfStartButton == Brushes.Green && SelfStart2Button == Brushes.Green) {
-                    GetSequenceStart();
+                    CommandSequenceStart();
                 }
 
                 // 긴급 정지
@@ -182,7 +183,6 @@ namespace AutomaticScrewMachine.CurrentList._1.Jog.ViewModel {
                 P3_NG = SetOutportBind(18);
                 P4_NG = SetOutportBind(19);
                 P5_NG = SetOutportBind(20);
-
             }
         }
 
@@ -308,7 +308,9 @@ namespace AutomaticScrewMachine.CurrentList._1.Jog.ViewModel {
                     AddPosition = new RelayCommand(AddPos); // Seq 추가
                     RemoveSequenceCommand = new RelayCommand(RemoveSelectedSequenceListItem); // SEQ삭제
                     RemovePositionCommand = new RelayCommand(RemoveSelectedPositionListItem); // POS삭제
-                    SequenceStart = new RelayCommand(GetSequenceStart); // 시퀀스 시작
+
+                    // 자동화 시퀀스 시작
+                    SequenceStart = new RelayCommand(CommandSequenceStart); // 시퀀스 시작
 
                     //NGBOX ONOFF
                     NGBoxCommand = new RelayCommand(() => DIOWrite((int)DIOIndex.NGBOX, _StatusReciverInstance.INPORT_NGBOX_OFF == 0 ? 1u : 0));
@@ -334,7 +336,7 @@ namespace AutomaticScrewMachine.CurrentList._1.Jog.ViewModel {
                     MovePosition3 = new RelayCommand(() => CommandMoveJIG(GetPortInterval * 2));
                     MovePosition4 = new RelayCommand(() => CommandMoveJIG(GetPortInterval * 3));
                     MovePosition5 = new RelayCommand(() => CommandMoveJIG(GetPortInterval * 4));
-                    MovePositionSupply = new RelayCommand(() => GetMoveMultiPosition(SupplyPosition));
+                    MovePositionSupply = new RelayCommand(() => MoveMultiPos_XY(SupplyPosition));
 
                 }
             } catch (Exception ex) {
@@ -349,12 +351,12 @@ namespace AutomaticScrewMachine.CurrentList._1.Jog.ViewModel {
             if (TabCnt == 1) {
                 Interval = intaval;
                 Port1Position = new double[2] { StartPortXPos + Interval, StartPortYPos };
-                GetMoveMultiPosition(Port1Position);
+                MoveMultiPos_XY(Port1Position);
                 TabCnt++;
             } else {
                 Interval = intaval;
                 Port1Position = new double[2] { StartPortXPos + Interval + GetTabInterval, StartPortYPos };
-                GetMoveMultiPosition(Port1Position);
+                MoveMultiPos_XY(Port1Position);
                 TabCnt--;
             }
             
@@ -424,7 +426,7 @@ namespace AutomaticScrewMachine.CurrentList._1.Jog.ViewModel {
                 for (int i = 0; i < ExcelAdapter.WorkSheetNameList.Count; i++) {
                     SequenceData seq = new SequenceData {
                         Name = ExcelAdapter.WorkSheetNameList[i].ToString(),
-                        SequenceListStart = new RelayCommand(GetSequenceStart)
+                        SequenceListStart = new RelayCommand(CommandSequenceStart)
                     };
 
                     SequenceDataList.Add(seq);
@@ -644,7 +646,7 @@ namespace AutomaticScrewMachine.CurrentList._1.Jog.ViewModel {
 
             return removedIndex;
         }
-        private void GetSequenceStart () {
+        private void CommandSequenceStart () {
             Trace.WriteLine("==========   Start   ==========\nMethodName : " + MethodBase.GetCurrentMethod().Name + "\n");
             try {
 
@@ -663,7 +665,7 @@ namespace AutomaticScrewMachine.CurrentList._1.Jog.ViewModel {
         }
 
         private void SEQ_RunWorkerCompleted (object sender, RunWorkerCompletedEventArgs e) {
-            GetMoveMultiPosition(SupplyPosition);
+            MoveMultiPos_XY(SupplyPosition);
         }
         private void DIOWrite (int axis, uint value) {
             CAXD.AxdoWriteOutport(axis, value);
@@ -673,7 +675,7 @@ namespace AutomaticScrewMachine.CurrentList._1.Jog.ViewModel {
             for (int i = 0; i < PositionDataList.Count; i++) {
                 double[] SeqXYHoldPos = new double[2] { PositionDataList[i].X, PositionDataList[i].Y };
 
-                GetMoveMultiPosition(SupplyPosition); //xy 공급기
+                MoveMultiPos_XY(SupplyPosition); //xy 공급기
 
                 MoveDownPos(SupplyPosition, 50000); // z 스크류 공급
 
@@ -687,8 +689,10 @@ namespace AutomaticScrewMachine.CurrentList._1.Jog.ViewModel {
                 MoveJIGPos(SeqXYHoldPos); // xy 지그 위치로 이동
 
                 MoveDownPos(SeqXYHoldPos, 30000); // 지그 구멍에 맞춰 체결할곳으로 하강
-
-                Delay(700); // 차후 토크 컨트롤임
+                Delay(700); // 해당 딜레이 => 조건이 충족하면 ? 하기 토크 작동되는 것으로 변경
+                            // ex) 위치가 해당위치가 맞고, INPORT_SCREW_DRIVER_VACUUM_SENSOR의 Status가, ON이면, 
+                TorqDriverWrite((int)DIOIndex.TORQUE_DRIVER_START, SignalON); // 토크 드라이버 작동 (메서드화 해야함. INPORT_TORQU_DRIVER_OK Status가 ON이 아니면 while Delay)
+                  // INPORT_TORQU_DRIVER_READY == SignalON 이 아니면 While Delay
 
                 MoveUpPos(10000);
 
@@ -697,10 +701,19 @@ namespace AutomaticScrewMachine.CurrentList._1.Jog.ViewModel {
                 DIOWrite((int)DIOIndex.DRIVER, SignalOFF);
                 DIOWrite((int)DIOIndex.VACUUM, SignalOFF);
 
+                Console.WriteLine("원사이클 해결");
             }
 
             Delay(500); // 시퀀스 작업이 모두 종료후 0.5초동안 잠시 대기 후
         }
+
+        private void TorqDriverWrite (int axis, uint value) {
+            CAXD.AxdoWriteOutport(axis, value);
+            while (_StatusReciverInstance.INPORT_TORQU_DRIVER_READY != SignalON) {
+                Delay(10);
+            }
+        }
+
         private bool ArePositionsEqual (double[] position1, double[] position2) {
             return ((int)position1[0] == (int)position2[0] && (int)position1[1] == (int)position2[1]);
         }
@@ -731,6 +744,7 @@ namespace AutomaticScrewMachine.CurrentList._1.Jog.ViewModel {
         private void MoveDownPos (double[] xyStatus, double downPos) {
             while (!((int)xyStatus[0] == (int)PositionValueX && (int)xyStatus[1] == (int)PositionValueY)) { // XY 이동이 종료 될때까지
                 Delay(100);
+                Console.WriteLine("1111111111");
             }
 
             if ((int)xyStatus[0] == (int)PositionValueX && (int)xyStatus[1] == (int)PositionValueY) { // XY 가 다시한번 정상인것을 확인 후 하강
@@ -739,6 +753,7 @@ namespace AutomaticScrewMachine.CurrentList._1.Jog.ViewModel {
 
             while ((int)PositionValueZ != downPos) {
                 Delay(100);
+                Console.WriteLine("2222222222");
             }
 
         }
@@ -749,7 +764,7 @@ namespace AutomaticScrewMachine.CurrentList._1.Jog.ViewModel {
             }
         }
 
-        private void GetMoveMultiPosition (double[] XYHoldPos) {
+        private void MoveMultiPos_XY (double[] XYHoldPos) {
             double _moveAbleZPosition = 10000; //마지노선
             if (_StatusReciverInstance.OUTPORT_SCREW_DRIVER != 0 && _StatusReciverInstance.OUTPORT_SCREW_VACUUM != 0) {
                 Crash_IO_OnOff(false);

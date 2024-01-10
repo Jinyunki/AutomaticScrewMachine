@@ -158,6 +158,9 @@
     <Compile Include="CurrentList\3.IO\View\IOMap.xaml.cs">
       <DependentUpon>IOMap.xaml</DependentUpon>
     </Compile>
+    <Compile Include="CurrentList\4.TorqControllerStatus\View\TorqControllerStatus.xaml.cs">
+      <DependentUpon>TorqControllerStatus.xaml</DependentUpon>
+    </Compile>
     <Compile Include="LibContorller\AXA.cs" />
     <Compile Include="LibContorller\AXC.cs" />
     <Compile Include="LibContorller\AXD.cs" />
@@ -228,6 +231,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="CurrentList\3.IO\View\IOMap.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="CurrentList\4.TorqControllerStatus\View\TorqControllerStatus.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -356,6 +363,7 @@
     <Folder Include="CurrentList\1.Jog\Base\" />
     <Folder Include="CurrentList\2.SidBar\ViewModel\" />
     <Folder Include="CurrentList\3.IO\ViewModel\" />
+    <Folder Include="CurrentList\4.TorqControllerStatus\ViewModel\" />
     <Folder Include="Views\" />
   </ItemGroup>
   <ItemGroup>

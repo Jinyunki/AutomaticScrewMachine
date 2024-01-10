@@ -26,9 +26,9 @@ namespace AutomaticScrewMachine.CurrentList._1.Jog.Model {
             EMGBTN = 2,
             START2BTN = 3,
 
-            IDK4 = 4,
-            IDK5 = 5,
-            IDK6 = 6,
+            TORQUE_DRIVER_START = 4, // Torqu 시작 P25 (4)
+            IDK5 = 5, // Preset선택 P25 (1)
+            IDK6 = 6, // Preset선택 P25 (2)
 
             NGBOX = 7,
 
@@ -54,13 +54,13 @@ namespace AutomaticScrewMachine.CurrentList._1.Jog.Model {
             SOUND_BUZZER = 24,
 
 
-            IDK25 = 25,
-            IDK26 = 26,
-            IDK27 = 27,
-            IDK28 = 28,
-            IDK29 = 29,
-            IDK30 = 30,
-            IDK31 = 31
+            IDK25 = 25, // NULL 비어있는 Index
+            IDK26 = 26, // NULL 비어있는 Index
+            IDK27 = 27, // NULL 비어있는 Index
+            IDK28 = 28, // NULL 비어있는 Index
+            IDK29 = 29, // NULL 비어있는 Index
+            IDK30 = 30, // NULL 비어있는 Index
+            IDK31 = 31  // NULL 비어있는 Index
         }
         public enum ServoIndex {
             YPOSITION = 0,

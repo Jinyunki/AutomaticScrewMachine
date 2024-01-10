@@ -109,6 +109,7 @@ namespace AutomaticScrewMachine.Model {
         public ICommand CurrentJogView { get; set; }
         public ICommand CurrentMainView { get; set; }
         public ICommand CurrentIO { get; set; }
+        public ICommand CurrentTORQUE { get; set; }
         #endregion
 
 

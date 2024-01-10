@@ -13,7 +13,8 @@ namespace AutomaticScrewMachine.Bases {
         public uint OUTPORT_RESET_BUTTON; // 1
         public uint OUTPORT_EMG_BUTTON; // 2
         public uint OUTPORT_START_RIGHT_BUTTON; // 3
-                                                //456 무엇인지 모르는 상황
+        public uint OUTPORT_START_TORQUE_DRIVER; // 4
+                                                // 5,6 은 Preset Selected
         public uint OUTPORT_NGBOX; // 7
 
         public uint OUTPORT_SCREW_DRIVER; // 8
@@ -33,7 +34,7 @@ namespace AutomaticScrewMachine.Bases {
         public uint OUTPORT_BUZZER_ERROR; // 22
         public uint OUTPORT_BUZZER_OK; // 23
         public uint OUTPORT_BUZZER_SOUND; // 24
-                                          // 25~31 분석 필요
+                                          // 25 26 27 28 29 30 31 Status NULL -> 여분 슬롯
         #endregion
 
         #region INPORT Status Literal
@@ -57,10 +58,15 @@ namespace AutomaticScrewMachine.Bases {
         public uint INPORT_JIG_PORT4; // 16
         public uint INPORT_JIG_PORT5; // 17
 
-        // 20, 21, 22, 23 ??
+        public uint INPORT_TORQU_DRIVER_OK; // 20
+        public uint INPORT_TORQU_DRIVER_START; // 21
+        public uint INPORT_TORQU_DRIVER_READY; // 22
+        public uint INPORT_TORQU_DRIVER_NG; // 23
+
         public uint INPORT_SUPPLY_SCREW_SENSOR; // 18
         public uint INPORT_EMERGENCY_SENSOR; // 19
         public uint INPORT_NGBOX_IN_SENSOR; // 24
+
                                             // 25, 26, 27, 28, 29 ,30, 31 ??
 
         #endregion
@@ -164,6 +170,7 @@ namespace AutomaticScrewMachine.Bases {
                 OUTPORT_RESET_BUTTON = OutportStatus(1);
                 OUTPORT_EMG_BUTTON = OutportStatus(2);
                 OUTPORT_START_RIGHT_BUTTON = OutportStatus(3);
+                OUTPORT_START_TORQUE_DRIVER = OutportStatus(4);
 
                 OUTPORT_NGBOX = OutportStatus(7);
 
@@ -206,7 +213,14 @@ namespace AutomaticScrewMachine.Bases {
                 INPORT_JIG_PORT5 = InportStatus(17);
 
                 INPORT_SUPPLY_SCREW_SENSOR = InportStatus(18);
+
                 INPORT_EMERGENCY_SENSOR = InportStatus(19);
+
+                INPORT_TORQU_DRIVER_OK = InportStatus(20);
+                INPORT_TORQU_DRIVER_START = InportStatus(21);
+                INPORT_TORQU_DRIVER_READY = InportStatus(22);
+                INPORT_TORQU_DRIVER_NG = InportStatus(23);
+
                 INPORT_NGBOX_IN_SENSOR = InportStatus(24);
             }
         }
