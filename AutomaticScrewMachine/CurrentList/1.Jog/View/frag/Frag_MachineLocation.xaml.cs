@@ -11,6 +11,7 @@ namespace AutomaticScrewMachine.CurrentList._1.Jog.View.frag {
         public Frag_MachineLocation () {
             InitializeComponent();
         }
+
         
     }
 }

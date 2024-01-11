@@ -692,8 +692,7 @@ namespace AutomaticScrewMachine.CurrentList._1.Jog.ViewModel {
                 Delay(700); // 해당 딜레이 => 조건이 충족하면 ? 하기 토크 작동되는 것으로 변경
                             // ex) 위치가 해당위치가 맞고, INPORT_SCREW_DRIVER_VACUUM_SENSOR의 Status가, ON이면, 
                 TorqDriverWrite((int)DIOIndex.TORQUE_DRIVER_START, SignalON); // 토크 드라이버 작동 (메서드화 해야함. INPORT_TORQU_DRIVER_OK Status가 ON이 아니면 while Delay)
-                  // INPORT_TORQU_DRIVER_READY == SignalON 이 아니면 While Delay
-
+                 
                 MoveUpPos(10000);
 
                 //GetScrewCommand_WriteOutport(false); driver,vacuum Off
@@ -709,7 +708,9 @@ namespace AutomaticScrewMachine.CurrentList._1.Jog.ViewModel {
 
         private void TorqDriverWrite (int axis, uint value) {
             CAXD.AxdoWriteOutport(axis, value);
+            Delay(500);
             while (_StatusReciverInstance.INPORT_TORQU_DRIVER_READY != SignalON) {
+                Console.WriteLine("여기탔는지 체크용");
                 Delay(10);
             }
         }
@@ -744,7 +745,6 @@ namespace AutomaticScrewMachine.CurrentList._1.Jog.ViewModel {
         private void MoveDownPos (double[] xyStatus, double downPos) {
             while (!((int)xyStatus[0] == (int)PositionValueX && (int)xyStatus[1] == (int)PositionValueY)) { // XY 이동이 종료 될때까지
                 Delay(100);
-                Console.WriteLine("1111111111");
             }
 
             if ((int)xyStatus[0] == (int)PositionValueX && (int)xyStatus[1] == (int)PositionValueY) { // XY 가 다시한번 정상인것을 확인 후 하강
@@ -753,7 +753,6 @@ namespace AutomaticScrewMachine.CurrentList._1.Jog.ViewModel {
 
             while ((int)PositionValueZ != downPos) {
                 Delay(100);
-                Console.WriteLine("2222222222");
             }
 
         }

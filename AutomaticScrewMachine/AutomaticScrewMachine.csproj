@@ -131,6 +131,9 @@
     <Compile Include="CurrentList\1.Jog\View\frag\Frag_PositionList.xaml.cs">
       <DependentUpon>Frag_PositionList.xaml</DependentUpon>
     </Compile>
+    <Compile Include="CurrentList\1.Jog\View\frag\Frag_PositionMatch.xaml.cs">
+      <DependentUpon>Frag_PositionMatch.xaml</DependentUpon>
+    </Compile>
     <Compile Include="CurrentList\1.Jog\View\frag\Frag_SequnceList.xaml.cs">
       <DependentUpon>Frag_SequnceList.xaml</DependentUpon>
     </Compile>
@@ -195,6 +198,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="CurrentList\1.Jog\View\frag\Frag_PositionList.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="CurrentList\1.Jog\View\frag\Frag_PositionMatch.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
