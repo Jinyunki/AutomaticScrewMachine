@@ -20,10 +20,10 @@ namespace AutomaticScrewMachine.CurrentList._1.Jog.ViewModel {
         private BackgroundWorker _motionWorker;
         private BackgroundWorker _seqWorker;
         private BackgroundWorker _homeReturnWorker;
-        private StatusReciver _StatusReciverInstance = StatusReciver.Instance;
+        private StatusReciver STATUS_Instance = StatusReciver.Instance;
 
         public JogViewModel () {
-            _StatusReciverInstance.StartStatusRead();
+            STATUS_Instance.StartStatusRead();
             //SerialPortAdapter.ConnectedSerial();
             //SerialPortAdapter.WriteTorqSerial();
             DefaultSet(); // 기본
@@ -72,45 +72,45 @@ namespace AutomaticScrewMachine.CurrentList._1.Jog.ViewModel {
             Brush brush;
             switch (indexNum) {
                 case 0:
-                    brush = _StatusReciverInstance.INPORT_START_LEFT_BUTTON == 0 ? Brushes.Gray : Brushes.Green;
-                    OutportInput(indexNum, _StatusReciverInstance.INPORT_START_LEFT_BUTTON);
+                    brush = STATUS_Instance.INPORT_START_LEFT_BUTTON == 0 ? Brushes.Gray : Brushes.Green;
+                    OutportInput(indexNum, STATUS_Instance.INPORT_START_LEFT_BUTTON);
                     break;
                 case 1: // 리셋버튼
-                    brush = _StatusReciverInstance.INPORT_RESET_BUTTON == 0 ? Brushes.Gray : Brushes.Orange;
-                    OutportInput(indexNum, _StatusReciverInstance.INPORT_RESET_BUTTON);
-                    if (_StatusReciverInstance.INPORT_RESET_BUTTON == 1) {
+                    brush = STATUS_Instance.INPORT_RESET_BUTTON == 0 ? Brushes.Gray : Brushes.Orange;
+                    OutportInput(indexNum, STATUS_Instance.INPORT_RESET_BUTTON);
+                    if (STATUS_Instance.INPORT_RESET_BUTTON == 1) {
                         CmdHomeReturn();
                     }
                     break;
                 case 2:
-                    brush = _StatusReciverInstance.INPORT_EMG_BUTTON == 0 ? Brushes.Gray : Brushes.Red;
-                    OutportInput(indexNum, _StatusReciverInstance.INPORT_EMG_BUTTON);
+                    brush = STATUS_Instance.INPORT_EMG_BUTTON == 0 ? Brushes.Gray : Brushes.Red;
+                    OutportInput(indexNum, STATUS_Instance.INPORT_EMG_BUTTON);
                     break;
                 case 3:
-                    brush = _StatusReciverInstance.INPORT_START_RIGHT_BUTTON == 0 ? Brushes.Gray : Brushes.Green;
-                    OutportInput(indexNum, _StatusReciverInstance.INPORT_START_RIGHT_BUTTON);
+                    brush = STATUS_Instance.INPORT_START_RIGHT_BUTTON == 0 ? Brushes.Gray : Brushes.Green;
+                    OutportInput(indexNum, STATUS_Instance.INPORT_START_RIGHT_BUTTON);
                     break;
 
 
                 case 13:
-                    brush = _StatusReciverInstance.INPORT_JIG_PORT1 == 0 ? Brushes.Transparent : Brushes.Black;
+                    brush = STATUS_Instance.INPORT_JIG_PORT1 == 0 ? Brushes.Transparent : Brushes.Black;
                     break;
                 case 14:
-                    brush = _StatusReciverInstance.INPORT_JIG_PORT2 == 0 ? Brushes.Transparent : Brushes.Black;
+                    brush = STATUS_Instance.INPORT_JIG_PORT2 == 0 ? Brushes.Transparent : Brushes.Black;
                     break;
                 case 15:
-                    brush = _StatusReciverInstance.INPORT_JIG_PORT3 == 0 ? Brushes.Transparent : Brushes.Black;
+                    brush = STATUS_Instance.INPORT_JIG_PORT3 == 0 ? Brushes.Transparent : Brushes.Black;
                     break;
                 case 16:
-                    brush = _StatusReciverInstance.INPORT_JIG_PORT4 == 0 ? Brushes.Transparent : Brushes.Black;
+                    brush = STATUS_Instance.INPORT_JIG_PORT4 == 0 ? Brushes.Transparent : Brushes.Black;
                     break;
                 case 17:
-                    brush = _StatusReciverInstance.INPORT_JIG_PORT5 == 0 ? Brushes.Transparent : Brushes.Black;
+                    brush = STATUS_Instance.INPORT_JIG_PORT5 == 0 ? Brushes.Transparent : Brushes.Black;
                     break;
 
                 case 19:
-                    brush = _StatusReciverInstance.INPORT_EMERGENCY_SENSOR == 0 ? Brushes.Red : Brushes.Transparent; // EMG 센서는 반대로 임
-                    if (_StatusReciverInstance.INPORT_EMERGENCY_SENSOR == 0 && PositionValueY < 330000) {
+                    brush = STATUS_Instance.INPORT_EMERGENCY_SENSOR == 0 ? Brushes.Red : Brushes.Transparent; // EMG 센서는 반대로 임
+                    if (STATUS_Instance.INPORT_EMERGENCY_SENSOR == 0 && PositionValueY < 330000) {
                         EmergencyStop();
                     }
                     break;
@@ -158,8 +158,8 @@ namespace AutomaticScrewMachine.CurrentList._1.Jog.ViewModel {
                 JigP4 = SetInportBind(16);
                 JigP5 = SetInportBind(17);
 
-                ScrewSupplyOnoff = _StatusReciverInstance.INPORT_SUPPLY_SCREW_SENSOR == 1 ? Brushes.Red : Brushes.Gray;
-                ScrewSupplyINOUT = _StatusReciverInstance.INPORT_SUPPLY_SCREW_SENSOR == 1 ? Brushes.Green : Brushes.Gray;
+                ScrewSupplyOnoff = STATUS_Instance.INPORT_SUPPLY_SCREW_SENSOR == 1 ? Brushes.Red : Brushes.Gray;
+                ScrewSupplyINOUT = STATUS_Instance.INPORT_SUPPLY_SCREW_SENSOR == 1 ? Brushes.Green : Brushes.Gray;
 
                 NGBOX = SetOutportBind(7);
                 
@@ -193,17 +193,17 @@ namespace AutomaticScrewMachine.CurrentList._1.Jog.ViewModel {
         private void Motion_DoWork (object sender, DoWorkEventArgs e) {
             // BackgroundWorker가 캔슬신호를 받기전까지 무한루프.
             while (!_motionWorker.CancellationPending) {
-                ServoStatusX = RecevieSignalColor(_StatusReciverInstance.SERVO_ONOFF_SIGNAL_X);
-                ServoStatusY = RecevieSignalColor(_StatusReciverInstance.SERVO_ONOFF_SIGNAL_Y);
-                ServoStatusZ = RecevieSignalColor(_StatusReciverInstance.SERVO_ONOFF_SIGNAL_Z);
+                ServoStatusX = RecevieSignalColor(STATUS_Instance.SERVO_ONOFF_SIGNAL_X);
+                ServoStatusY = RecevieSignalColor(STATUS_Instance.SERVO_ONOFF_SIGNAL_Y);
+                ServoStatusZ = RecevieSignalColor(STATUS_Instance.SERVO_ONOFF_SIGNAL_Z);
 
-                ServoMoveCheckX = RecevieSignalColor(_StatusReciverInstance.SERVO_MOVE_STATUS_X);
-                ServoMoveCheckY = RecevieSignalColor(_StatusReciverInstance.SERVO_MOVE_STATUS_Y);
-                ServoMoveCheckZ = RecevieSignalColor(_StatusReciverInstance.SERVO_MOVE_STATUS_Z);
+                ServoMoveCheckX = RecevieSignalColor(STATUS_Instance.SERVO_MOVE_STATUS_X);
+                ServoMoveCheckY = RecevieSignalColor(STATUS_Instance.SERVO_MOVE_STATUS_Y);
+                ServoMoveCheckZ = RecevieSignalColor(STATUS_Instance.SERVO_MOVE_STATUS_Z);
 
-                PositionValueX = _StatusReciverInstance.SERVO_POSITION_VALUE_X;
-                PositionValueY = _StatusReciverInstance.SERVO_POSITION_VALUE_Y;
-                PositionValueZ = _StatusReciverInstance.SERVO_POSITION_VALUE_Z;
+                PositionValueX = STATUS_Instance.SERVO_POSITION_VALUE_X;
+                PositionValueY = STATUS_Instance.SERVO_POSITION_VALUE_Y;
+                PositionValueZ = STATUS_Instance.SERVO_POSITION_VALUE_Z;
 
                 DriverPosList = new Thickness(PositionValueX * 0.00155, PositionValueY * 0.00165, 0, 0);
                 ScrewMCForcus = PositionValueZ;
@@ -212,23 +212,26 @@ namespace AutomaticScrewMachine.CurrentList._1.Jog.ViewModel {
         
         private Brush SetOutportBind (int indexIONumber) {
             Dictionary<int, Func<Brush>> brushFunctions = new Dictionary<int, Func<Brush>> {
-                { 7, () => _StatusReciverInstance.INPORT_NGBOX_OFF == 0 ? Brushes.Transparent : Brushes.Gray },
-                { 8, () => _StatusReciverInstance.OUTPORT_SCREW_DRIVER == 0 ? Brushes.Gray : Brushes.Green },
-                { 9, () => _StatusReciverInstance.OUTPORT_DEPTH_CHECKER == 0 ? Brushes.Gray : Brushes.Green },
-                { 10, () => _StatusReciverInstance.OUTPORT_SCREW_VACUUM == 0 ? Brushes.Gray : Brushes.Green },
-                { 11, () => _StatusReciverInstance.OUTPORT_LED_OK1 == 0 ? Brushes.Gray : Brushes.Green },
-                { 12, () => _StatusReciverInstance.OUTPORT_LED_OK2 == 0 ? Brushes.Gray : Brushes.Green },
-                { 13, () => _StatusReciverInstance.OUTPORT_LED_OK3 == 0 ? Brushes.Gray : Brushes.Green },
-                { 14, () => _StatusReciverInstance.OUTPORT_LED_OK4 == 0 ? Brushes.Gray : Brushes.Green },
-                { 15, () => _StatusReciverInstance.OUTPORT_LED_OK5 == 0 ? Brushes.Gray : Brushes.Green },
-                { 21, () => { CAXD.AxdoWriteOutport(24, _StatusReciverInstance.OUTPORT_BUZZER_NG); return _StatusReciverInstance.OUTPORT_BUZZER_NG == 0 ? Brushes.Gray : Brushes.Red; } },
-                { 22, () => _StatusReciverInstance.OUTPORT_BUZZER_ERROR == 0 ? Brushes.Gray : Brushes.Orange },
-                { 23, () => _StatusReciverInstance.OUTPORT_BUZZER_OK == 0 ? Brushes.Gray : Brushes.Green },
-                { 16, () => _StatusReciverInstance.OUTPORT_LED_NG1 == 0 ? Brushes.Gray : Brushes.Red },
-                { 17, () => _StatusReciverInstance.OUTPORT_LED_NG2 == 0 ? Brushes.Gray : Brushes.Red },
-                { 18, () => _StatusReciverInstance.OUTPORT_LED_NG3 == 0 ? Brushes.Gray : Brushes.Red },
-                { 19, () => _StatusReciverInstance.OUTPORT_LED_NG4 == 0 ? Brushes.Gray : Brushes.Red },
-                { 20, () => _StatusReciverInstance.OUTPORT_LED_NG5 == 0 ? Brushes.Gray : Brushes.Red },
+                { 7, () => STATUS_Instance.INPORT_NGBOX_OFF == 0 ? Brushes.Transparent : Brushes.Gray },
+                { 8, () => STATUS_Instance.OUTPORT_SCREW_DRIVER == 0 ? Brushes.Gray : Brushes.Green },
+                { 9, () => STATUS_Instance.OUTPORT_DEPTH_CHECKER == 0 ? Brushes.Gray : Brushes.Green },
+                { 10, () => STATUS_Instance.OUTPORT_SCREW_VACUUM == 0 ? Brushes.Gray : Brushes.Green },
+                { 11, () => STATUS_Instance.OUTPORT_LED_OK1 == 0 ? Brushes.Gray : Brushes.Green },
+                { 12, () => STATUS_Instance.OUTPORT_LED_OK2 == 0 ? Brushes.Gray : Brushes.Green },
+                { 13, () => STATUS_Instance.OUTPORT_LED_OK3 == 0 ? Brushes.Gray : Brushes.Green },
+                { 14, () => STATUS_Instance.OUTPORT_LED_OK4 == 0 ? Brushes.Gray : Brushes.Green },
+                { 15, () => STATUS_Instance.OUTPORT_LED_OK5 == 0 ? Brushes.Gray : Brushes.Green },
+                
+                { 16, () => STATUS_Instance.OUTPORT_LED_NG1 == 0 ? Brushes.Gray : Brushes.Red },
+                { 17, () => STATUS_Instance.OUTPORT_LED_NG2 == 0 ? Brushes.Gray : Brushes.Red },
+                { 18, () => STATUS_Instance.OUTPORT_LED_NG3 == 0 ? Brushes.Gray : Brushes.Red },
+                { 19, () => STATUS_Instance.OUTPORT_LED_NG4 == 0 ? Brushes.Gray : Brushes.Red },
+                { 20, () => STATUS_Instance.OUTPORT_LED_NG5 == 0 ? Brushes.Gray : Brushes.Red },
+
+                { 21, () => { CAXD.AxdoWriteOutport(24, STATUS_Instance.OUTPORT_BUZZER_NG); return STATUS_Instance.OUTPORT_BUZZER_NG == 0 ? Brushes.Gray : Brushes.Red; } },
+                { 22, () => STATUS_Instance.OUTPORT_BUZZER_ERROR == 0 ? Brushes.Gray : Brushes.Orange },
+                { 23, () => STATUS_Instance.OUTPORT_BUZZER_OK == 0 ? Brushes.Gray : Brushes.Green },
+
             };
 
             return brushFunctions.TryGetValue(indexIONumber, out var func) ? func() : Brushes.Black;
@@ -313,17 +316,17 @@ namespace AutomaticScrewMachine.CurrentList._1.Jog.ViewModel {
                     SequenceStart = new RelayCommand(CommandSequenceStart); // 시퀀스 시작
 
                     //NGBOX ONOFF
-                    NGBoxCommand = new RelayCommand(() => DIOWrite((int)DIOIndex.NGBOX, _StatusReciverInstance.INPORT_NGBOX_OFF == 0 ? 1u : 0));
+                    NGBoxCommand = new RelayCommand(() => DIOWrite((int)DIOIndex.NGBOX, STATUS_Instance.INPORT_NGBOX_OFF == 0 ? 1u : 0));
 
                     // Servo OnOff
-                    ServoCheckX = new RelayCommand(() => ServoDIOWrite((int)ServoIndex.XPOSITION, _StatusReciverInstance.SERVO_ONOFF_SIGNAL_X == 0 ? 1u : 0));
-                    ServoCheckY = new RelayCommand(() => ServoDIOWrite((int)ServoIndex.YPOSITION, _StatusReciverInstance.SERVO_ONOFF_SIGNAL_Y == 0 ? 1u : 0));
-                    ServoCheckZ = new RelayCommand(() => ServoDIOWrite((int)ServoIndex.ZPOSITION, _StatusReciverInstance.SERVO_ONOFF_SIGNAL_Z == 0 ? 1u : 0));
+                    ServoCheckX = new RelayCommand(() => ServoDIOWrite((int)ServoIndex.XPOSITION, STATUS_Instance.SERVO_ONOFF_SIGNAL_X == 0 ? 1u : 0));
+                    ServoCheckY = new RelayCommand(() => ServoDIOWrite((int)ServoIndex.YPOSITION, STATUS_Instance.SERVO_ONOFF_SIGNAL_Y == 0 ? 1u : 0));
+                    ServoCheckZ = new RelayCommand(() => ServoDIOWrite((int)ServoIndex.ZPOSITION, STATUS_Instance.SERVO_ONOFF_SIGNAL_Z == 0 ? 1u : 0));
 
                     // Sylinder IO
-                    DriverIO = new RelayCommand(() => DIOWrite((int)DIOIndex.DRIVER, _StatusReciverInstance.OUTPORT_SCREW_DRIVER == 0 ? 1u : 0));
-                    DepthIO = new RelayCommand(() => DIOWrite((int)DIOIndex.DEPTH, _StatusReciverInstance.OUTPORT_DEPTH_CHECKER == 0 ? 1u : 0));
-                    VacuumIO = new RelayCommand(() => DIOWrite((int)DIOIndex.VACUUM, _StatusReciverInstance.OUTPORT_SCREW_VACUUM == 0 ? 1u : 0));
+                    DriverIO = new RelayCommand(() => DIOWrite((int)DIOIndex.DRIVER, STATUS_Instance.OUTPORT_SCREW_DRIVER == 0 ? 1u : 0));
+                    DepthIO = new RelayCommand(() => DIOWrite((int)DIOIndex.DEPTH, STATUS_Instance.OUTPORT_DEPTH_CHECKER == 0 ? 1u : 0));
+                    VacuumIO = new RelayCommand(() => DIOWrite((int)DIOIndex.VACUUM, STATUS_Instance.OUTPORT_SCREW_VACUUM == 0 ? 1u : 0));
                     
                     // ExcelIO
                     ReadRecipe = new RelayCommand(ReadRecipeCommand);
@@ -487,15 +490,15 @@ namespace AutomaticScrewMachine.CurrentList._1.Jog.ViewModel {
                             break;
 
                         case string n when n == StaticControllerSignal.IO_SERVO_X:
-                            ServoDIOWrite((int)ServoIndex.XPOSITION, _StatusReciverInstance.SERVO_MOVE_STATUS_X);
+                            ServoDIOWrite((int)ServoIndex.XPOSITION, STATUS_Instance.SERVO_MOVE_STATUS_X);
                             break;
                             
                         case string n when n == StaticControllerSignal.IO_SERVO_Y:
-                            ServoDIOWrite((int)ServoIndex.YPOSITION, _StatusReciverInstance.SERVO_MOVE_STATUS_Y);
+                            ServoDIOWrite((int)ServoIndex.YPOSITION, STATUS_Instance.SERVO_MOVE_STATUS_Y);
                             break;
                             
                         case string n when n == StaticControllerSignal.IO_SERVO_Z:
-                            ServoDIOWrite((int)ServoIndex.ZPOSITION, _StatusReciverInstance.SERVO_MOVE_STATUS_Z);
+                            ServoDIOWrite((int)ServoIndex.ZPOSITION, STATUS_Instance.SERVO_MOVE_STATUS_Z);
                             break;
 
                         default:
@@ -529,8 +532,8 @@ namespace AutomaticScrewMachine.CurrentList._1.Jog.ViewModel {
             PositionDataList[index].X = PositionValueX;
             PositionDataList[index].Y = PositionValueY;
             PositionDataList[index].Z = PositionValueZ;
-            PositionDataList[index].Driver_IO = _StatusReciverInstance.OUTPORT_SCREW_DRIVER;
-            PositionDataList[index].Depth_IO = _StatusReciverInstance.OUTPORT_DEPTH_CHECKER;
+            PositionDataList[index].Driver_IO = STATUS_Instance.OUTPORT_SCREW_DRIVER;
+            PositionDataList[index].Depth_IO = STATUS_Instance.OUTPORT_DEPTH_CHECKER;
         }
         public void GetReadingData (int workSheetIndex) {
             PositionDataList?.Clear();
@@ -585,8 +588,8 @@ namespace AutomaticScrewMachine.CurrentList._1.Jog.ViewModel {
                     X = PositionValueX,
                     Y = PositionValueY,
                     Z = PositionValueZ,
-                    Driver_IO = _StatusReciverInstance.OUTPORT_SCREW_DRIVER,
-                    Depth_IO = _StatusReciverInstance.OUTPORT_DEPTH_CHECKER
+                    Driver_IO = STATUS_Instance.OUTPORT_SCREW_DRIVER,
+                    Depth_IO = STATUS_Instance.OUTPORT_DEPTH_CHECKER
                 };
 
                 PositionDataList.Add(posData);
@@ -672,8 +675,8 @@ namespace AutomaticScrewMachine.CurrentList._1.Jog.ViewModel {
         }
 
         private void SEQ_DoWork (object sender, DoWorkEventArgs e) {
-            for (int i = 0; i < PositionDataList.Count; i++) {
-                double[] SeqXYHoldPos = new double[2] { PositionDataList[i].X, PositionDataList[i].Y };
+            for (int i = 1; i <= PositionDataList.Count; i++) {
+                double[] SeqXYHoldPos = new double[2] { PositionDataList[i-1].X, PositionDataList[i-1].Y };
 
                 MoveMultiPos_XY(SupplyPosition); //xy 공급기
 
@@ -688,10 +691,10 @@ namespace AutomaticScrewMachine.CurrentList._1.Jog.ViewModel {
 
                 MoveJIGPos(SeqXYHoldPos); // xy 지그 위치로 이동
 
-                MoveDownPos(SeqXYHoldPos, 30000); // 지그 구멍에 맞춰 체결할곳으로 하강
-                Delay(700); // 해당 딜레이 => 조건이 충족하면 ? 하기 토크 작동되는 것으로 변경
+                MoveDownPos(SeqXYHoldPos, TorqReadyZposition); // 지그 구멍에 맞춰 체결할곳으로 하강
+                //Delay(700); // 해당 딜레이 => 조건이 충족하면 ? 하기 토크 작동되는 것으로 변경
                             // ex) 위치가 해당위치가 맞고, INPORT_SCREW_DRIVER_VACUUM_SENSOR의 Status가, ON이면, 
-                TorqDriverWrite((int)DIOIndex.TORQUE_DRIVER_START, SignalON); // 토크 드라이버 작동 (메서드화 해야함. INPORT_TORQU_DRIVER_OK Status가 ON이 아니면 while Delay)
+                test_TorqDriverWrite((int)DIOIndex.TORQUE_DRIVER,i); // 토크 드라이버 작동 (메서드화 해야함. INPORT_TORQU_DRIVER_OK Status가 ON이 아니면 while Delay)
                  
                 MoveUpPos(10000);
 
@@ -704,15 +707,60 @@ namespace AutomaticScrewMachine.CurrentList._1.Jog.ViewModel {
             }
 
             Delay(500); // 시퀀스 작업이 모두 종료후 0.5초동안 잠시 대기 후
+            if (STATUS_Instance.OUTPORT_LED_NG1 == SignalON || STATUS_Instance.OUTPORT_LED_NG2 == SignalON || STATUS_Instance.OUTPORT_LED_NG3 == SignalON || STATUS_Instance.OUTPORT_LED_NG4 == SignalON || STATUS_Instance.OUTPORT_LED_NG5 == SignalON) {
+                DIOWrite((int)DIOIndex.LED_BUZZER_RED, SignalON);
+            } else {
+                DIOWrite((int)DIOIndex.LED_BUZZER_GREEN, SignalON);
+            }
         }
 
-        private void TorqDriverWrite (int axis, uint value) {
-            CAXD.AxdoWriteOutport(axis, value);
-            Delay(500);
-            while (_StatusReciverInstance.INPORT_TORQU_DRIVER_READY != SignalON) {
-                Console.WriteLine("여기탔는지 체크용");
+        private void test_TorqDriverWrite (int axis,int positionListIndex) {
+            double checkerValue = (double)positionListIndex / 2;
+            while (STATUS_Instance.INPORT_SCREW_DRIVER_DOWN != SignalON) {
                 Delay(10);
             }
+            CAXD.AxdoWriteOutport(axis, SignalON);
+            Delay(500);
+            while (STATUS_Instance.INPORT_TORQU_DRIVER_START == SignalON) {
+                Delay(10);
+            }
+            Delay(300);
+            if (STATUS_Instance.INPORT_TORQU_DRIVER_NG == SignalON) {
+                if (checkerValue <= 1) {//12
+                    DIOWrite((int)DIOIndex.NG_LED_PORT1, SignalON);
+                } else if (1 < checkerValue && checkerValue <= 2) { //34
+                    DIOWrite((int)DIOIndex.NG_LED_PORT2, SignalON);
+                } else if (2 < checkerValue && checkerValue <= 3) { //56
+                    DIOWrite((int)DIOIndex.NG_LED_PORT3, SignalON);
+                } else if (3 < checkerValue && checkerValue <= 4) { //78
+                    DIOWrite((int)DIOIndex.NG_LED_PORT4, SignalON);
+                } else if (4 < checkerValue && checkerValue <= 5) { //910
+                    DIOWrite((int)DIOIndex.NG_LED_PORT5, SignalON);
+                }
+            } else {
+                DIOWrite((int)DIOIndex.OK_LED_PORT1, SignalON);
+            }
+            CAXD.AxdoWriteOutport(axis, SignalOFF);
+            
+        }
+        private void TorqDriverWrite (int axis, uint value, int playIndex) {
+            CAXD.AxdoWriteOutport(axis, value);
+            Delay(500);
+            while (STATUS_Instance.INPORT_TORQU_DRIVER_READY != SignalON) {
+                Delay(10);
+            }
+            while (STATUS_Instance.INPORT_TORQU_DRIVER_NG != SignalON) {
+                Delay(10);
+            }
+            if (STATUS_Instance.INPORT_TORQU_DRIVER_NG == SignalON) {
+                if (playIndex < 2) {
+                    Console.WriteLine("여기탔는지 체크용");
+                    DIOWrite((int)DIOIndex.NG_LED_PORT1, SignalON);
+                }
+                
+            }
+
+            CAXD.AxdoWriteOutport(axis, SignalOFF);
         }
 
         private bool ArePositionsEqual (double[] position1, double[] position2) {
@@ -765,7 +813,7 @@ namespace AutomaticScrewMachine.CurrentList._1.Jog.ViewModel {
 
         private void MoveMultiPos_XY (double[] XYHoldPos) {
             double _moveAbleZPosition = 10000; //마지노선
-            if (_StatusReciverInstance.OUTPORT_SCREW_DRIVER != 0 && _StatusReciverInstance.OUTPORT_SCREW_VACUUM != 0) {
+            if (STATUS_Instance.OUTPORT_SCREW_DRIVER != 0 && STATUS_Instance.OUTPORT_SCREW_VACUUM != 0) {
                 Crash_IO_OnOff(false);
             }
             if (PositionValueZ > _moveAbleZPosition) {
@@ -791,7 +839,7 @@ namespace AutomaticScrewMachine.CurrentList._1.Jog.ViewModel {
             try {
                 
                 _seqWorker?.CancelAsync();
-
+                PositionDataList.Clear();
                 CAXM.AxmMoveEStop((int)ServoIndex.YPOSITION);
                 CAXM.AxmMoveEStop((int)ServoIndex.XPOSITION);
                 CAXM.AxmMoveEStop((int)ServoIndex.ZPOSITION);
@@ -801,7 +849,6 @@ namespace AutomaticScrewMachine.CurrentList._1.Jog.ViewModel {
                 CAXM.AxmSignalServoOn((int)ServoIndex.YPOSITION, SignalOFF);
 
                 Crash_IO_OnOff(false);
-
 
             } catch (Exception ex) {
                 Trace.WriteLine("========== Exception ==========\nMethodName : " + MethodBase.GetCurrentMethod().Name + "\nException : " + ex);

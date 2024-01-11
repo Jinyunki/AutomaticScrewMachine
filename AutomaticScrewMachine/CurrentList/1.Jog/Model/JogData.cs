@@ -26,7 +26,7 @@ namespace AutomaticScrewMachine.CurrentList._1.Jog.Model {
             EMGBTN = 2,
             START2BTN = 3,
 
-            TORQUE_DRIVER_START = 4, // Torqu 시작 P25 (4)
+            TORQUE_DRIVER = 4, // Torqu 시작 P25 (4)
             IDK5 = 5, // Preset선택 P25 (1)
             IDK6 = 6, // Preset선택 P25 (2)
 
@@ -375,6 +375,7 @@ namespace AutomaticScrewMachine.CurrentList._1.Jog.Model {
         public double GetPortInterval = 53000;
         public double GetTabInterval = 14000;
         public double Interval { get; set; }
+        public double TorqReadyZposition = 45000;
         public double[] SupplyPosition = new double[2] { 167119, 117239 };
         public double[] Port1Position /*= new double[2] { 73800, 249100 }*/;
         private Brush _buzzerY = Brushes.Gray;
