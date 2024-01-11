@@ -161,28 +161,28 @@ namespace AutomaticScrewMachine.CurrentList._1.Jog.ViewModel {
                 ScrewSupplyOnoff = STATUS_Instance.INPORT_SUPPLY_SCREW_SENSOR == 1 ? Brushes.Red : Brushes.Gray;
                 ScrewSupplyINOUT = STATUS_Instance.INPORT_SUPPLY_SCREW_SENSOR == 1 ? Brushes.Green : Brushes.Gray;
 
-                NGBOX = SetOutportBind(7);
+                NGBOX = SetOutportBind((int)DIOIndex.NGBOX);
                 
-                DriverBuzzer = SetOutportBind(8);
-                DepthBuzzer = SetOutportBind(9);
-                VacuumBuzzer = SetOutportBind(10);
+                DriverBuzzer = SetOutportBind((int)DIOIndex.DRIVER_SYLINDER);
+                DepthBuzzer = SetOutportBind((int)DIOIndex.DEPTH_SYLINDER);
+                VacuumBuzzer = SetOutportBind((int)DIOIndex.VACUUM);
 
                 // 머신 상단 알람 부저
-                BuzzerAlarmOK = SetOutportBind(23);
-                BuzzerAlarmERR = SetOutportBind(22);
-                BuzzerAlarmNG = SetOutportBind(21);
+                BuzzerAlarmOK = SetOutportBind((int)DIOIndex.LED_BUZZER_GREEN);
+                BuzzerAlarmERR = SetOutportBind((int)DIOIndex.LED_BUZZER_YELLOW);
+                BuzzerAlarmNG = SetOutportBind((int)DIOIndex.LED_BUZZER_RED);
 
-                P1_OK = SetOutportBind(11);
-                P2_OK = SetOutportBind(12);
-                P3_OK = SetOutportBind(13);
-                P4_OK = SetOutportBind(14);
-                P5_OK = SetOutportBind(15);
+                P1_OK = SetOutportBind((int)DIOIndex.OK_LED_PORT1);
+                P2_OK = SetOutportBind((int)DIOIndex.OK_LED_PORT2);
+                P3_OK = SetOutportBind((int)DIOIndex.OK_LED_PORT3);
+                P4_OK = SetOutportBind((int)DIOIndex.OK_LED_PORT4);
+                P5_OK = SetOutportBind((int)DIOIndex.OK_LED_PORT5);
 
-                P1_NG = SetOutportBind(16);
-                P2_NG = SetOutportBind(17);
-                P3_NG = SetOutportBind(18);
-                P4_NG = SetOutportBind(19);
-                P5_NG = SetOutportBind(20);
+                P1_NG = SetOutportBind((int)DIOIndex.NG_LED_PORT1);
+                P2_NG = SetOutportBind((int)DIOIndex.NG_LED_PORT2);
+                P3_NG = SetOutportBind((int)DIOIndex.NG_LED_PORT3);
+                P4_NG = SetOutportBind((int)DIOIndex.NG_LED_PORT4);
+                P5_NG = SetOutportBind((int)DIOIndex.NG_LED_PORT5);
             }
         }
 
@@ -212,25 +212,26 @@ namespace AutomaticScrewMachine.CurrentList._1.Jog.ViewModel {
         
         private Brush SetOutportBind (int indexIONumber) {
             Dictionary<int, Func<Brush>> brushFunctions = new Dictionary<int, Func<Brush>> {
-                { 7, () => STATUS_Instance.INPORT_NGBOX_OFF == 0 ? Brushes.Transparent : Brushes.Gray },
-                { 8, () => STATUS_Instance.OUTPORT_SCREW_DRIVER == 0 ? Brushes.Gray : Brushes.Green },
-                { 9, () => STATUS_Instance.OUTPORT_DEPTH_CHECKER == 0 ? Brushes.Gray : Brushes.Green },
-                { 10, () => STATUS_Instance.OUTPORT_SCREW_VACUUM == 0 ? Brushes.Gray : Brushes.Green },
-                { 11, () => STATUS_Instance.OUTPORT_LED_OK1 == 0 ? Brushes.Gray : Brushes.Green },
-                { 12, () => STATUS_Instance.OUTPORT_LED_OK2 == 0 ? Brushes.Gray : Brushes.Green },
-                { 13, () => STATUS_Instance.OUTPORT_LED_OK3 == 0 ? Brushes.Gray : Brushes.Green },
-                { 14, () => STATUS_Instance.OUTPORT_LED_OK4 == 0 ? Brushes.Gray : Brushes.Green },
-                { 15, () => STATUS_Instance.OUTPORT_LED_OK5 == 0 ? Brushes.Gray : Brushes.Green },
-                
-                { 16, () => STATUS_Instance.OUTPORT_LED_NG1 == 0 ? Brushes.Gray : Brushes.Red },
-                { 17, () => STATUS_Instance.OUTPORT_LED_NG2 == 0 ? Brushes.Gray : Brushes.Red },
-                { 18, () => STATUS_Instance.OUTPORT_LED_NG3 == 0 ? Brushes.Gray : Brushes.Red },
-                { 19, () => STATUS_Instance.OUTPORT_LED_NG4 == 0 ? Brushes.Gray : Brushes.Red },
-                { 20, () => STATUS_Instance.OUTPORT_LED_NG5 == 0 ? Brushes.Gray : Brushes.Red },
+                { (int)DIOIndex.NGBOX, () => STATUS_Instance.INPORT_NGBOX_OFF == 0 ? Brushes.Transparent : Brushes.Gray },
+                { (int)DIOIndex.DRIVER_SYLINDER, () => STATUS_Instance.OUTPORT_SCREW_DRIVER == 0 ? Brushes.Gray : Brushes.Green },
+                { (int)DIOIndex.DEPTH_SYLINDER, () => STATUS_Instance.OUTPORT_DEPTH_CHECKER == 0 ? Brushes.Gray : Brushes.Green },
+                { (int)DIOIndex.VACUUM, () => STATUS_Instance.OUTPORT_SCREW_VACUUM == 0 ? Brushes.Gray : Brushes.Green },
 
-                { 21, () => { CAXD.AxdoWriteOutport(24, STATUS_Instance.OUTPORT_BUZZER_NG); return STATUS_Instance.OUTPORT_BUZZER_NG == 0 ? Brushes.Gray : Brushes.Red; } },
-                { 22, () => STATUS_Instance.OUTPORT_BUZZER_ERROR == 0 ? Brushes.Gray : Brushes.Orange },
-                { 23, () => STATUS_Instance.OUTPORT_BUZZER_OK == 0 ? Brushes.Gray : Brushes.Green },
+                { (int)DIOIndex.OK_LED_PORT1, () => STATUS_Instance.OUTPORT_LED_OK1 == 0 ? Brushes.Gray : Brushes.Green },
+                { (int)DIOIndex.OK_LED_PORT2, () => STATUS_Instance.OUTPORT_LED_OK2 == 0 ? Brushes.Gray : Brushes.Green },
+                { (int)DIOIndex.OK_LED_PORT3, () => STATUS_Instance.OUTPORT_LED_OK3 == 0 ? Brushes.Gray : Brushes.Green },
+                { (int)DIOIndex.OK_LED_PORT4, () => STATUS_Instance.OUTPORT_LED_OK4 == 0 ? Brushes.Gray : Brushes.Green },
+                { (int)DIOIndex.OK_LED_PORT5, () => STATUS_Instance.OUTPORT_LED_OK5 == 0 ? Brushes.Gray : Brushes.Green },
+                
+                { (int)DIOIndex.NG_LED_PORT1, () => STATUS_Instance.OUTPORT_LED_NG1 == 0 ? Brushes.Gray : Brushes.Red },
+                { (int)DIOIndex.NG_LED_PORT2, () => STATUS_Instance.OUTPORT_LED_NG2 == 0 ? Brushes.Gray : Brushes.Red },
+                { (int)DIOIndex.NG_LED_PORT3, () => STATUS_Instance.OUTPORT_LED_NG3 == 0 ? Brushes.Gray : Brushes.Red },
+                { (int)DIOIndex.NG_LED_PORT4, () => STATUS_Instance.OUTPORT_LED_NG4 == 0 ? Brushes.Gray : Brushes.Red },
+                { (int)DIOIndex.NG_LED_PORT5, () => STATUS_Instance.OUTPORT_LED_NG5 == 0 ? Brushes.Gray : Brushes.Red },
+
+                { (int)DIOIndex.LED_BUZZER_RED, () => { CAXD.AxdoWriteOutport((int)DIOIndex.SOUND_BUZZER, STATUS_Instance.OUTPORT_BUZZER_NG); return STATUS_Instance.OUTPORT_BUZZER_NG == 0 ? Brushes.Gray : Brushes.Red; } },
+                { (int)DIOIndex.LED_BUZZER_YELLOW, () => STATUS_Instance.OUTPORT_BUZZER_ERROR == 0 ? Brushes.Gray : Brushes.Orange },
+                { (int)DIOIndex.LED_BUZZER_GREEN, () => STATUS_Instance.OUTPORT_BUZZER_OK == 0 ? Brushes.Gray : Brushes.Green },
 
             };
 
@@ -324,8 +325,8 @@ namespace AutomaticScrewMachine.CurrentList._1.Jog.ViewModel {
                     ServoCheckZ = new RelayCommand(() => ServoDIOWrite((int)ServoIndex.ZPOSITION, STATUS_Instance.SERVO_ONOFF_SIGNAL_Z == 0 ? 1u : 0));
 
                     // Sylinder IO
-                    DriverIO = new RelayCommand(() => DIOWrite((int)DIOIndex.DRIVER, STATUS_Instance.OUTPORT_SCREW_DRIVER == 0 ? 1u : 0));
-                    DepthIO = new RelayCommand(() => DIOWrite((int)DIOIndex.DEPTH, STATUS_Instance.OUTPORT_DEPTH_CHECKER == 0 ? 1u : 0));
+                    DriverIO = new RelayCommand(() => DIOWrite((int)DIOIndex.DRIVER_SYLINDER, STATUS_Instance.OUTPORT_SCREW_DRIVER == 0 ? 1u : 0));
+                    DepthIO = new RelayCommand(() => DIOWrite((int)DIOIndex.DEPTH_SYLINDER, STATUS_Instance.OUTPORT_DEPTH_CHECKER == 0 ? 1u : 0));
                     VacuumIO = new RelayCommand(() => DIOWrite((int)DIOIndex.VACUUM, STATUS_Instance.OUTPORT_SCREW_VACUUM == 0 ? 1u : 0));
                     
                     // ExcelIO
@@ -683,7 +684,7 @@ namespace AutomaticScrewMachine.CurrentList._1.Jog.ViewModel {
                 MoveDownPos(SupplyPosition, 50000); // z 스크류 공급
 
                 //GetScrewCommand_WriteOutport(true); // io 스크류 체득
-                DIOWrite((int)DIOIndex.DRIVER, SignalON);
+                DIOWrite((int)DIOIndex.DRIVER_SYLINDER, SignalON);
                 DIOWrite((int)DIOIndex.VACUUM, SignalON);
                 Delay(500);
 
@@ -700,7 +701,7 @@ namespace AutomaticScrewMachine.CurrentList._1.Jog.ViewModel {
 
                 //GetScrewCommand_WriteOutport(false); driver,vacuum Off
 
-                DIOWrite((int)DIOIndex.DRIVER, SignalOFF);
+                DIOWrite((int)DIOIndex.DRIVER_SYLINDER, SignalOFF);
                 DIOWrite((int)DIOIndex.VACUUM, SignalOFF);
 
                 Console.WriteLine("원사이클 해결");
@@ -868,8 +869,8 @@ namespace AutomaticScrewMachine.CurrentList._1.Jog.ViewModel {
             try {
 
                 uint returnOnof = OnOff ? 1u : 0u;
-                CAXD.AxdoWriteOutport((int)DIOIndex.DRIVER, returnOnof);
-                CAXD.AxdoWriteOutport((int)DIOIndex.DEPTH, returnOnof);
+                CAXD.AxdoWriteOutport((int)DIOIndex.DRIVER_SYLINDER, returnOnof);
+                CAXD.AxdoWriteOutport((int)DIOIndex.DEPTH_SYLINDER, returnOnof);
                 CAXD.AxdoWriteOutport((int)DIOIndex.VACUUM, returnOnof);
 
             } catch (Exception ex) {

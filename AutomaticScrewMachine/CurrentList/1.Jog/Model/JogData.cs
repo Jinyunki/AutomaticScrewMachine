@@ -32,8 +32,8 @@ namespace AutomaticScrewMachine.CurrentList._1.Jog.Model {
 
             NGBOX = 7,
 
-            DRIVER = 8,
-            DEPTH = 9,
+            DRIVER_SYLINDER = 8,
+            DEPTH_SYLINDER = 9,
             VACUUM = 10,
 
             OK_LED_PORT1 = 11,
