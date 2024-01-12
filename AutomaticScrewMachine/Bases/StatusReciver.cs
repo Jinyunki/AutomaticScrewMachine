@@ -100,6 +100,13 @@ namespace AutomaticScrewMachine.Bases {
                 }
             }
         }
+        // 추가: 인스턴스 클리어 메서드
+        public static StatusReciver ClearInstance () {
+            lock (LockObject) {
+                _instance = null;
+            }
+            return _instance;
+        }
         #region Thread Worker List
         private BackgroundWorker _digitalStatusWorker;
         private BackgroundWorker _servoStatusWorker;
@@ -225,7 +232,9 @@ namespace AutomaticScrewMachine.Bases {
             }
         }
 
-
+        public void DOWrite (int axis, uint value) {
+            CAXD.AxdoWriteOutport(axis, value);
+        }
         private double ServoPositionValue (int indexNum) {
             double value = 99;
             CAXM.AxmStatusGetCmdPos(indexNum, ref value);

@@ -6,8 +6,8 @@
     xmlns:local="clr-namespace:AutomaticScrewMachine.CurrentList._3.IO.View"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     d:DesignHeight="800"
-    d:DesignWidth="800"
-    DataContext="{Binding JogViewModel, Source={StaticResource Locator}}"
+    d:DesignWidth="1600"
+    DataContext="{Binding IOMapViewModel, Source={StaticResource Locator}}"
     mc:Ignorable="d">
 
     <UserControl.Resources>
@@ -28,13 +28,15 @@
                 HorizontalAlignment="Center"
                 FontSize="25"
                 Foreground="{DynamicResource FontColor}"
-                Text="Digital I/O MAP" />
+                Text="I/O MAPS" />
         </Grid>
-        <Grid Grid.Row="1">
+        <Grid Grid.Row="1" ShowGridLines="True">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="3*" />
                 <ColumnDefinition Width="3*" />
             </Grid.ColumnDefinitions>
+
+
             <Grid Grid.Column="0">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="1*" />
@@ -47,14 +49,14 @@
                     <RowDefinition Height="2*" />
                     <RowDefinition Height="1*" />
                 </Grid.RowDefinitions>
+
                 <TextBlock
                     Grid.Row="0"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"
                     FontSize="15"
                     Foreground="{DynamicResource FontColor}"
-                    Text="OUT PORT SIGNAL" />
-
+                    Text="IN PORT SIGNAL" />
                 <Grid Grid.Row="1">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition />
@@ -76,6 +78,7 @@
                             Width="20"
                             Height="20"
                             VerticalAlignment="Center"
+                            Command="{Binding WriteStartButtonLeft}"
                             Background="{Binding SelfStartButton, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                             Style="{DynamicResource RoundedButtonStyle}" />
                         <TextBlock
@@ -97,6 +100,7 @@
                             Width="20"
                             Height="20"
                             VerticalAlignment="Center"
+                            Command="{Binding WriteResetButtonLeft}"
                             Background="{Binding SelfResetButton, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                             Style="{DynamicResource RoundedButtonStyle}" />
                         <TextBlock
@@ -118,6 +122,7 @@
                             Width="20"
                             Height="20"
                             VerticalAlignment="Center"
+                            Command="{Binding WriteEmgButtonLeft}"
                             Background="{Binding SelfEmgButton, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                             Style="{DynamicResource RoundedButtonStyle}" />
                         <TextBlock
@@ -139,6 +144,7 @@
                             Width="20"
                             Height="20"
                             VerticalAlignment="Center"
+                            Command="{Binding WriteStartButtonRight}"
                             Background="{Binding SelfStart2Button, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                             Style="{DynamicResource RoundedButtonStyle}" />
                         <TextBlock
@@ -234,7 +240,6 @@
 
                 </Grid>
             </Grid>
-
             <Grid Grid.Column="1">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="1*" />
@@ -247,14 +252,15 @@
                     <RowDefinition Height="2*" />
                     <RowDefinition Height="1*" />
                 </Grid.RowDefinitions>
-
                 <TextBlock
                     Grid.Row="0"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"
                     FontSize="15"
                     Foreground="{DynamicResource FontColor}"
-                    Text="IN PORT SIGNAL" />
+                    Text="OUT PORT SIGNAL" />
+
+
             </Grid>
         </Grid>
 

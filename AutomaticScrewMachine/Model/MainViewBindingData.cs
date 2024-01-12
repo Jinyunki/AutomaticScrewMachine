@@ -7,6 +7,8 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Reflection;
 using AutomaticScrewMachine.ViewModel;
+using GalaSoft.MvvmLight.Ioc;
+using GalaSoft.MvvmLight.Views;
 
 namespace AutomaticScrewMachine.Model {
     public class MainViewBindingData  : ViewModelBase {
@@ -20,6 +22,10 @@ namespace AutomaticScrewMachine.Model {
                 return _currentViewModel;
             }
             set {
+                // 이전 View 종료
+                if (_currentViewModel != null) {
+                    _currentViewModel.Cleanup();
+                }
                 _currentViewModel = value;
                 RaisePropertyChanged("CurrentViewModel");
             }

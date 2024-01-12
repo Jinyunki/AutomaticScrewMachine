@@ -112,6 +112,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Bases\StatusReciver.cs" />
+    <Compile Include="CurrentList\0.ParentModel\ParentsData.cs" />
     <Compile Include="CurrentList\1.Jog\Model\JogData.cs" />
     <Compile Include="CurrentList\1.Jog\Model\PosData.cs" />
     <Compile Include="CurrentList\1.Jog\Model\SequenceData.cs" />
@@ -158,6 +159,8 @@
     <Compile Include="CurrentList\2.SidBar\View\SidBar.xaml.cs">
       <DependentUpon>SidBar.xaml</DependentUpon>
     </Compile>
+    <Compile Include="CurrentList\3.IO\Model\IOData.cs" />
+    <Compile Include="CurrentList\3.IO\ViewModel\IOMapViewModel.cs" />
     <Compile Include="CurrentList\3.IO\View\IOMap.xaml.cs">
       <DependentUpon>IOMap.xaml</DependentUpon>
     </Compile>
@@ -369,7 +372,6 @@
   <ItemGroup>
     <Folder Include="CurrentList\1.Jog\Base\" />
     <Folder Include="CurrentList\2.SidBar\ViewModel\" />
-    <Folder Include="CurrentList\3.IO\ViewModel\" />
     <Folder Include="CurrentList\4.TorqControllerStatus\ViewModel\" />
     <Folder Include="Views\" />
   </ItemGroup>
@@ -379,6 +381,9 @@
   <ItemGroup>
     <Resource Include="Assets\ic_jig.png" />
     <Resource Include="Assets\ic_screwSupply.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\btn_driver_off.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

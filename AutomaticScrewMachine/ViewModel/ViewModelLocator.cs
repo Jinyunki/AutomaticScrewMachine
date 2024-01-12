@@ -13,6 +13,7 @@
 */
 
 using AutomaticScrewMachine.CurrentList._1.Jog.ViewModel;
+using AutomaticScrewMachine.CurrentList._3.IO.ViewModel;
 using CommonServiceLocator;
 using GalaSoft.MvvmLight.Ioc;
 
@@ -44,6 +45,7 @@ namespace AutomaticScrewMachine.ViewModel
 
             SimpleIoc.Default.Register<MainViewModel>();
             SimpleIoc.Default.Register<JogViewModel>();
+            SimpleIoc.Default.Register<IOMapViewModel>();
         }
 
         public MainViewModel Main
@@ -59,11 +61,20 @@ namespace AutomaticScrewMachine.ViewModel
                 return ServiceLocator.Current.GetInstance<JogViewModel>();
             }
         }
+         public IOMapViewModel IOMapViewModel {
+            get
+            {
+                return ServiceLocator.Current.GetInstance<IOMapViewModel>();
+            }
+        }
         
         
         public static void Cleanup()
         {
-            // TODO Clear the ViewModels
+            // ºä¸ðµ¨ Á¤¸® ÄÚµå Ãß°¡
+            SimpleIoc.Default.GetInstance<MainViewModel>()?.Cleanup();
+            SimpleIoc.Default.GetInstance<JogViewModel>()?.Cleanup();
+            SimpleIoc.Default.GetInstance<IOMapViewModel>()?.Cleanup();
         }
     }
 }

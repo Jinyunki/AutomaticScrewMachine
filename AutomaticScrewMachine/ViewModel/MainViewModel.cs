@@ -39,7 +39,7 @@ namespace AutomaticScrewMachine.ViewModel {
                 BtnClose = new RelayCommand(WindowClose);
                 // CurrentViewControl
                 CurrentJogView = new RelayCommand(() => CurrentViewModel = _locator.JogViewModel);
-                CurrentIO = new RelayCommand(() => CurrentViewModel = _locator.JogViewModel);
+                CurrentIO = new RelayCommand(() => CurrentViewModel = _locator.IOMapViewModel);
                 //CurrentTORQUE = new RelayCommand(() => CAXD.AxdoWriteOutport((int)DIOIndex.TORQUE_DRIVER_START, 1));
                 //CurrentMainView = new RelayCommand(() => SerialPortAdapter.WriteTorqSerial());
 

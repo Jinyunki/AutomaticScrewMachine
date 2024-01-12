@@ -15,63 +15,17 @@ using System.Diagnostics;
 using System.Windows.Data;
 using AutomaticScrewMachine.Bases;
 using System.Net.NetworkInformation;
+using AutomaticScrewMachine.CurrentList._0.ParentModel;
 
 namespace AutomaticScrewMachine.CurrentList._1.Jog.Model {
-    public class JogData : ViewModelBase {
+    public class JogData : ParentsData {
         public Dictionary<int, Brush> _callBackBrush = new Dictionary<int, Brush>();
 
-        public enum DIOIndex {
-            STARTBTN = 0,
-            RESETBTN = 1,
-            EMGBTN = 2,
-            START2BTN = 3,
-
-            TORQUE_DRIVER = 4, // Torqu 시작 P25 (4)
-            IDK5 = 5, // Preset선택 P25 (1)
-            IDK6 = 6, // Preset선택 P25 (2)
-
-            NGBOX = 7,
-
-            DRIVER_SYLINDER = 8,
-            DEPTH_SYLINDER = 9,
-            VACUUM = 10,
-
-            OK_LED_PORT1 = 11,
-            OK_LED_PORT2 = 12,
-            OK_LED_PORT3 = 13,
-            OK_LED_PORT4 = 14,
-            OK_LED_PORT5 = 15,
-
-            NG_LED_PORT1 = 16,
-            NG_LED_PORT2 = 17,
-            NG_LED_PORT3 = 18,
-            NG_LED_PORT4 = 19,
-            NG_LED_PORT5 = 20,
-
-            LED_BUZZER_RED = 21,
-            LED_BUZZER_YELLOW = 22,
-            LED_BUZZER_GREEN = 23,
-            SOUND_BUZZER = 24,
-
-
-            IDK25 = 25, // NULL 비어있는 Index
-            IDK26 = 26, // NULL 비어있는 Index
-            IDK27 = 27, // NULL 비어있는 Index
-            IDK28 = 28, // NULL 비어있는 Index
-            IDK29 = 29, // NULL 비어있는 Index
-            IDK30 = 30, // NULL 비어있는 Index
-            IDK31 = 31  // NULL 비어있는 Index
-        }
         public enum ServoIndex {
             YPOSITION = 0,
             XPOSITION = 1,
             ZPOSITION = 2
         }
-        public static readonly string isFolderName = "Data";
-        public static readonly string isFileName = "JogData.xlsx";
-
-        public const uint SignalON = 1u;
-        public const uint SignalOFF = 0;
 
         private PosData _selectedPositionItem;
         public PosData SelectedPositionItem {
@@ -142,7 +96,7 @@ namespace AutomaticScrewMachine.CurrentList._1.Jog.Model {
         public ICommand MovePosition4 { get; set; }
         public ICommand MovePosition5 { get; set; }
         public ICommand MovePositionSupply { get; set; }
-
+        public ICommand TorqDriver { get; set; }
         private ObservableCollection<PosData> _posDataList = new ObservableCollection<PosData>();
         public ObservableCollection<PosData> PositionDataList {
             get { return _posDataList; }
@@ -250,7 +204,7 @@ namespace AutomaticScrewMachine.CurrentList._1.Jog.Model {
                 RaisePropertyChanged(nameof(InputPositionValueY));
             }
         }
-        #region PORT OK/NG Signal
+        #region PORT OK/NG Signal to Color
         private Brush _p1_ok = Brushes.Gray;
         public Brush P1_OK {
             get { return _p1_ok; }
@@ -436,6 +390,14 @@ namespace AutomaticScrewMachine.CurrentList._1.Jog.Model {
             set {
                 _driverBuzzer = value;
                 RaisePropertyChanged(nameof(DriverBuzzer));
+            }
+        }
+        private Brush _torqBuzzer = Brushes.Gray;
+        public Brush TorqBuzzer {
+            get { return _torqBuzzer; }
+            set {
+                _torqBuzzer = value;
+                RaisePropertyChanged(nameof(TorqBuzzer));
             }
         }
 

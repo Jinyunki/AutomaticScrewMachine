@@ -42,15 +42,12 @@
                             Width="50"
                             Height="50"
                             Margin="{Binding DriverPosList, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                            BorderBrush="Black"
+                            BorderThickness="15"
                             CornerRadius="100"
-                            Opacity="0.7">
-                            <Border.RenderTransform>
-                                <TranslateTransform />
-                            </Border.RenderTransform>
-                            <Border.Background>
-                                <ImageBrush ImageSource="../../../../Assets/btn_screw_mc.png" />
-                            </Border.Background>
-                        </Border>
+                            Opacity="0.7" />
+
+
 
                         <!--  Motion Screw  LightBlue  -->
                         <Button
@@ -85,6 +82,18 @@
                                 BorderThickness="3"
                                 CornerRadius="100"
                                 Opacity="0.5" />
+
+                            <Button
+                                Grid.Row="0"
+                                Grid.Column="1"
+                                Width="15"
+                                Height="15"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                Background="{Binding TorqBuzzer, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                Command="{Binding TorqDriver}"
+                                Opacity="0.7"
+                                Style="{DynamicResource RoundedButtonStyle}" />
                         </Grid>
                         <!--  Driver IO  -->
                         <Button
