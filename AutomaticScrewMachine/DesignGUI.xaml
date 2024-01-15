@@ -42,6 +42,7 @@
     </LinearGradientBrush>
 
 
+
     <Style
         xmlns:sys="clr-namespace:System;assembly=mscorlib"
         x:Key="CueBannerTextBoxStyle"

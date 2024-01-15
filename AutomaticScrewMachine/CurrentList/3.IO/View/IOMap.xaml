@@ -15,6 +15,7 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="../../../DesignGUI.xaml" />
             </ResourceDictionary.MergedDictionaries>
+
         </ResourceDictionary>
     </UserControl.Resources>
 
@@ -56,187 +57,41 @@
                     VerticalAlignment="Center"
                     FontSize="15"
                     Foreground="{DynamicResource FontColor}"
-                    Text="IN PORT SIGNAL" />
-                <Grid Grid.Row="1">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition />
-                        <ColumnDefinition />
-                        <ColumnDefinition />
-                        <ColumnDefinition />
-                        <ColumnDefinition />
-                        <ColumnDefinition />
-                        <ColumnDefinition />
-                        <ColumnDefinition />
-                    </Grid.ColumnDefinitions>
-                    <Grid Grid.Column="0">
-                        <Grid.RowDefinitions>
-                            <RowDefinition />
-                            <RowDefinition />
-                        </Grid.RowDefinitions>
-                        <Button
-                            Grid.Row="0"
-                            Width="20"
-                            Height="20"
-                            VerticalAlignment="Center"
-                            Command="{Binding WriteStartButtonLeft}"
-                            Background="{Binding SelfStartButton, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                            Style="{DynamicResource RoundedButtonStyle}" />
-                        <TextBlock
-                            Grid.Row="1"
-                            HorizontalAlignment="Center"
-                            VerticalAlignment="Top"
-                            FontSize="8"
-                            Foreground="{DynamicResource FontColor}"
-                            Text="(0) Start" />
-                    </Grid>
-
-                    <Grid Grid.Column="1">
-                        <Grid.RowDefinitions>
-                            <RowDefinition />
-                            <RowDefinition />
-                        </Grid.RowDefinitions>
-                        <Button
-                            Grid.Row="0"
-                            Width="20"
-                            Height="20"
-                            VerticalAlignment="Center"
-                            Command="{Binding WriteResetButtonLeft}"
-                            Background="{Binding SelfResetButton, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                            Style="{DynamicResource RoundedButtonStyle}" />
-                        <TextBlock
-                            Grid.Row="1"
-                            HorizontalAlignment="Center"
-                            VerticalAlignment="Top"
-                            FontSize="8"
-                            Foreground="{DynamicResource FontColor}"
-                            Text="(1) Reset" />
-                    </Grid>
-
-                    <Grid Grid.Column="2">
-                        <Grid.RowDefinitions>
-                            <RowDefinition />
-                            <RowDefinition />
-                        </Grid.RowDefinitions>
-                        <Button
-                            Grid.Row="0"
-                            Width="20"
-                            Height="20"
-                            VerticalAlignment="Center"
-                            Command="{Binding WriteEmgButtonLeft}"
-                            Background="{Binding SelfEmgButton, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                            Style="{DynamicResource RoundedButtonStyle}" />
-                        <TextBlock
-                            Grid.Row="1"
-                            HorizontalAlignment="Center"
-                            VerticalAlignment="Top"
-                            FontSize="8"
-                            Foreground="{DynamicResource FontColor}"
-                            Text="(2) Emg" />
-                    </Grid>
-
-                    <Grid Grid.Column="3">
-                        <Grid.RowDefinitions>
-                            <RowDefinition />
-                            <RowDefinition />
-                        </Grid.RowDefinitions>
-                        <Button
-                            Grid.Row="0"
-                            Width="20"
-                            Height="20"
-                            VerticalAlignment="Center"
-                            Command="{Binding WriteStartButtonRight}"
-                            Background="{Binding SelfStart2Button, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                            Style="{DynamicResource RoundedButtonStyle}" />
-                        <TextBlock
-                            Grid.Row="1"
-                            HorizontalAlignment="Center"
-                            VerticalAlignment="Top"
-                            FontSize="8"
-                            Foreground="{DynamicResource FontColor}"
-                            Text="(3) Start" />
-                    </Grid>
-
-                    <Grid Grid.Column="4">
-                        <Grid.RowDefinitions>
-                            <RowDefinition />
-                            <RowDefinition />
-                        </Grid.RowDefinitions>
-                        <Button
-                            Grid.Row="0"
-                            Width="20"
-                            Height="20"
-                            VerticalAlignment="Center"
-                            Style="{DynamicResource RoundedButtonStyle}" />
-                        <TextBlock
-                            Grid.Row="1"
-                            HorizontalAlignment="Center"
-                            VerticalAlignment="Top"
-                            FontSize="8"
-                            Foreground="{DynamicResource FontColor}"
-                            Text="(4) -" />
-                    </Grid>
-
-                    <Grid Grid.Column="5">
-                        <Grid.RowDefinitions>
-                            <RowDefinition />
-                            <RowDefinition />
-                        </Grid.RowDefinitions>
-                        <Button
-                            Grid.Row="0"
-                            Width="20"
-                            Height="20"
-                            VerticalAlignment="Center"
-                            Style="{DynamicResource RoundedButtonStyle}" />
-                        <TextBlock
-                            Grid.Row="1"
-                            HorizontalAlignment="Center"
-                            VerticalAlignment="Top"
-                            FontSize="8"
-                            Foreground="{DynamicResource FontColor}"
-                            Text="(5) -" />
-                    </Grid>
-
-                    <Grid Grid.Column="6">
-                        <Grid.RowDefinitions>
-                            <RowDefinition />
-                            <RowDefinition />
-                        </Grid.RowDefinitions>
-                        <Button
-                            Grid.Row="0"
-                            Width="20"
-                            Height="20"
-                            VerticalAlignment="Center"
-                            Style="{DynamicResource RoundedButtonStyle}" />
-                        <TextBlock
-                            Grid.Row="1"
-                            HorizontalAlignment="Center"
-                            VerticalAlignment="Top"
-                            FontSize="8"
-                            Foreground="{DynamicResource FontColor}"
-                            Text="(6) -" />
-                    </Grid>
-
-                    <Grid Grid.Column="7">
-                        <Grid.RowDefinitions>
-                            <RowDefinition />
-                            <RowDefinition />
-                        </Grid.RowDefinitions>
-                        <Button
-                            Grid.Row="0"
-                            Width="20"
-                            Height="20"
-                            VerticalAlignment="Center"
-                            Background="{Binding NGBOX, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                            Command="{Binding NGBoxCommand}"
-                            Style="{DynamicResource RoundedButtonStyle}" />
-                        <TextBlock
-                            Grid.Row="1"
-                            HorizontalAlignment="Center"
-                            VerticalAlignment="Top"
-                            FontSize="8"
-                            Foreground="{DynamicResource FontColor}"
-                            Text="(7) NG" />
-                    </Grid>
+                    Text="OUTPUT SIGNAL" />
+                <Grid Grid.Row="1" >
+                    <ItemsControl ItemsSource="{Binding ControlSetsOutput}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <!-- WrapPanel을 사용하여 가로로 나열 -->
+                                <WrapPanel Orientation="Horizontal" />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Grid Margin="15 0 0 0">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition />
+                                        <RowDefinition />
+                                    </Grid.RowDefinitions>
+                                    <Button
+                                        Grid.Row="0"
+                                        Width="20"
+                                        Height="20"
+                                        VerticalAlignment="Center"
+                                        Background="{Binding ButtonBackground, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                        Command="{Binding ButtonCommand, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                        Style="{DynamicResource RoundedButtonStyle}" />
+                                    <TextBlock
+                                        Grid.Row="1"
+                                        HorizontalAlignment="Center"
+                                        VerticalAlignment="Top"
+                                        FontSize="8"
+                                        Foreground="{DynamicResource FontColor}"
+                                        Text="{Binding ButtonText}" />
+                                </Grid>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
 
                 </Grid>
             </Grid>
@@ -258,7 +113,7 @@
                     VerticalAlignment="Center"
                     FontSize="15"
                     Foreground="{DynamicResource FontColor}"
-                    Text="OUT PORT SIGNAL" />
+                    Text="INPUT SIGNAL" />
 
 
             </Grid>

@@ -14,8 +14,8 @@ namespace AutomaticScrewMachine.CurrentList._0.ParentModel {
             START2BTN = 3,
 
             TORQUE_DRIVER = 4, // Torqu 시작 P25 (4)
-            IDK5 = 5, // Preset선택 P25 (1)
-            IDK6 = 6, // Preset선택 P25 (2)
+            PRESET1 = 5, // Preset선택 P25 (1)
+            PRESET2 = 6, // Preset선택 P25 (2)
 
             NGBOX = 7,
 

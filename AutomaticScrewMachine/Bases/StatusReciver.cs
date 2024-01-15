@@ -14,7 +14,9 @@ namespace AutomaticScrewMachine.Bases {
         public uint OUTPORT_EMG_BUTTON; // 2
         public uint OUTPORT_START_RIGHT_BUTTON; // 3
         public uint OUTPORT_START_TORQUE_DRIVER; // 4
-                                                // 5,6 은 Preset Selected
+        public uint OUTPORT_PRESET_ONE; // 5
+        public uint OUTPORT_PRESET_TWO; // 6
+
         public uint OUTPORT_NGBOX; // 7
 
         public uint OUTPORT_SCREW_DRIVER; // 8
