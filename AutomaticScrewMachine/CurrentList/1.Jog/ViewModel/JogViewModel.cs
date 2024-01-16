@@ -198,6 +198,8 @@ namespace AutomaticScrewMachine.CurrentList._1.Jog.ViewModel {
 
         private void Motion_DoWork (object sender, DoWorkEventArgs e) {
             // BackgroundWorker가 캔슬신호를 받기전까지 무한루프.
+            /*var box = sender as BackgroundWorker;
+            while (!box.CancellationPending) {*/
             while (!_motionWorker.CancellationPending) {
                 ServoStatusX = RecevieSignalColor(STATUS_Instance.SERVO_ONOFF_SIGNAL_X);
                 ServoStatusY = RecevieSignalColor(STATUS_Instance.SERVO_ONOFF_SIGNAL_Y);
@@ -219,8 +221,8 @@ namespace AutomaticScrewMachine.CurrentList._1.Jog.ViewModel {
         private Brush SetOutportBind (int indexIONumber) {
             Dictionary<int, Func<Brush>> brushFunctions = new Dictionary<int, Func<Brush>> {
                 { (int)DO_Index.NGBOX, () => STATUS_Instance.INPORT_NGBOX_OFF == 0 ? Brushes.Transparent : Brushes.Gray },
-                { (int)DO_Index.DRIVER_SYLINDER, () => STATUS_Instance.OUTPORT_SCREW_DRIVER == 0 ? Brushes.Gray : Brushes.Green },
-                { (int)DO_Index.DEPTH_SYLINDER, () => STATUS_Instance.OUTPORT_DEPTH_CHECKER == 0 ? Brushes.Gray : Brushes.Green },
+                { (int)DO_Index.DRIVER_SYLINDER, () => STATUS_Instance.OUTPORT_DRIVER_SYLINDER == 0 ? Brushes.Gray : Brushes.Green },
+                { (int)DO_Index.DEPTH_SYLINDER, () => STATUS_Instance.OUTPORT_DEPTH_SYLINDER == 0 ? Brushes.Gray : Brushes.Green },
                 { (int)DO_Index.VACUUM, () => STATUS_Instance.OUTPORT_SCREW_VACUUM == 0 ? Brushes.Gray : Brushes.Green },
 
                 { (int)DO_Index.TORQUE_DRIVER, () => STATUS_Instance.OUTPORT_START_TORQUE_DRIVER == 0 ? Brushes.Gray : Brushes.DarkBlue },
@@ -274,8 +276,8 @@ namespace AutomaticScrewMachine.CurrentList._1.Jog.ViewModel {
                     TorqDriver = new RelayCommand(() => DIOWrite((int)DO_Index.TORQUE_DRIVER, STATUS_Instance.OUTPORT_START_TORQUE_DRIVER == 0 ? 1u : 0));
 
                     // Sylinder IO
-                    DriverIO = new RelayCommand(() => DIOWrite((int)DO_Index.DRIVER_SYLINDER, STATUS_Instance.OUTPORT_SCREW_DRIVER == 0 ? 1u : 0));
-                    DepthIO = new RelayCommand(() => DIOWrite((int)DO_Index.DEPTH_SYLINDER, STATUS_Instance.OUTPORT_DEPTH_CHECKER == 0 ? 1u : 0));
+                    DriverIO = new RelayCommand(() => DIOWrite((int)DO_Index.DRIVER_SYLINDER, STATUS_Instance.OUTPORT_DRIVER_SYLINDER == 0 ? 1u : 0));
+                    DepthIO = new RelayCommand(() => DIOWrite((int)DO_Index.DEPTH_SYLINDER, STATUS_Instance.OUTPORT_DEPTH_SYLINDER == 0 ? 1u : 0));
                     VacuumIO = new RelayCommand(() => DIOWrite((int)DO_Index.VACUUM, STATUS_Instance.OUTPORT_SCREW_VACUUM == 0 ? 1u : 0));
                     
                     // ExcelIO
@@ -480,8 +482,8 @@ namespace AutomaticScrewMachine.CurrentList._1.Jog.ViewModel {
             PositionDataList[index].X = PositionValueX;
             PositionDataList[index].Y = PositionValueY;
             PositionDataList[index].Z = PositionValueZ;
-            PositionDataList[index].Driver_IO = STATUS_Instance.OUTPORT_SCREW_DRIVER;
-            PositionDataList[index].Depth_IO = STATUS_Instance.OUTPORT_DEPTH_CHECKER;
+            PositionDataList[index].Driver_IO = STATUS_Instance.OUTPORT_DRIVER_SYLINDER;
+            PositionDataList[index].Depth_IO = STATUS_Instance.OUTPORT_DEPTH_SYLINDER;
         }
         public void GetReadingData (int workSheetIndex) {
             PositionDataList?.Clear();
@@ -536,8 +538,8 @@ namespace AutomaticScrewMachine.CurrentList._1.Jog.ViewModel {
                     X = PositionValueX,
                     Y = PositionValueY,
                     Z = PositionValueZ,
-                    Driver_IO = STATUS_Instance.OUTPORT_SCREW_DRIVER,
-                    Depth_IO = STATUS_Instance.OUTPORT_DEPTH_CHECKER
+                    Driver_IO = STATUS_Instance.OUTPORT_DRIVER_SYLINDER,
+                    Depth_IO = STATUS_Instance.OUTPORT_DEPTH_SYLINDER
                 };
 
                 PositionDataList.Add(posData);
@@ -736,7 +738,7 @@ namespace AutomaticScrewMachine.CurrentList._1.Jog.ViewModel {
 
         private void MoveMultiPos_XY (double[] XYHoldPos) {
             double _moveAbleZPosition = 10000; //마지노선
-            if (STATUS_Instance.OUTPORT_SCREW_DRIVER != 0 && STATUS_Instance.OUTPORT_SCREW_VACUUM != 0) {
+            if (STATUS_Instance.OUTPORT_DRIVER_SYLINDER != 0 && STATUS_Instance.OUTPORT_SCREW_VACUUM != 0) {
                 Crash_IO_OnOff(false);
             }
             if (PositionValueZ > _moveAbleZPosition) {
@@ -824,7 +826,7 @@ namespace AutomaticScrewMachine.CurrentList._1.Jog.ViewModel {
                 CAXM.AxmSignalServoOn((int)ServoIndex.ZPOSITION, SIGNAL_ON);
                 CAXM.AxmSignalServoOn((int)ServoIndex.XPOSITION, SIGNAL_ON);
                 CAXM.AxmSignalServoOn((int)ServoIndex.YPOSITION, SIGNAL_ON);
-
+                
                 Crash_IO_OnOff(false);
                 SetHomeReturnSpeed(100000);
 

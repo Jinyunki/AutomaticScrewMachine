@@ -19,8 +19,8 @@ namespace AutomaticScrewMachine.Bases {
 
         public uint OUTPORT_NGBOX; // 7
 
-        public uint OUTPORT_SCREW_DRIVER; // 8
-        public uint OUTPORT_DEPTH_CHECKER; // 9
+        public uint OUTPORT_DRIVER_SYLINDER; // 8
+        public uint OUTPORT_DEPTH_SYLINDER; // 9
         public uint OUTPORT_SCREW_VACUUM; // 10
         public uint OUTPORT_LED_OK1; // 11
         public uint OUTPORT_LED_OK2; // 12
@@ -183,8 +183,8 @@ namespace AutomaticScrewMachine.Bases {
 
                 OUTPORT_NGBOX = OutportStatus(7);
 
-                OUTPORT_SCREW_DRIVER = OutportStatus(8);
-                OUTPORT_DEPTH_CHECKER = OutportStatus(9);
+                OUTPORT_DRIVER_SYLINDER = OutportStatus(8);
+                OUTPORT_DEPTH_SYLINDER = OutportStatus(9);
                 OUTPORT_SCREW_VACUUM = OutportStatus(10);
 
                 OUTPORT_LED_OK1 = OutportStatus(11);
@@ -258,12 +258,12 @@ namespace AutomaticScrewMachine.Bases {
             return value;
         }
 
-        private uint OutportStatus (int indexNum) {
+        public uint OutportStatus (int indexNum) {
             uint value = 99;
             CAXD.AxdoReadOutport(indexNum, ref value);
             return value;
         }
-        private uint InportStatus (int indexNum) {
+        public uint InportStatus (int indexNum) {
             uint value = 99;
             CAXD.AxdiReadInport(indexNum, ref value);
             return value;

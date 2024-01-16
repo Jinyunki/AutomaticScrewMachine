@@ -9,94 +9,162 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
+using static OfficeOpenXml.ExcelErrorValue;
 
 namespace AutomaticScrewMachine.CurrentList._3.IO.ViewModel {
     public class IOMapViewModel : IOData {
         private BackgroundWorker _DIOWorker;
         private StatusReciver STATUS_Instance = StatusReciver.Instance;
 
-        public ICommand NGBoxCommand { get; set; }
         public IOMapViewModel () {
-            ControlSetsOutput = new ObservableCollection<ControlSetOutput>();
             STATUS_Instance.StartStatusRead();
             ReadStatusIO();
-            AddContorl();
-            WriteOrder();
+            AddStatusOutput();
+            AddStatusInput();
         }
-        private void AddCtr (int DOindex, uint statusValue, string textValue) {
-            ControlSetsOutput.Add(new ControlSetOutput {
-                ButtonBackground = Brushes.Gray,
-                ButtonCommand = new RelayCommand(() => DIOWrite(DOindex, statusValue == 0 ? 1u : 0)),
-                ButtonText = $"{DOindex} {textValue}"
-            });
-        }
-        private void AddContorl () {
-            //AddCtr((int)DO_Index.STARTBTN, STATUS_Instance.OUTPORT_START_LEFT_BUTTON, "START_L");
-            //AddCtr((int)DO_Index.RESETBTN, STATUS_Instance.OUTPORT_RESET_BUTTON, "RESET");
-            ControlSetsOutput.Add(new ControlSetOutput {
-                ButtonBackground = Brushes.Gray,
-                ButtonCommand = new RelayCommand(() => DIOWrite((int)DO_Index.STARTBTN, STATUS_Instance.OUTPORT_START_LEFT_BUTTON == 0 ? 1u : 0)),
-                ButtonText = "(0) START_L"
-            });
-
-            ControlSetsOutput.Add(new ControlSetOutput {
-                ButtonBackground = Brushes.Gray,
-                ButtonCommand = new RelayCommand(() => DIOWrite((int)DO_Index.RESETBTN, STATUS_Instance.OUTPORT_RESET_BUTTON == 0 ? 1u : 0)),
-                ButtonText = "(1) RESET"
-            });
-
-            ControlSetsOutput.Add(new ControlSetOutput {
-                ButtonBackground = Brushes.Gray,
-                ButtonCommand = new RelayCommand(() => DIOWrite((int)DO_Index.EMGBTN, STATUS_Instance.OUTPORT_EMG_BUTTON == 0 ? 1u : 0)),
-                ButtonText = "(2) EMG"
-            });
-
-            ControlSetsOutput.Add(new ControlSetOutput {
-                ButtonBackground = Brushes.Gray,
-                ButtonCommand = new RelayCommand(() => DIOWrite((int)DO_Index.START2BTN, STATUS_Instance.OUTPORT_START_RIGHT_BUTTON == 0 ? 1u : 0)),
-                ButtonText = "(3) START_R"
-            });
-
-            ControlSetsOutput.Add(new ControlSetOutput {
-                ButtonBackground = Brushes.Gray,
-                ButtonCommand = new RelayCommand(() => DIOWrite((int)DO_Index.TORQUE_DRIVER, STATUS_Instance.OUTPORT_START_TORQUE_DRIVER == 0 ? 1u : 0)),
-                ButtonText = "(4) TORQU"
-            });
-
-            ControlSetsOutput.Add(new ControlSetOutput {
-                ButtonBackground = Brushes.Gray,
-                ButtonCommand = new RelayCommand(() => DIOWrite((int)DO_Index.PRESET1, STATUS_Instance.OUTPORT_PRESET_ONE == 0 ? 1u : 0)),
-                ButtonText = "(5) PRESET1"
-            });
-
-            ControlSetsOutput.Add(new ControlSetOutput {
-                ButtonBackground = Brushes.Gray,
-                ButtonCommand = new RelayCommand(() => DIOWrite((int)DO_Index.PRESET2, STATUS_Instance.OUTPORT_PRESET_TWO == 0 ? 1u : 0)),
-                ButtonText = "(6) PRESET2"
-            });
-
-            ControlSetsOutput.Add(new ControlSetOutput {
-                ButtonBackground = Brushes.Gray,
-                ButtonCommand = new RelayCommand(() => DIOWrite((int)DO_Index.NGBOX, STATUS_Instance.OUTPORT_NGBOX == 1 ? 0 : 1u)),
-                ButtonText = "(7) NGBOX"
-            });
-
-        }
-        private void DIOWrite (int axis, uint value) {
-            CAXD.AxdoWriteOutport(axis, value);
-        }
-        private void WriteOrder () {
-            NGBoxCommand = new RelayCommand(()=> STATUS_Instance.DOWrite((int)DO_Index.NGBOX, STATUS_Instance.OUTPORT_NGBOX == 0 ? 1u:0));
-        }
-
         ~IOMapViewModel () {
             _DIOWorker?.CancelAsync();
             STATUS_Instance = StatusReciver.ClearInstance();
         }
-        private Brush SetColor (uint Status) {
+        private void AddStatusOutput () {
+            // H/W Button
+            OutputList.Add(new ControlSetOutput {
+                ButtonCommand = new RelayCommand(() => DIOWrite((int)DO_Index.STARTBTN_L, STATUS_Instance.OUTPORT_START_LEFT_BUTTON)),
+                ButtonText = $"({(int)DO_Index.STARTBTN_L}) Start L"
+            });
+            OutputList.Add(new ControlSetOutput {
+                ButtonCommand = new RelayCommand(() => DIOWrite((int)DO_Index.RESETBTN, STATUS_Instance.OUTPORT_RESET_BUTTON)),
+                ButtonText = $"({(int)DO_Index.RESETBTN}) Reset"
+            });
+            OutputList.Add(new ControlSetOutput {
+                ButtonCommand = new RelayCommand(() => DIOWrite((int)DO_Index.EMGBTN, STATUS_Instance.OUTPORT_EMG_BUTTON)),
+                ButtonText = $"({(int)DO_Index.EMGBTN}) Emg"
+            });
+            OutputList.Add(new ControlSetOutput {
+                ButtonCommand = new RelayCommand(() => DIOWrite((int)DO_Index.STARTBTN_R, STATUS_Instance.OUTPORT_START_RIGHT_BUTTON)),
+                ButtonText = $"({(int)DO_Index.STARTBTN_R}) Start R"
+            });
+
+            // TorqControl
+            OutputList.Add(new ControlSetOutput {
+                ButtonCommand = new RelayCommand(() => DIOWrite((int)DO_Index.TORQUE_DRIVER, STATUS_Instance.OUTPORT_START_TORQUE_DRIVER)),
+                ButtonText = $"({(int)DO_Index.TORQUE_DRIVER})Torqu"
+            });
+
+            // Preset
+            OutputList.Add(new ControlSetOutput {
+                ButtonCommand = new RelayCommand(() => DIOWrite((int)DO_Index.PRESET1, STATUS_Instance.OUTPORT_PRESET_ONE)),
+                ButtonText = $"({(int)DO_Index.PRESET1}) Pre1"
+            });
+            OutputList.Add(new ControlSetOutput {
+                ButtonCommand = new RelayCommand(() => DIOWrite((int)DO_Index.PRESET2, STATUS_Instance.OUTPORT_PRESET_TWO)),
+                ButtonText = $"({(int)DO_Index.PRESET2}) Pre2"
+            });
+
+            // NGBox
+            OutputList.Add(new ControlSetOutput {
+                ButtonCommand = new RelayCommand(() => DIOWrite((int)DO_Index.NGBOX, STATUS_Instance.OUTPORT_NGBOX)),
+                ButtonText = $"({(int)DO_Index.NGBOX}) NgBox"
+            });
+
+            // Servo Sylinder
+            OutputList.Add(new ControlSetOutput {
+                ButtonCommand = new RelayCommand(() => DIOWrite((int)DO_Index.DRIVER_SYLINDER, STATUS_Instance.OUTPORT_DRIVER_SYLINDER)),
+                ButtonText = $"({(int)DO_Index.DRIVER_SYLINDER}) Driver"
+            });
+            OutputList.Add(new ControlSetOutput {
+                ButtonCommand = new RelayCommand(() => DIOWrite((int)DO_Index.DEPTH_SYLINDER, STATUS_Instance.OUTPORT_DEPTH_SYLINDER)),
+                ButtonText = $"({(int)DO_Index.DEPTH_SYLINDER}) Depth"
+            });
+            OutputList.Add(new ControlSetOutput {
+                ButtonCommand = new RelayCommand(() => DIOWrite((int)DO_Index.VACUUM, STATUS_Instance.OUTPORT_SCREW_VACUUM)),
+                ButtonText = $"({(int)DO_Index.VACUUM}) Vacuum"
+            });
+
+            // OK SIGNAL PORT
+            OutputList.Add(new ControlSetOutput {
+                ButtonCommand = new RelayCommand(() => DIOWrite((int)DO_Index.OK_LED_PORT1, STATUS_Instance.OUTPORT_LED_OK1)),
+                ButtonText = $"({(int)DO_Index.OK_LED_PORT1}) Port 1 OK"
+            });
+            OutputList.Add(new ControlSetOutput {
+                ButtonCommand = new RelayCommand(() => DIOWrite((int)DO_Index.OK_LED_PORT2, STATUS_Instance.OUTPORT_LED_OK2)),
+                ButtonText = $"({(int)DO_Index.OK_LED_PORT2}) Port 2 OK"
+            });
+            OutputList.Add(new ControlSetOutput {
+                ButtonCommand = new RelayCommand(() => DIOWrite((int)DO_Index.OK_LED_PORT3, STATUS_Instance.OUTPORT_LED_OK3)),
+                ButtonText = $"({(int)DO_Index.OK_LED_PORT3}) Port 3 OK"
+            });
+            OutputList.Add(new ControlSetOutput {
+                ButtonCommand = new RelayCommand(() => DIOWrite((int)DO_Index.OK_LED_PORT4, STATUS_Instance.OUTPORT_LED_OK4)),
+                ButtonText = $"({(int)DO_Index.OK_LED_PORT4}) Port 4 OK"
+            });
+            OutputList.Add(new ControlSetOutput {
+                ButtonCommand = new RelayCommand(() => DIOWrite((int)DO_Index.OK_LED_PORT5, STATUS_Instance.OUTPORT_LED_OK5)),
+                ButtonText = $"({(int)DO_Index.OK_LED_PORT5}) Port 5 OK"
+            });
+
+            // NG SIGNAL PORT
+            OutputList.Add(new ControlSetOutput {
+                ButtonCommand = new RelayCommand(() => DIOWrite((int)DO_Index.NG_LED_PORT1, STATUS_Instance.OUTPORT_LED_NG1)),
+                ButtonText = $"({(int)DO_Index.NG_LED_PORT1}) Port 1 NG"
+            });
+            OutputList.Add(new ControlSetOutput {
+                ButtonCommand = new RelayCommand(() => DIOWrite((int)DO_Index.NG_LED_PORT2, STATUS_Instance.OUTPORT_LED_NG2)),
+                ButtonText = $"({(int)DO_Index.NG_LED_PORT2}) Port 2 NG"
+            });
+            OutputList.Add(new ControlSetOutput {
+                ButtonCommand = new RelayCommand(() => DIOWrite((int)DO_Index.NG_LED_PORT3, STATUS_Instance.OUTPORT_LED_NG3)),
+                ButtonText = $"({(int)DO_Index.NG_LED_PORT3}) Port 3 NG"
+            });
+            OutputList.Add(new ControlSetOutput {
+                ButtonCommand = new RelayCommand(() => DIOWrite((int)DO_Index.NG_LED_PORT4, STATUS_Instance.OUTPORT_LED_NG4)),
+                ButtonText = $"({(int)DO_Index.NG_LED_PORT4}) Port 4 NG"
+            });
+            OutputList.Add(new ControlSetOutput {
+                ButtonCommand = new RelayCommand(() => DIOWrite((int)DO_Index.NG_LED_PORT5, STATUS_Instance.OUTPORT_LED_NG5)),
+                ButtonText = $"({(int)DO_Index.NG_LED_PORT5}) Port 5 NG"
+            });
+
+            // BUZZER
+            OutputList.Add(new ControlSetOutput {
+                ButtonCommand = new RelayCommand(() => DIOWrite((int)DO_Index.LED_BUZZER_RED, STATUS_Instance.OUTPORT_BUZZER_NG)),
+                ButtonText = $"({(int)DO_Index.LED_BUZZER_RED}) Buzzer NG"
+            });
+            OutputList.Add(new ControlSetOutput {
+                ButtonCommand = new RelayCommand(() => DIOWrite((int)DO_Index.LED_BUZZER_YELLOW, STATUS_Instance.OUTPORT_BUZZER_ERROR)),
+                ButtonText = $"({(int)DO_Index.LED_BUZZER_YELLOW}) Buzzer Err"
+            });
+            OutputList.Add(new ControlSetOutput {
+                ButtonCommand = new RelayCommand(() => DIOWrite((int)DO_Index.LED_BUZZER_GREEN, STATUS_Instance.OUTPORT_BUZZER_OK)),
+                ButtonText = $"({(int)DO_Index.LED_BUZZER_GREEN}) Buzzer OK"
+            });
+            OutputList.Add(new ControlSetOutput {
+                ButtonCommand = new RelayCommand(() => DIOWrite((int)DO_Index.SOUND_BUZZER, STATUS_Instance.OUTPORT_BUZZER_SOUND)),
+                ButtonText = $"({(int)DO_Index.SOUND_BUZZER}) Buzzer Sound"
+            });
+
+        }
+        private void AddStatusInput () {
+            for (int i = 0; i <= 24; i++) {
+                InputList.Add(new ControlSetOutput { ButtonText = $"({i})"});
+            }
+        }
+        private void DIOWrite (int axis, uint value) {
+            if (axis == 7) {
+                CAXD.AxdoWriteOutport(axis, value == 1 ? 0 : 1u);
+            } else {
+                CAXD.AxdoWriteOutport(axis, value == 0 ? 1u : 0);
+            }
+        }
+
+        private Brush SetOutputColor (uint Status) {
             return Status == 0 ? Brushes.Gray : Brushes.DarkBlue;
+        }
+        private Brush SetInputColor (uint Status) {
+            return Status == 0 ? Brushes.Gray : Brushes.DarkGreen;
         }
 
         private void ReadStatusIO () {
@@ -114,67 +182,22 @@ namespace AutomaticScrewMachine.CurrentList._3.IO.ViewModel {
 
         private void DIO_DoWork (object sender, DoWorkEventArgs e) {
             while (!_DIOWorker.CancellationPending) {
-                STATUS_Instance.Delay(100);
-                // 수동버튼
-                //SelfStartButton = SetColor(STATUS_Instance.INPORT_START_LEFT_BUTTON);
-                ControlSetsOutput[0].ButtonBackground = SetColor(STATUS_Instance.OUTPORT_START_LEFT_BUTTON);
-                ControlSetsOutput[1].ButtonBackground = SetColor(STATUS_Instance.OUTPORT_RESET_BUTTON);
-                /*ControlSetsOutput[2].ButtonBackground = SetColor(STATUS_Instance.OUTPORT_EMG_BUTTON);
-                ControlSetsOutput[3].ButtonBackground = SetColor(STATUS_Instance.OUTPORT_START_RIGHT_BUTTON);
-                ControlSetsOutput[4].ButtonBackground = SetColor(STATUS_Instance.OUTPORT_START_TORQUE_DRIVER);
-
-                ControlSetsOutput[7].ButtonBackground = SetColor(STATUS_Instance.OUTPORT_NGBOX);*/
-                //Console.WriteLine("SetColor(STATUS_Instance.INPORT_START_LEFT_BUTTON) ????" + SetColor(STATUS_Instance.INPORT_START_LEFT_BUTTON));
-                //SelfResetButton = STATUS_Instance.INPORT_RESET_BUTTON == 0 ? Brushes.Gray : Brushes.DarkBlue;
-                //SelfEmgButton = STATUS_Instance.INPORT_EMG_BUTTON == 0 ? Brushes.Gray : Brushes.DarkBlue;
-                //SelfStart2Button = STATUS_Instance.INPORT_START_RIGHT_BUTTON == 0 ? Brushes.Gray : Brushes.DarkBlue;
-                //TorquButton = STATUS_Instance.INPORT_START_RIGHT_BUTTON == 0 ? Brushes.Gray : Brushes.DarkBlue;
-
-                //NGBOX = STATUS_Instance.INPORT_NGBOX_OFF == 1 ? Brushes.Gray : Brushes.DarkBlue;
-
-                /*// 시퀀스 시작 트리거
-                if (SelfStartButton == Brushes.Green && SelfStart2Button == Brushes.Green) {
-                    CommandSequenceStart();
-                }
-
-                //비상정지
-                EmgLine = SetInportBind(19);
-
-                //JIG 내부 센서
-                JigP1 = SetInportBind(13);
-                JigP2 = SetInportBind(14);
-                JigP3 = SetInportBind(15);
-                JigP4 = SetInportBind(16);
-                JigP5 = SetInportBind(17);
-
-                ScrewSupplyOnoff = STATUS_Instance.INPORT_SUPPLY_SCREW_SENSOR == 1 ? Brushes.Red : Brushes.Gray;
-                ScrewSupplyINOUT = STATUS_Instance.INPORT_SUPPLY_SCREW_SENSOR == 1 ? Brushes.Green : Brushes.Gray;
-
-                NGBOX = SetOutportBind((int)DIOIndex.NGBOX);
-
-                DriverBuzzer = SetOutportBind((int)DIOIndex.DRIVER_SYLINDER);
-                DepthBuzzer = SetOutportBind((int)DIOIndex.DEPTH_SYLINDER);
-                VacuumBuzzer = SetOutportBind((int)DIOIndex.VACUUM);
-
-                TorqBuzzer = SetOutportBind((int)DIOIndex.TORQUE_DRIVER);
-
-                // 머신 상단 알람 부저
-                BuzzerAlarmOK = SetOutportBind((int)DIOIndex.LED_BUZZER_GREEN);
-                BuzzerAlarmERR = SetOutportBind((int)DIOIndex.LED_BUZZER_YELLOW);
-                BuzzerAlarmNG = SetOutportBind((int)DIOIndex.LED_BUZZER_RED);
-
-                P1_OK = SetOutportBind((int)DIOIndex.OK_LED_PORT1);
-                P2_OK = SetOutportBind((int)DIOIndex.OK_LED_PORT2);
-                P3_OK = SetOutportBind((int)DIOIndex.OK_LED_PORT3);
-                P4_OK = SetOutportBind((int)DIOIndex.OK_LED_PORT4);
-                P5_OK = SetOutportBind((int)DIOIndex.OK_LED_PORT5);
-
-                P1_NG = SetOutportBind((int)DIOIndex.NG_LED_PORT1);
-                P2_NG = SetOutportBind((int)DIOIndex.NG_LED_PORT2);
-                P3_NG = SetOutportBind((int)DIOIndex.NG_LED_PORT3);
-                P4_NG = SetOutportBind((int)DIOIndex.NG_LED_PORT4);
-                P5_NG = SetOutportBind((int)DIOIndex.NG_LED_PORT5);*/
+                STATUS_Instance.Delay(10);
+                Console.WriteLine("STATUS_Instance.OUTPORT_PRESET_ONE : " + STATUS_Instance.OUTPORT_PRESET_ONE);
+                Console.WriteLine("STATUS_Instance.OUTPORT_PRESET_TWO : " + STATUS_Instance.OUTPORT_PRESET_TWO);
+                SetOutputBackground();
+                SetInputBackground();
             }
+        }
+
+        private void SetOutputBackground () {
+            for (int i = 0; i <= 24; i++) {
+                OutputList[i].ButtonBackground = SetOutputColor(STATUS_Instance.OutportStatus(i));
+            } 
+        }private void SetInputBackground () {
+            for (int i = 0; i <= 24; i++) {
+                InputList[i].ButtonBackground = SetInputColor(STATUS_Instance.InportStatus(i));
+            } 
         }
     }
 }

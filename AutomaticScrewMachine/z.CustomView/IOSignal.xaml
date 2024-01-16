@@ -1,5 +1,5 @@
 ﻿<UserControl
-    x:Class="AutomaticScrewMachine.z.CustomView.Cst_IO"
+    x:Class="AutomaticScrewMachine.z.CustomView.IOSignal"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -13,6 +13,7 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="../DesignGUI.xaml" />
             </ResourceDictionary.MergedDictionaries>
+
         </ResourceDictionary>
     </UserControl.Resources>
     <Grid>
@@ -20,19 +21,20 @@
             <RowDefinition />
             <RowDefinition />
         </Grid.RowDefinitions>
-
         <Button
             Grid.Row="0"
             Width="20"
             Height="20"
             VerticalAlignment="Center"
-            Background="{Binding ButtonBackground, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-            Command="{Binding ButtonCommand}"
-            Style="{DynamicResource IconButtonStyle}" />
-
+            Background="{Binding ButtonBackground, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+            Command="{Binding ButtonCommand, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+            Style="{DynamicResource RoundedButtonStyle}" />
         <TextBlock
             Grid.Row="1"
-            Style="{DynamicResource TextBlockStyle}"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Top"
+            FontSize="10"
+            Foreground="{DynamicResource FontColor}"
             Text="{Binding ButtonText}" />
     </Grid>
 </UserControl>

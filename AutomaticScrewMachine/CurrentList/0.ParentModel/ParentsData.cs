@@ -8,10 +8,10 @@ using System.Threading.Tasks;
 namespace AutomaticScrewMachine.CurrentList._0.ParentModel {
     public class ParentsData : ViewModelBase {
         public enum DO_Index {
-            STARTBTN = 0,
+            STARTBTN_L = 0,
             RESETBTN = 1,
             EMGBTN = 2,
-            START2BTN = 3,
+            STARTBTN_R = 3,
 
             TORQUE_DRIVER = 4, // Torqu 시작 P25 (4)
             PRESET1 = 5, // Preset선택 P25 (1)
@@ -41,13 +41,14 @@ namespace AutomaticScrewMachine.CurrentList._0.ParentModel {
             SOUND_BUZZER = 24,
 
 
-            IDK25 = 25, // NULL 비어있는 Index
+
+            /*IDK25 = 25, // NULL 비어있는 Index
             IDK26 = 26, // NULL 비어있는 Index
             IDK27 = 27, // NULL 비어있는 Index
             IDK28 = 28, // NULL 비어있는 Index
             IDK29 = 29, // NULL 비어있는 Index
             IDK30 = 30, // NULL 비어있는 Index
-            IDK31 = 31  // NULL 비어있는 Index
+            IDK31 = 31  // NULL 비어있는 Index*/
         }
 
         public enum DI_Index {

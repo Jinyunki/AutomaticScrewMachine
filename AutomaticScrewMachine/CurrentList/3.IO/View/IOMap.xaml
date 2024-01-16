@@ -5,6 +5,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:AutomaticScrewMachine.CurrentList._3.IO.View"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:signalIO="clr-namespace:AutomaticScrewMachine.z.CustomView"
     d:DesignHeight="800"
     d:DesignWidth="1600"
     DataContext="{Binding IOMapViewModel, Source={StaticResource Locator}}"
@@ -42,13 +43,11 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="1*" />
                     <RowDefinition Height="2*" />
-                    <RowDefinition Height="1*" />
                     <RowDefinition Height="2*" />
-                    <RowDefinition Height="1*" />
                     <RowDefinition Height="2*" />
-                    <RowDefinition Height="1*" />
                     <RowDefinition Height="2*" />
-                    <RowDefinition Height="1*" />
+                    <RowDefinition Height="2*" />
+                    <RowDefinition Height="2*" />
                 </Grid.RowDefinitions>
 
                 <TextBlock
@@ -58,54 +57,37 @@
                     FontSize="15"
                     Foreground="{DynamicResource FontColor}"
                     Text="OUTPUT SIGNAL" />
-                <Grid Grid.Row="1" >
-                    <ItemsControl ItemsSource="{Binding ControlSetsOutput}">
+                <Grid Grid.Row="1">
+                    <ItemsControl ItemsSource="{Binding OutputList}">
                         <ItemsControl.ItemsPanel>
                             <ItemsPanelTemplate>
-                                <!-- WrapPanel을 사용하여 가로로 나열 -->
-                                <WrapPanel Orientation="Horizontal" />
+                                <!--  UniformGrid를 사용하여 가로로 나열  -->
+                                <UniformGrid Columns="8" Rows="1" />
                             </ItemsPanelTemplate>
                         </ItemsControl.ItemsPanel>
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
-                                <Grid Margin="15 0 0 0">
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition />
-                                        <RowDefinition />
-                                    </Grid.RowDefinitions>
-                                    <Button
-                                        Grid.Row="0"
-                                        Width="20"
-                                        Height="20"
-                                        VerticalAlignment="Center"
-                                        Background="{Binding ButtonBackground, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
-                                        Command="{Binding ButtonCommand, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
-                                        Style="{DynamicResource RoundedButtonStyle}" />
-                                    <TextBlock
-                                        Grid.Row="1"
-                                        HorizontalAlignment="Center"
-                                        VerticalAlignment="Top"
-                                        FontSize="8"
-                                        Foreground="{DynamicResource FontColor}"
-                                        Text="{Binding ButtonText}" />
-                                </Grid>
+                                <signalIO:IOSignal
+                                    BorderBrush="Silver"
+                                    BorderThickness="0.1"
+                                    ButtonBackground="{Binding ButtonBackground}"
+                                    ButtonCommand="{Binding ButtonCommand}"
+                                    ButtonText="{Binding ButtonText}" />
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
-
                 </Grid>
+
             </Grid>
             <Grid Grid.Column="1">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="1*" />
                     <RowDefinition Height="2*" />
-                    <RowDefinition Height="1*" />
                     <RowDefinition Height="2*" />
-                    <RowDefinition Height="1*" />
                     <RowDefinition Height="2*" />
-                    <RowDefinition Height="1*" />
                     <RowDefinition Height="2*" />
-                    <RowDefinition Height="1*" />
+                    <RowDefinition Height="2*" />
+                    <RowDefinition Height="2*" />
                 </Grid.RowDefinitions>
                 <TextBlock
                     Grid.Row="0"
@@ -115,7 +97,26 @@
                     Foreground="{DynamicResource FontColor}"
                     Text="INPUT SIGNAL" />
 
-
+                <Grid Grid.Row="1">
+                    <ItemsControl ItemsSource="{Binding InputList}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <!--  UniformGrid를 사용하여 가로로 나열  -->
+                                <UniformGrid Columns="8" Rows="1" />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <signalIO:IOSignal
+                                    BorderBrush="Silver"
+                                    BorderThickness="0.1"
+                                    ButtonBackground="{Binding ButtonBackground}"
+                                    ButtonCommand="{Binding ButtonCommand}"
+                                    ButtonText="{Binding ButtonText}" />
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </Grid>
             </Grid>
         </Grid>
 

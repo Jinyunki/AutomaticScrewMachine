@@ -185,8 +185,8 @@
     <Compile Include="Utiles\SerialPortAdapter.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />
-    <Compile Include="z.CustomView\Cst_IO.xaml.cs">
-      <DependentUpon>Cst_IO.xaml</DependentUpon>
+    <Compile Include="z.CustomView\IOSignal.xaml.cs">
+      <DependentUpon>IOSignal.xaml</DependentUpon>
     </Compile>
     <Page Include="CurrentList\1.Jog\View\frag\Frag_InputPosition.xaml">
       <SubType>Designer</SubType>
@@ -268,7 +268,7 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="z.CustomView\Cst_IO.xaml">
+    <Page Include="z.CustomView\IOSignal.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

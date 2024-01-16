@@ -3,6 +3,7 @@ using GalaSoft.MvvmLight;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,8 +11,23 @@ using System.Windows.Media;
 
 namespace AutomaticScrewMachine.CurrentList._3.IO.Model {
     public class IOData : ParentsData {
-
-        public ObservableCollection<ControlSetOutput> ControlSetsOutput { get; set; }
+        
+        private ObservableCollection<ControlSetOutput> _ouputList = new ObservableCollection<ControlSetOutput>();
+        public ObservableCollection<ControlSetOutput> OutputList {
+            get { return _ouputList; }
+            set {
+                _ouputList = value;
+                RaisePropertyChanged(nameof(OutputList));
+            }
+        }
+        private ObservableCollection<ControlSetOutput> _inputList = new ObservableCollection<ControlSetOutput>();
+        public ObservableCollection<ControlSetOutput> InputList {
+            get { return _inputList; }
+            set {
+                _inputList = value;
+                RaisePropertyChanged(nameof(InputList));
+            }
+        }
         // 0
         private Brush _selfStartButton = Brushes.Gray;
         public Brush SelfStartButton {
