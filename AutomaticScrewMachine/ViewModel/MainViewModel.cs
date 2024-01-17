@@ -5,8 +5,6 @@ using System;
 using System.Diagnostics;
 using System.Reflection;
 using System.Windows;
-using static AutomaticScrewMachine.CurrentList._1.Jog.Model.JogData;
-using static OfficeOpenXml.ExcelErrorValue;
 
 namespace AutomaticScrewMachine.ViewModel {
     public class MainViewModel : MainViewBindingData {
@@ -37,11 +35,10 @@ namespace AutomaticScrewMachine.ViewModel {
                 BtnMinmize = new RelayCommand(WinMinmize);
                 BtnMaxsize = new RelayCommand(WinMaxSize);
                 BtnClose = new RelayCommand(WindowClose);
+
                 // CurrentViewControl
                 CurrentJogView = new RelayCommand(() => CurrentViewModel = _locator.JogViewModel);
                 CurrentIO = new RelayCommand(() => CurrentViewModel = _locator.IOMapViewModel);
-                //CurrentTORQUE = new RelayCommand(() => CAXD.AxdoWriteOutport((int)DIOIndex.TORQUE_DRIVER_START, 1));
-                //CurrentMainView = new RelayCommand(() => SerialPortAdapter.WriteTorqSerial());
 
                 WindowBtnOpacity = 0.5;
             } catch (Exception ex) {

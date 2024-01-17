@@ -378,7 +378,6 @@
     <Resource Include="Assets\btn_right_white.png" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="CurrentList\1.Jog\Base\" />
     <Folder Include="CurrentList\2.SidBar\ViewModel\" />
     <Folder Include="CurrentList\4.TorqControllerStatus\ViewModel\" />
     <Folder Include="Views\" />

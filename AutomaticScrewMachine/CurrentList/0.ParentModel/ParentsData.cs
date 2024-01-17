@@ -1,9 +1,5 @@
 ﻿using GalaSoft.MvvmLight;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AutomaticScrewMachine.CurrentList._0.ParentModel {
     public class ParentsData : ViewModelBase {
@@ -35,12 +31,10 @@ namespace AutomaticScrewMachine.CurrentList._0.ParentModel {
             NG_LED_PORT4 = 19,
             NG_LED_PORT5 = 20,
 
-            LED_BUZZER_RED = 21,
-            LED_BUZZER_YELLOW = 22,
-            LED_BUZZER_GREEN = 23,
+            LED_BUZZER_NG = 21,
+            LED_BUZZER_ERR = 22,
+            LED_BUZZER_OK = 23,
             SOUND_BUZZER = 24,
-
-
 
             /*IDK25 = 25, // NULL 비어있는 Index
             IDK26 = 26, // NULL 비어있는 Index
@@ -50,7 +44,6 @@ namespace AutomaticScrewMachine.CurrentList._0.ParentModel {
             IDK30 = 30, // NULL 비어있는 Index
             IDK31 = 31  // NULL 비어있는 Index*/
         }
-
         public enum DI_Index {
             STARTBTN_LEFT = 0,
             RESETBTN = 1,
@@ -81,18 +74,24 @@ namespace AutomaticScrewMachine.CurrentList._0.ParentModel {
 
             NGBOX_IN_SENSOR = 24,
 
-            IDK25 = 25, // NULL 비어있는 Index
+            /*IDK25 = 25, // NULL 비어있는 Index
             IDK26 = 26, // NULL 비어있는 Index
             IDK27 = 27, // NULL 비어있는 Index
             IDK28 = 28, // NULL 비어있는 Index
             IDK29 = 29, // NULL 비어있는 Index
             IDK30 = 30, // NULL 비어있는 Index
-            IDK31 = 31  // NULL 비어있는 Index
+            IDK31 = 31  // NULL 비어있는 Index*/
+        }
+        public enum Servo_Index {
+            SERVO_Y = 0,
+            SERVO_X = 1,
+            SERVO_Z = 2
         }
 
         public static readonly string isFolderName = "Data";
         public static readonly string isFileName = "JogData.xlsx";
         public const uint SIGNAL_ON = 1u;
         public const uint SIGNAL_OFF = 0;
+        
     }
 }

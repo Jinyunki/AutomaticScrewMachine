@@ -1,31 +1,17 @@
-﻿using AutomaticScrewMachine.Utiles;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Threading;
 using System.Windows;
-using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
-using System.Runtime.InteropServices;
-using System.Threading.Tasks;
-using System.Threading;
-using System.Diagnostics;
-using System.Windows.Data;
-using AutomaticScrewMachine.Bases;
-using System.Net.NetworkInformation;
 using AutomaticScrewMachine.CurrentList._0.ParentModel;
 
 namespace AutomaticScrewMachine.CurrentList._1.Jog.Model {
     public class JogData : ParentsData {
         public Dictionary<int, Brush> _callBackBrush = new Dictionary<int, Brush>();
 
-        public enum ServoIndex {
-            YPOSITION = 0,
-            XPOSITION = 1,
-            ZPOSITION = 2
-        }
 
         private PosData _selectedPositionItem;
         public PosData SelectedPositionItem {
@@ -44,7 +30,7 @@ namespace AutomaticScrewMachine.CurrentList._1.Jog.Model {
             }
         }
 
-        //TODO : TABCOUNT 구조 변경해야함
+
         private int _tabCnt = 1;
         public int TabCnt {
             get { return _tabCnt; }
@@ -306,22 +292,22 @@ namespace AutomaticScrewMachine.CurrentList._1.Jog.Model {
 
         #endregion
 
-        private Brush _buzzerX = Brushes.Gray;
-        public Brush ServoMoveCheckX {
-            get { return _buzzerX; }
-            set {
-                _buzzerX = value;
-                RaisePropertyChanged(nameof(ServoMoveCheckX));
-            }
-        }
-
-
         private double _positionValueY = 0;
         public double PositionValueY {
             get { return _positionValueY; }
             set {
                 _positionValueY = value;
                 RaisePropertyChanged(nameof(PositionValueY));
+            }
+        }
+        
+
+        private double _positionValueZ = 0;
+        public double PositionValueZ {
+            get { return _positionValueZ; }
+            set {
+                _positionValueZ = value;
+                RaisePropertyChanged(nameof(PositionValueZ));
             }
         }
         public double StartPortXPos = 73800;
@@ -332,7 +318,9 @@ namespace AutomaticScrewMachine.CurrentList._1.Jog.Model {
         public double TorqReadyZposition = 45000;
         public double[] SupplyPosition = new double[2] { 167119, 117239 };
         public double[] Port1Position /*= new double[2] { 73800, 249100 }*/;
-        private Brush _buzzerY = Brushes.Gray;
+
+
+        private Brush _buzzerY = Brushes.Gray; 
         public Brush ServoMoveCheckY {
             get { return _buzzerY; }
             set {
@@ -340,15 +328,15 @@ namespace AutomaticScrewMachine.CurrentList._1.Jog.Model {
                 RaisePropertyChanged(nameof(ServoMoveCheckY));
             }
         }
-
-        private double _positionValueZ = 0;
-        public double PositionValueZ {
-            get { return _positionValueZ; }
+        private Brush _buzzerX = Brushes.Gray;
+        public Brush ServoMoveCheckX {
+            get { return _buzzerX; }
             set {
-                _positionValueZ = value;
-                RaisePropertyChanged(nameof(PositionValueZ));
+                _buzzerX = value;
+                RaisePropertyChanged(nameof(ServoMoveCheckX));
             }
         }
+
 
         private Brush _buzzerZ = Brushes.Gray;
         public Brush ServoMoveCheckZ {

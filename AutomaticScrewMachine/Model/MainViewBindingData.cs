@@ -1,14 +1,8 @@
 ﻿using System.Windows.Input;
 using System.Windows;
-using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight;
-using System;
 using System.ComponentModel;
-using System.Diagnostics;
-using System.Reflection;
 using AutomaticScrewMachine.ViewModel;
-using GalaSoft.MvvmLight.Ioc;
-using GalaSoft.MvvmLight.Views;
 
 namespace AutomaticScrewMachine.Model {
     public class MainViewBindingData  : ViewModelBase {
@@ -24,7 +18,7 @@ namespace AutomaticScrewMachine.Model {
             set {
                 // 이전 View 종료
                 if (_currentViewModel != null) {
-                    _currentViewModel.Cleanup();
+                    _currentViewModel = null;
                 }
                 _currentViewModel = value;
                 RaisePropertyChanged("CurrentViewModel");

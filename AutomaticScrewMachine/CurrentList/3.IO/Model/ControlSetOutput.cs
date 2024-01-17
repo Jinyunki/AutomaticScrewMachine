@@ -1,4 +1,5 @@
-﻿using GalaSoft.MvvmLight;
+﻿using AutomaticScrewMachine.Bases;
+using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using System;
 using System.Collections.Generic;
