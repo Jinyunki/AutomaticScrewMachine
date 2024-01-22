@@ -165,6 +165,7 @@
     <Compile Include="CurrentList\3.IO\View\IOMap.xaml.cs">
       <DependentUpon>IOMap.xaml</DependentUpon>
     </Compile>
+    <Compile Include="CurrentList\4.TorqControllerStatus\ViewModel\TorqueIOViewModel.cs" />
     <Compile Include="CurrentList\4.TorqControllerStatus\View\TorqControllerStatus.xaml.cs">
       <DependentUpon>TorqControllerStatus.xaml</DependentUpon>
     </Compile>
@@ -379,7 +380,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="CurrentList\2.SidBar\ViewModel\" />
-    <Folder Include="CurrentList\4.TorqControllerStatus\ViewModel\" />
     <Folder Include="Views\" />
   </ItemGroup>
   <ItemGroup>

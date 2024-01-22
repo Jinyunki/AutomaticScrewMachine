@@ -1,5 +1,6 @@
 ﻿using GalaSoft.MvvmLight;
 using System;
+using System.Collections.Generic;
 
 namespace AutomaticScrewMachine.CurrentList._0.ParentModel {
     public class ParentsData : ViewModelBase {
@@ -88,10 +89,11 @@ namespace AutomaticScrewMachine.CurrentList._0.ParentModel {
             SERVO_Z = 2
         }
 
+
         public static readonly string isFolderName = "Data";
         public static readonly string isFileName = "JogData.xlsx";
         public const uint SIGNAL_ON = 1u;
         public const uint SIGNAL_OFF = 0;
-        
+
     }
 }

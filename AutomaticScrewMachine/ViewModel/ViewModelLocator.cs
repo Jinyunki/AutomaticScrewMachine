@@ -14,6 +14,7 @@
 
 using AutomaticScrewMachine.CurrentList._1.Jog.ViewModel;
 using AutomaticScrewMachine.CurrentList._3.IO.ViewModel;
+using AutomaticScrewMachine.CurrentList._4.TorqControllerStatus.ViewModel;
 using CommonServiceLocator;
 using GalaSoft.MvvmLight.Ioc;
 
@@ -46,6 +47,7 @@ namespace AutomaticScrewMachine.ViewModel
             SimpleIoc.Default.Register<MainViewModel>();
             SimpleIoc.Default.Register<JogViewModel>();
             SimpleIoc.Default.Register<IOMapViewModel>();
+            SimpleIoc.Default.Register<TorqueIOViewModel>();
         }
 
         public MainViewModel Main
@@ -65,6 +67,14 @@ namespace AutomaticScrewMachine.ViewModel
             get
             {
                 return ServiceLocator.Current.GetInstance<IOMapViewModel>();
+            }
+        }
+        
+        
+         public TorqueIOViewModel TorqueIOViewModel {
+            get
+            {
+                return ServiceLocator.Current.GetInstance<TorqueIOViewModel>();
             }
         }
         

@@ -47,7 +47,7 @@ namespace AutomaticScrewMachine.Utiles {
             string receivedData = serialPort.ReadExisting();
 
             ReadData = receivedData;
-            Console.WriteLine($"수신된 메시지: {receivedData}");
+            //Console.WriteLine($"수신된 메시지: {receivedData}");
 
 
             // UI 업데이트를 Dispatcher를 통해 수행 *Dispatcher ISSUE
@@ -56,7 +56,7 @@ namespace AutomaticScrewMachine.Utiles {
                 Console.WriteLine($"수신된 메시지: {receivedData}");
             });*/
         }
-        private static void SendData (string inputData) {
+        public static void SendData (string inputData) {
             string inputString = inputData;
 
             // 입력된 문자열을 정수로 변환

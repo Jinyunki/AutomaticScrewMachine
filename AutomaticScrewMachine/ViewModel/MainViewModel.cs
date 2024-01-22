@@ -11,7 +11,7 @@ namespace AutomaticScrewMachine.ViewModel {
         public MainViewModel()
         {
 
-            SerialPortAdapter.ConnectedSerial();
+            
             
             WinBtnEvent();
             RealTime();
@@ -39,6 +39,7 @@ namespace AutomaticScrewMachine.ViewModel {
                 // CurrentViewControl
                 CurrentJogView = new RelayCommand(() => CurrentViewModel = _locator.JogViewModel);
                 CurrentIO = new RelayCommand(() => CurrentViewModel = _locator.IOMapViewModel);
+                CurrentTORQUE = new RelayCommand(() => CurrentViewModel = _locator.TorqueIOViewModel);
 
                 WindowBtnOpacity = 0.5;
             } catch (Exception ex) {

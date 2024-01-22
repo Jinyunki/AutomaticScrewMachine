@@ -5,8 +5,84 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:AutomaticScrewMachine.CurrentList._4.TorqControllerStatus.View"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    d:DesignHeight="450"
-    d:DesignWidth="800"
+    d:DesignHeight="800"
+    d:DesignWidth="1600"
+    DataContext="{Binding TorqueIOViewModel, Source={StaticResource Locator}}"
     mc:Ignorable="d">
-    <Grid />
+
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../../../DesignGUI.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+
+        <Grid Grid.Column="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="2*" />
+                <RowDefinition Height="2*" />
+            </Grid.RowDefinitions>
+
+            <Grid Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <TextBlock
+                    Grid.Column="0"
+                    VerticalAlignment="Bottom"
+                    FontSize="25"
+                    Foreground="White"
+                    Text="발신" />
+                <TextBox
+                    Grid.Column="1"
+                    VerticalAlignment="Bottom"
+                    FontSize="25"
+                    Foreground="White"
+                    Text="{Binding ParameterCommand}" />
+
+                <Button
+                    Grid.Column="2"
+                    Height="50"
+                    VerticalAlignment="Bottom"
+                    Command="{Binding SendTorq}"
+                    Content="Send" />
+                <TextBlock
+                    Grid.Column="4"
+                    VerticalAlignment="Bottom"
+                    FontSize="25"
+                    Foreground="White"
+                    Text="수신" />
+                <TextBlock
+                    Grid.Column="5"
+                    VerticalAlignment="Bottom"
+                    FontSize="25"
+                    Foreground="White"
+                    Text="{Binding CommandResult}" />
+            </Grid>
+
+        </Grid>
+
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+        </Grid>
+    </Grid>
 </UserControl>

@@ -5,11 +5,13 @@ using System;
 using System.ComponentModel;
 using System.Windows.Input;
 using System.Windows.Media;
+using static OfficeOpenXml.ExcelErrorValue;
 
 namespace AutomaticScrewMachine.CurrentList._3.IO.ViewModel {
     public class IOMapViewModel : IOData {
         private BackgroundWorker _DIOWorker;
         private StatusReciver STATUS_Instance = StatusReciver.Instance;
+        
 
         public IOMapViewModel () {
             ReadStatusIO();
@@ -45,7 +47,7 @@ namespace AutomaticScrewMachine.CurrentList._3.IO.ViewModel {
             OutputList[(int)DO_Index.RESETBTN].ButtonCommand = new RelayCommand(() => DIOWrite((int)DO_Index.RESETBTN, STATUS_Instance.OutportStatus((int)DO_Index.RESETBTN)));
             OutputList[(int)DO_Index.EMGBTN].ButtonCommand = new RelayCommand(() => DIOWrite((int)DO_Index.EMGBTN, STATUS_Instance.OutportStatus((int)DO_Index.EMGBTN)));
             OutputList[(int)DO_Index.STARTBTN_R].ButtonCommand = new RelayCommand(() => DIOWrite((int)DO_Index.STARTBTN_R, STATUS_Instance.OutportStatus((int)DO_Index.STARTBTN_R)));
-
+            
             // TorqControl
             OutputList[(int)DO_Index.TORQUE_DRIVER].ButtonCommand = new RelayCommand(() => DIOWrite((int)DO_Index.TORQUE_DRIVER, STATUS_Instance.OutportStatus((int)DO_Index.TORQUE_DRIVER)));
 
@@ -55,10 +57,10 @@ namespace AutomaticScrewMachine.CurrentList._3.IO.ViewModel {
 
             // NGBox
             OutputList[(int)DO_Index.NGBOX].ButtonCommand = new RelayCommand(() => DIOWrite((int)DO_Index.NGBOX, STATUS_Instance.OutportStatus((int)DO_Index.NGBOX))); //
-            
+
             // Servo Sylinder
-            OutputList[(int)DO_Index.DRIVER_SYLINDER ].ButtonCommand = new RelayCommand(() => DIOWrite((int)DO_Index.DRIVER_SYLINDER , STATUS_Instance.OutportStatus((int)DO_Index.DRIVER_SYLINDER)));
-            OutputList[(int)DO_Index.DEPTH_SYLINDER ].ButtonCommand = new RelayCommand(() => DIOWrite((int)DO_Index.DEPTH_SYLINDER , STATUS_Instance.OutportStatus((int)DO_Index.DEPTH_SYLINDER)));
+            OutputList[(int)DO_Index.DRIVER_SYLINDER].ButtonCommand = new RelayCommand(() => DIOWrite((int)DO_Index.DRIVER_SYLINDER, STATUS_Instance.OutportStatus((int)DO_Index.DRIVER_SYLINDER)));
+            OutputList[(int)DO_Index.DEPTH_SYLINDER].ButtonCommand = new RelayCommand(() => DIOWrite((int)DO_Index.DEPTH_SYLINDER, STATUS_Instance.OutportStatus((int)DO_Index.DEPTH_SYLINDER)));
             OutputList[(int)DO_Index.VACUUM].ButtonCommand = new RelayCommand(() => DIOWrite((int)DO_Index.VACUUM, STATUS_Instance.OutportStatus((int)DO_Index.VACUUM)));
 
             // OK SIGNAL PORT
