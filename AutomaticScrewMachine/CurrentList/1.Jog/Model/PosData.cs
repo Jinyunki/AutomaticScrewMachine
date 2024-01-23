@@ -71,6 +71,7 @@ namespace AutomaticScrewMachine.CurrentList._1.Jog.Model {
             }
         }
         public ICommand ChangePositionDataBtn { get;set; }
+        public ICommand MoveCheckPositionXY { get;set; }
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected virtual void OnPropertyChanged (string propertyName) {

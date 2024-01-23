@@ -88,13 +88,14 @@
 
             <Grid Grid.Row="1" Background="Transparent">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition />
-                    <ColumnDefinition />
-                    <ColumnDefinition />
-                    <ColumnDefinition />
-                    <ColumnDefinition />
-                    <ColumnDefinition />
-                    <ColumnDefinition />
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="0.7*"/>
+                    <ColumnDefinition Width="0.7*"/>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1*"/>
                 </Grid.ColumnDefinitions>
                 <TextBlock
                     Grid.Column="0"
@@ -160,6 +161,16 @@
                     Foreground="{DynamicResource FontColor}"
                     Text="Change&#10;Position"
                     TextAlignment="Right" />
+                
+                <TextBlock
+                    Grid.Column="7"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Center"
+                    FontSize="10"
+                    FontWeight="Bold"
+                    Foreground="{DynamicResource FontColor}"
+                    Text="GetMove&#10;X,Y"
+                    TextAlignment="Right" />
             </Grid>
 
             <ListBox
@@ -178,13 +189,14 @@
                     <DataTemplate>
                         <Grid>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition />
-                                <ColumnDefinition />
-                                <ColumnDefinition />
-                                <ColumnDefinition />
-                                <ColumnDefinition />
-                                <ColumnDefinition />
-                                <ColumnDefinition />
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="0.7*"/>
+                                <ColumnDefinition Width="0.7*"/>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="1*"/>
                             </Grid.ColumnDefinitions>
                             <TextBlock
                                 Grid.Column="0"
@@ -210,6 +222,7 @@
                                 Grid.Column="5"
                                 HorizontalAlignment="Right"
                                 Text="{Binding Depth_IO}" />
+                            
                             <Button
                                 Grid.Column="6"
                                 Width="20"
@@ -221,8 +234,22 @@
                                 <Button.Background>
                                     <ImageBrush ImageSource="../../../../Assets/btn_change.png" />
                                 </Button.Background>
-
                             </Button>
+                            
+                            
+                            <Button
+                                Grid.Column="7"
+                                Width="20"
+                                Height="20"
+                                HorizontalAlignment="Right"
+                                VerticalAlignment="Center"
+                                Command="{Binding MoveCheckPositionXY}"
+                                Style="{StaticResource RoundedButtonStyle}">
+                                <Button.Background>
+                                    <ImageBrush ImageSource="../../../../Assets/btn_start.png" />
+                                </Button.Background>
+                            </Button>
+                            
                         </Grid>
                     </DataTemplate>
                 </ListBox.ItemTemplate>

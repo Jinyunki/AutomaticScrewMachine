@@ -11,8 +11,8 @@ namespace AutomaticScrewMachine.ViewModel {
         public MainViewModel()
         {
 
-            
-            
+
+            CurrentViewModel = _locator.LoginViewModel;
             WinBtnEvent();
             RealTime();
             Docking();
@@ -40,6 +40,7 @@ namespace AutomaticScrewMachine.ViewModel {
                 CurrentJogView = new RelayCommand(() => CurrentViewModel = _locator.JogViewModel);
                 CurrentIO = new RelayCommand(() => CurrentViewModel = _locator.IOMapViewModel);
                 CurrentTORQUE = new RelayCommand(() => CurrentViewModel = _locator.TorqueIOViewModel);
+                CurrentMainView = new RelayCommand(() => CurrentViewModel = _locator.LoginViewModel);
 
                 WindowBtnOpacity = 0.5;
             } catch (Exception ex) {

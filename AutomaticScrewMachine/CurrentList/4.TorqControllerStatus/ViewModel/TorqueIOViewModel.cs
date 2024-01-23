@@ -1,4 +1,6 @@
-﻿using AutomaticScrewMachine.Utiles;
+﻿using AutomaticScrewMachine.Bases;
+using AutomaticScrewMachine.CurrentList._0.ParentModel;
+using AutomaticScrewMachine.Utiles;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using System;
@@ -7,9 +9,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using System.Windows.Threading;
 
 namespace AutomaticScrewMachine.CurrentList._4.TorqControllerStatus.ViewModel {
-    public class TorqueIOViewModel :ViewModelBase{
+    public class TorqueIOViewModel : ParentsData {
         public ICommand SendTorq { get; set; }
         private string _parameterCommand;
         public string ParameterCommand {
@@ -31,9 +34,16 @@ namespace AutomaticScrewMachine.CurrentList._4.TorqControllerStatus.ViewModel {
 
         public TorqueIOViewModel() {
             SerialPortAdapter.ConnectedSerial();
-            SendTorq = new RelayCommand(() => SerialPortAdapter.SendData(ParameterCommand));
-            Console.WriteLine("TEST" + SerialPortAdapter.ReadData);
+            SendTorq = new RelayCommand(() => SnedTest(ParameterCommand));
+            //Console.WriteLine("TEST" + SerialPortAdapter.ReadData);
         }
+
+        private void SnedTest (string sendString) {
+            SerialPortAdapter.SendData(sendString);
+            Delay(100);
+            CommandResult = SerialPortAdapter.ReadData;
+        }
+
 
     }
 }

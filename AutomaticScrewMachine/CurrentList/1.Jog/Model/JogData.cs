@@ -60,6 +60,7 @@ namespace AutomaticScrewMachine.CurrentList._1.Jog.Model {
         public ICommand DriverIO { get; set; }
         public ICommand DepthIO { get; set; }
         public ICommand VacuumIO { get; set; }
+        public ICommand TorqDriverIO { get; set; }
 
 
         public ICommand ReadRecipe { get; set; }
@@ -397,6 +398,15 @@ namespace AutomaticScrewMachine.CurrentList._1.Jog.Model {
                 RaisePropertyChanged(nameof(DepthBuzzer));
             }
         }
+        
+        private Brush _torqDriverCtr = Brushes.Gray;
+        public Brush TorqDriverCtr {
+            get { return _torqDriverCtr; }
+            set {
+                _torqDriverCtr = value;
+                RaisePropertyChanged(nameof(TorqDriverCtr));
+            }
+        }
 
         private Brush _vacuumBuzzer = Brushes.Gray;
         public Brush VacuumBuzzer {
@@ -563,19 +573,6 @@ namespace AutomaticScrewMachine.CurrentList._1.Jog.Model {
             }
         }
         
-
-        public DateTime Delay (int MS) {
-
-            DateTime thisMoment = DateTime.Now;
-            TimeSpan duration = new TimeSpan(0, 0, 0, 0, MS);
-            DateTime afterMoment = thisMoment.Add(duration);
-
-            while (afterMoment >= thisMoment) {
-                Application.Current?.Dispatcher.Invoke(DispatcherPriority.Background, new Action(delegate { }));
-                thisMoment = DateTime.Now;
-            }
-            return DateTime.Now;
-        }
 
 
         public Brush RecevieSignalColor (uint signalCode) {

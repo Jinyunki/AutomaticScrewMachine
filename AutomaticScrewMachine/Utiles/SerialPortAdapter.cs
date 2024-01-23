@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.IO.Ports;
@@ -41,6 +42,7 @@ namespace AutomaticScrewMachine.Utiles {
 
         public static int receiveStep = 0;
         public static bool readComplete = false;
+        public static Dispatcher dispatcher;
         private static void Torq_SerialPort_DataReceived (object sender, SerialDataReceivedEventArgs e) {
             // DataReceived 이벤트 핸들러에서 수신된 데이터를 처리하는 코드를 추가
             SerialPort serialPort = (SerialPort)sender;
@@ -49,12 +51,12 @@ namespace AutomaticScrewMachine.Utiles {
             ReadData = receivedData;
             //Console.WriteLine($"수신된 메시지: {receivedData}");
 
-
             // UI 업데이트를 Dispatcher를 통해 수행 *Dispatcher ISSUE
-            /*Dispatcher.Invoke(() => {
+            dispatcher = Dispatcher.CurrentDispatcher;
+            dispatcher.Invoke(() => {
                 ReadData = receivedData;
                 Console.WriteLine($"수신된 메시지: {receivedData}");
-            });*/
+            });
         }
         public static void SendData (string inputData) {
             string inputString = inputData;

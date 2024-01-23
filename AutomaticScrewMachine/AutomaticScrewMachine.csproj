@@ -113,6 +113,10 @@
     </ApplicationDefinition>
     <Compile Include="Bases\StatusReciver.cs" />
     <Compile Include="CurrentList\0.ParentModel\ParentsData.cs" />
+    <Compile Include="CurrentList\0.ParentModel\ViewModel\LoginViewModel.cs" />
+    <Compile Include="CurrentList\0.ParentModel\View\LoginView.xaml.cs">
+      <DependentUpon>LoginView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="CurrentList\1.Jog\Model\JogData.cs" />
     <Compile Include="CurrentList\1.Jog\Model\PosData.cs" />
     <Compile Include="CurrentList\1.Jog\Model\SequenceData.cs" />
@@ -189,6 +193,10 @@
     <Compile Include="z.CustomView\IOSignal.xaml.cs">
       <DependentUpon>IOSignal.xaml</DependentUpon>
     </Compile>
+    <Page Include="CurrentList\0.ParentModel\View\LoginView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="CurrentList\1.Jog\View\frag\Frag_InputPosition.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -391,6 +399,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Assets\btn_driver_off.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\LoginGUIBase.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

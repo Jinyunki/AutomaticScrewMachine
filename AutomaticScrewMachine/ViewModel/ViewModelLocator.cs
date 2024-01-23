@@ -12,6 +12,7 @@
   See http://www.galasoft.ch/mvvm
 */
 
+using AutomaticScrewMachine.CurrentList._0.ParentModel.ViewModel;
 using AutomaticScrewMachine.CurrentList._1.Jog.ViewModel;
 using AutomaticScrewMachine.CurrentList._3.IO.ViewModel;
 using AutomaticScrewMachine.CurrentList._4.TorqControllerStatus.ViewModel;
@@ -48,6 +49,7 @@ namespace AutomaticScrewMachine.ViewModel
             SimpleIoc.Default.Register<JogViewModel>();
             SimpleIoc.Default.Register<IOMapViewModel>();
             SimpleIoc.Default.Register<TorqueIOViewModel>();
+            SimpleIoc.Default.Register<LoginViewModel>();
         }
 
         public MainViewModel Main
@@ -75,6 +77,13 @@ namespace AutomaticScrewMachine.ViewModel
             get
             {
                 return ServiceLocator.Current.GetInstance<TorqueIOViewModel>();
+            }
+        }
+        
+         public LoginViewModel LoginViewModel {
+            get
+            {
+                return ServiceLocator.Current.GetInstance<LoginViewModel>();
             }
         }
         

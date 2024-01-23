@@ -168,7 +168,8 @@ namespace AutomaticScrewMachine.CurrentList._1.Jog.ViewModel {
                 DepthBuzzer = SetOutportBind((int)DO_Index.DEPTH_SYLINDER);
                 VacuumBuzzer = SetOutportBind((int)DO_Index.VACUUM);
 
-                TorqBuzzer = SetOutportBind((int)DO_Index.TORQUE_DRIVER);
+                TorqDriverCtr = SetOutportBind((int)DO_Index.TORQUE_DRIVER);
+
 
                 // 머신 상단 알람 부저
                 BuzzerAlarmOK = SetOutportBind((int)DO_Index.LED_BUZZER_OK);
@@ -222,7 +223,7 @@ namespace AutomaticScrewMachine.CurrentList._1.Jog.ViewModel {
                 { (int)DO_Index.DEPTH_SYLINDER, () => STATUS_Instance.OutportStatus((int) DO_Index.DEPTH_SYLINDER) == SIGNAL_OFF ? Brushes.Gray : Brushes.Green },
                 { (int)DO_Index.VACUUM, () => STATUS_Instance.OutportStatus((int) DO_Index.VACUUM) == SIGNAL_OFF ? Brushes.Gray : Brushes.Green },
 
-                { (int)DO_Index.TORQUE_DRIVER, () => STATUS_Instance.OutportStatus((int)DO_Index.TORQUE_DRIVER) == SIGNAL_OFF ? Brushes.Gray : Brushes.DarkBlue },
+                { (int)DO_Index.TORQUE_DRIVER, () => STATUS_Instance.OutportStatus((int)DO_Index.TORQUE_DRIVER) == SIGNAL_OFF ? Brushes.Gray : Brushes.Green },
 
                 { (int)DO_Index.OK_LED_PORT1, () => STATUS_Instance.OutportStatus((int)DO_Index.OK_LED_PORT1) == SIGNAL_OFF ? Brushes.Gray : Brushes.Green },
                 { (int)DO_Index.OK_LED_PORT2, () => STATUS_Instance.OutportStatus((int)DO_Index.OK_LED_PORT2) == SIGNAL_OFF ? Brushes.Gray : Brushes.Green },
@@ -270,13 +271,13 @@ namespace AutomaticScrewMachine.CurrentList._1.Jog.ViewModel {
                     ServoCheckZ = new RelayCommand(() => ServoDIOWrite((int)Servo_Index.SERVO_Z, STATUS_Instance.ServoSignalStatus((int)_0.ParentModel.ParentsData.Servo_Index.SERVO_Z) == SIGNAL_OFF ? 1u : 0));
 
                     // Torq OnOff
-                    TorqDriver = new RelayCommand(() => DIOWrite((int)DO_Index.TORQUE_DRIVER, STATUS_Instance.OutportStatus((int)DO_Index.TORQUE_DRIVER) == SIGNAL_OFF ? 1u : 0));
+                    TorqDriverIO = new RelayCommand(() => DIOWrite((int)DO_Index.TORQUE_DRIVER, STATUS_Instance.OutportStatus((int)DO_Index.TORQUE_DRIVER) == SIGNAL_OFF ? 1u : 0));
 
                     // Sylinder IO
                     DriverIO = new RelayCommand(() => DIOWrite((int)DO_Index.DRIVER_SYLINDER, STATUS_Instance.OutportStatus((int)DO_Index.DRIVER_SYLINDER) == SIGNAL_OFF ? 1u : 0));
                     DepthIO = new RelayCommand(() => DIOWrite((int)DO_Index.DEPTH_SYLINDER, STATUS_Instance.OutportStatus((int)DO_Index.DEPTH_SYLINDER) == SIGNAL_OFF ? 1u : 0));
                     VacuumIO = new RelayCommand(() => DIOWrite((int)DO_Index.VACUUM, STATUS_Instance.OutportStatus((int)DO_Index.VACUUM) == SIGNAL_OFF ? 1u : 0));
-                    
+
                     // ExcelIO
                     ReadRecipe = new RelayCommand(ReadRecipeCommand);
                     AddRecipe = new RelayCommand(AddRecipeCommand);
@@ -497,7 +498,9 @@ namespace AutomaticScrewMachine.CurrentList._1.Jog.ViewModel {
                         Z = double.Parse(GetJogDataList[j][3]),
                         Driver_IO = uint.Parse(GetJogDataList[j][4]),
                         Depth_IO = uint.Parse(GetJogDataList[j][5]),
-                        ChangePositionDataBtn = new RelayCommand(()=> UpdateSelectedPosData(SelectedPositionIndex))
+                        ChangePositionDataBtn = new RelayCommand(()=> UpdateSelectedPosData(SelectedPositionIndex)),
+                        //MoveCheckPositionXY = new RelayCommand(()=> MoveJIGPos(new double[2] { double.Parse(GetJogDataList[j][1]), double.Parse(GetJogDataList[j][2]) }))
+                        MoveCheckPositionXY = new RelayCommand(()=> GetSelectedListPositionMove(PositionDataList[SelectedPositionIndex].X, PositionDataList[SelectedPositionIndex].Y))
                     };
 
                     PositionDataList.Add(posData);
@@ -505,6 +508,10 @@ namespace AutomaticScrewMachine.CurrentList._1.Jog.ViewModel {
             }
         }
 
+        private void GetSelectedListPositionMove (double x, double y) {
+            double[] doubles = new double[2] {x,y };
+            MoveMultiPos_XY(doubles);
+        }
 
         private SequenceData _selectedSequenceItem;
         public SequenceData SelectedSequenceItem {

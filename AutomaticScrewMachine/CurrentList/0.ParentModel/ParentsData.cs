@@ -1,6 +1,8 @@
 ﻿using GalaSoft.MvvmLight;
 using System;
 using System.Collections.Generic;
+using System.Windows;
+using System.Windows.Threading;
 
 namespace AutomaticScrewMachine.CurrentList._0.ParentModel {
     public class ParentsData : ViewModelBase {
@@ -89,6 +91,19 @@ namespace AutomaticScrewMachine.CurrentList._0.ParentModel {
             SERVO_Z = 2
         }
 
+
+        public DateTime Delay (int MS) {
+
+            DateTime thisMoment = DateTime.Now;
+            TimeSpan duration = new TimeSpan(0, 0, 0, 0, MS);
+            DateTime afterMoment = thisMoment.Add(duration);
+
+            while (afterMoment >= thisMoment) {
+                Application.Current?.Dispatcher.Invoke(DispatcherPriority.Background, new Action(delegate { }));
+                thisMoment = DateTime.Now;
+            }
+            return DateTime.Now;
+        }
 
         public static readonly string isFolderName = "Data";
         public static readonly string isFileName = "JogData.xlsx";

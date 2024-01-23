@@ -47,8 +47,6 @@
                             CornerRadius="100"
                             Opacity="0.7" />
 
-
-
                         <!--  Motion Screw  LightBlue  -->
                         <Button
                             Width="15"
@@ -139,6 +137,17 @@
                                 Command="{Binding DepthIO}"
                                 Opacity="0.5"
                                 Style="{DynamicResource RoundedButtonStyle}" />
+
+                            <Button
+                                Grid.Column="1"
+                                Width="15"
+                                Height="15"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Bottom"
+                                Tag="{Binding TorqDriverCtr, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                Command="{Binding TorqDriverIO}"
+                                Opacity="0.5"
+                                Style="{DynamicResource ReverseTriangleButtonStyle}" />
                         </Grid>
 
                     </Grid>

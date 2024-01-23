@@ -4,7 +4,10 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:IOVM="clr-namespace:AutomaticScrewMachine.CurrentList._3.IO.ViewModel"
     xmlns:IOView="clr-namespace:AutomaticScrewMachine.CurrentList._3.IO.View"
-    xmlns:IOview="clr-namespace:AutomaticScrewMachine.CurrentList._3.IO.View"
+    xmlns:LoginVM="clr-namespace:AutomaticScrewMachine.CurrentList._0.ParentModel.ViewModel"
+    xmlns:LoginView="clr-namespace:AutomaticScrewMachine.CurrentList._0.ParentModel.View"
+    xmlns:TorqVM="clr-namespace:AutomaticScrewMachine.CurrentList._4.TorqControllerStatus.ViewModel"
+    xmlns:TorqView="clr-namespace:AutomaticScrewMachine.CurrentList._4.TorqControllerStatus.View"
     xmlns:JogVM="clr-namespace:AutomaticScrewMachine.CurrentList._1.Jog.ViewModel"
     xmlns:JogView="clr-namespace:AutomaticScrewMachine.CurrentList._1.Jog.View"
     xmlns:SideView="clr-namespace:AutomaticScrewMachine.CurrentList._2.SidBar.View"
@@ -34,6 +37,14 @@
 
             <DataTemplate DataType="{x:Type IOVM:IOMapViewModel}">
                 <IOView:IOMap />
+            </DataTemplate>
+
+            <DataTemplate DataType="{x:Type TorqVM:TorqueIOViewModel}">
+                <TorqView:TorqControllerStatus/>
+            </DataTemplate>
+
+            <DataTemplate DataType="{x:Type LoginVM:LoginViewModel}">
+                <LoginView:LoginView/>
             </DataTemplate>
 
         </ResourceDictionary>
