@@ -500,6 +500,8 @@ namespace AutomaticScrewMachine.CurrentList._1.Jog.ViewModel {
                         Depth_IO = uint.Parse(GetJogDataList[j][5]),
                         ChangePositionDataBtn = new RelayCommand(()=> UpdateSelectedPosData(SelectedPositionIndex)),
                         //MoveCheckPositionXY = new RelayCommand(()=> MoveJIGPos(new double[2] { double.Parse(GetJogDataList[j][1]), double.Parse(GetJogDataList[j][2]) }))
+                        
+                        // 해당 부분이 누락된 업데이트
                         MoveCheckPositionXY = new RelayCommand(()=> GetSelectedListPositionMove(PositionDataList[SelectedPositionIndex].X, PositionDataList[SelectedPositionIndex].Y))
                     };
 
