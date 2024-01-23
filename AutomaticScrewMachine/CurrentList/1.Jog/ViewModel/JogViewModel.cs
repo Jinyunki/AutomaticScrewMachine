@@ -169,6 +169,7 @@ namespace AutomaticScrewMachine.CurrentList._1.Jog.ViewModel {
                 VacuumBuzzer = SetOutportBind((int)DO_Index.VACUUM);
 
                 TorqDriverCtr = SetOutportBind((int)DO_Index.TORQUE_DRIVER);
+                ReversTorqDriverCtr = SetOutportBind((int)DO_Index.TORQUE_REVERSED);
 
 
                 // 머신 상단 알람 부저
@@ -223,7 +224,8 @@ namespace AutomaticScrewMachine.CurrentList._1.Jog.ViewModel {
                 { (int)DO_Index.DEPTH_SYLINDER, () => STATUS_Instance.OutportStatus((int) DO_Index.DEPTH_SYLINDER) == SIGNAL_OFF ? Brushes.Gray : Brushes.Green },
                 { (int)DO_Index.VACUUM, () => STATUS_Instance.OutportStatus((int) DO_Index.VACUUM) == SIGNAL_OFF ? Brushes.Gray : Brushes.Green },
 
-                { (int)DO_Index.TORQUE_DRIVER, () => STATUS_Instance.OutportStatus((int)DO_Index.TORQUE_DRIVER) == SIGNAL_OFF ? Brushes.Gray : Brushes.Green },
+                { (int)DO_Index.TORQUE_DRIVER, () => STATUS_Instance.OutportStatus((int)DO_Index.TORQUE_DRIVER) == SIGNAL_OFF ? Brushes.Gray : Brushes.Blue },
+                { (int)DO_Index.TORQUE_REVERSED, () => STATUS_Instance.OutportStatus((int)DO_Index.TORQUE_REVERSED) == SIGNAL_OFF ? Brushes.Gray : Brushes.Red },
 
                 { (int)DO_Index.OK_LED_PORT1, () => STATUS_Instance.OutportStatus((int)DO_Index.OK_LED_PORT1) == SIGNAL_OFF ? Brushes.Gray : Brushes.Green },
                 { (int)DO_Index.OK_LED_PORT2, () => STATUS_Instance.OutportStatus((int)DO_Index.OK_LED_PORT2) == SIGNAL_OFF ? Brushes.Gray : Brushes.Green },
@@ -272,6 +274,7 @@ namespace AutomaticScrewMachine.CurrentList._1.Jog.ViewModel {
 
                     // Torq OnOff
                     TorqDriverIO = new RelayCommand(() => DIOWrite((int)DO_Index.TORQUE_DRIVER, STATUS_Instance.OutportStatus((int)DO_Index.TORQUE_DRIVER) == SIGNAL_OFF ? 1u : 0));
+                    TorqDriverReversIO = new RelayCommand(ReversTorque);
 
                     // Sylinder IO
                     DriverIO = new RelayCommand(() => DIOWrite((int)DO_Index.DRIVER_SYLINDER, STATUS_Instance.OutportStatus((int)DO_Index.DRIVER_SYLINDER) == SIGNAL_OFF ? 1u : 0));
@@ -298,6 +301,12 @@ namespace AutomaticScrewMachine.CurrentList._1.Jog.ViewModel {
             }
 
 
+        }
+
+        private void ReversTorque () {
+            DIOWrite((int)DO_Index.TORQUE_REVERSED, STATUS_Instance.OutportStatus((int)DO_Index.TORQUE_REVERSED) == SIGNAL_OFF ? 1u : 0);
+            Delay(100);
+            DIOWrite((int)DO_Index.TORQUE_DRIVER, STATUS_Instance.OutportStatus((int)DO_Index.TORQUE_DRIVER) == SIGNAL_OFF ? 1u : 0);
         }
 
         private void CommandMoveJIG (double intaval) {
@@ -645,7 +654,7 @@ namespace AutomaticScrewMachine.CurrentList._1.Jog.ViewModel {
 
                 MoveMultiPos_XY(SupplyPosition); //xy 공급기
 
-                MoveDownPos(SupplyPosition, 50000); // z 스크류 공급
+                MoveDownPos(SupplyPosition, SupplyScrewDownPos); // z 스크류 공급
 
                 //GetScrewCommand_WriteOutport(true); // io 스크류 체득
                 DIOWrite((int)DO_Index.DRIVER_SYLINDER, SIGNAL_ON);
@@ -675,13 +684,16 @@ namespace AutomaticScrewMachine.CurrentList._1.Jog.ViewModel {
 
         private void TorqDriverWrite (int axis,int positionListIndex) {
             double checkerValue = (double)positionListIndex / 2;
-            while (STATUS_Instance.InportStatus((int)DI_Index.SCREW_DRIVER_DOWN) != SIGNAL_ON) {
+            while (STATUS_Instance.InportStatus((int)DI_Index.SCREW_DRIVER_UP) != SIGNAL_OFF) {
                 Delay(10);
+
+                Console.WriteLine("AA");
             }
             CAXD.AxdoWriteOutport(axis, SIGNAL_ON);
             Delay(500);
             while (STATUS_Instance.InportStatus((int)DI_Index.TORQU_DRIVER_START) == SIGNAL_ON) {
                 Delay(10);
+                Console.WriteLine("CC");
             }
             Delay(300);
             if (STATUS_Instance.InportStatus((int)DI_Index.TORQU_DRIVER_NG) == SIGNAL_ON) {
@@ -699,6 +711,7 @@ namespace AutomaticScrewMachine.CurrentList._1.Jog.ViewModel {
             } else {
                 DIOWrite((int)DO_Index.OK_LED_PORT1, SIGNAL_ON);
             }
+            Delay(100);
             CAXD.AxdoWriteOutport(axis, SIGNAL_OFF);
             
         }

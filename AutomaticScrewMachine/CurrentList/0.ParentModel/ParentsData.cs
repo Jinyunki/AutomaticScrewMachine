@@ -38,6 +38,7 @@ namespace AutomaticScrewMachine.CurrentList._0.ParentModel {
             LED_BUZZER_ERR = 22,
             LED_BUZZER_OK = 23,
             SOUND_BUZZER = 24,
+            TORQUE_REVERSED = 25,
 
             /*IDK25 = 25, // NULL 비어있는 Index
             IDK26 = 26, // NULL 비어있는 Index

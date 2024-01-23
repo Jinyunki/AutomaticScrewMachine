@@ -61,6 +61,7 @@ namespace AutomaticScrewMachine.CurrentList._1.Jog.Model {
         public ICommand DepthIO { get; set; }
         public ICommand VacuumIO { get; set; }
         public ICommand TorqDriverIO { get; set; }
+        public ICommand TorqDriverReversIO { get; set; }
 
 
         public ICommand ReadRecipe { get; set; }
@@ -318,6 +319,7 @@ namespace AutomaticScrewMachine.CurrentList._1.Jog.Model {
         public double Interval { get; set; }
         public double TorqReadyZposition = 45000;
         public double[] SupplyPosition = new double[2] { 167119, 117239 };
+        public double SupplyScrewDownPos = /*50000*/11000;
         public double[] Port1Position /*= new double[2] { 73800, 249100 }*/;
 
 
@@ -405,6 +407,15 @@ namespace AutomaticScrewMachine.CurrentList._1.Jog.Model {
             set {
                 _torqDriverCtr = value;
                 RaisePropertyChanged(nameof(TorqDriverCtr));
+            }
+        }
+        
+        private Brush _reversTorqDriverCtr = Brushes.Gray;
+        public Brush ReversTorqDriverCtr {
+            get { return _reversTorqDriverCtr; }
+            set {
+                _reversTorqDriverCtr = value;
+                RaisePropertyChanged(nameof(ReversTorqDriverCtr));
             }
         }
 

@@ -31,7 +31,7 @@ namespace AutomaticScrewMachine.CurrentList._3.IO.ViewModel {
             }
         }
         private void AddStatusOutput () {
-            for (int i = 0; i <= 24; i++) {
+            for (int i = 0; i <= 25; i++) {
                 int currentIndex = i;
                 OutputList.Add(new ControlSetOutput { 
                     ButtonText = $"({currentIndex})"
@@ -81,6 +81,9 @@ namespace AutomaticScrewMachine.CurrentList._3.IO.ViewModel {
             OutputList[(int)DO_Index.LED_BUZZER_ERR].ButtonCommand = new RelayCommand(() => DIOWrite((int)DO_Index.LED_BUZZER_ERR, STATUS_Instance.OutportStatus((int)DO_Index.LED_BUZZER_ERR)));
             OutputList[(int)DO_Index.LED_BUZZER_OK].ButtonCommand = new RelayCommand(() => DIOWrite((int)DO_Index.LED_BUZZER_OK, STATUS_Instance.OutportStatus((int)DO_Index.LED_BUZZER_OK)));
             OutputList[(int)DO_Index.SOUND_BUZZER].ButtonCommand = new RelayCommand(() => DIOWrite((int)DO_Index.SOUND_BUZZER, STATUS_Instance.OutportStatus((int)DO_Index.SOUND_BUZZER)));
+            
+            // 토크 역회전 (OFF = 정회전, ON = 역회전)
+            OutputList[(int)DO_Index.TORQUE_REVERSED].ButtonCommand = new RelayCommand(() => DIOWrite((int)DO_Index.TORQUE_REVERSED, STATUS_Instance.OutportStatus((int)DO_Index.TORQUE_REVERSED)));
             #endregion
         }
 
@@ -122,7 +125,7 @@ namespace AutomaticScrewMachine.CurrentList._3.IO.ViewModel {
         }
 
         private void SetOutputBackground () {
-            for (int i = 0; i <= 24; i++) {
+            for (int i = 0; i <= 25; i++) {
                 OutputList[i].ButtonBackground = SetOutputColor(STATUS_Instance.OutportStatus(i));
             } 
         }private void SetInputBackground () {

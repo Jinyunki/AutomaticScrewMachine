@@ -206,17 +206,33 @@
             </Setter.Value>
         </Setter>
     </Style>
-    
-    <!-- 역삼각형 모양 -->
+
+    <!--  역삼각형 모양  -->
     <Style x:Key="ReverseTriangleButtonStyle" TargetType="Button">
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
                     <Viewbox>
-                        <Grid >
-                            <!-- 역삼각형 모양 -->
-                            <Path Fill="{Binding Path=Tag, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay}" Data="M 0,0 L 1,0 L 0.5,1 Z"/>
-                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        <Grid>
+                            <!--  역삼각형 모양  -->
+                            <Path Data="M 0,0 L 1,0 L 0.5,1 Z" Fill="{Binding Path=Tag, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay}" />
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Grid>
+                    </Viewbox>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <!--  정삼각형 모양  -->
+    <Style x:Key="TriangleButtonStyle" TargetType="Button">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Viewbox>
+                        <Grid>
+                            <!--  역삼각형 모양  -->
+                            <Path Data="M 0,1 L 1,1 L 0.5,0 Z" Fill="{Binding Path=Tag, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay}" />
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
                         </Grid>
                     </Viewbox>
                 </ControlTemplate>
