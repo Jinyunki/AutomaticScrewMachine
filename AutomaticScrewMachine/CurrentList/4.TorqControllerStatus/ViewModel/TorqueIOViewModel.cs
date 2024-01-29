@@ -39,7 +39,8 @@ namespace AutomaticScrewMachine.CurrentList._4.TorqControllerStatus.ViewModel {
         }
 
         private void SnedTest (string sendString) {
-            SerialPortAdapter.SendData(sendString);
+            //SerialPortAdapter.SendData("S",sendString+"0030");
+            SerialPortAdapter.SendData("S001",sendString);
             Delay(100);
             CommandResult = SerialPortAdapter.ReadData;
         }

@@ -28,7 +28,7 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="1*" />
                 <RowDefinition Height="1*" />
-                <RowDefinition Height="2*" />
+                <RowDefinition Height="1*" />
                 <RowDefinition Height="2*" />
             </Grid.RowDefinitions>
 
@@ -41,6 +41,15 @@
                     <ColumnDefinition />
                     <ColumnDefinition />
                 </Grid.ColumnDefinitions>
+                <TextBlock
+                    Grid.Column="0"
+                    Grid.ColumnSpan="6"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Top"
+                    FontSize="30"
+                    Foreground="White"
+                    Text="데이터 조회" />
+                
                 <TextBlock
                     Grid.Column="0"
                     VerticalAlignment="Bottom"
@@ -59,6 +68,58 @@
                     Height="50"
                     VerticalAlignment="Bottom"
                     Command="{Binding SendTorq}"
+                    Content="Send" />
+                <TextBlock
+                    Grid.Column="4"
+                    VerticalAlignment="Bottom"
+                    FontSize="25"
+                    Foreground="White"
+                    Text="수신" />
+                <TextBlock
+                    Grid.Column="5"
+                    VerticalAlignment="Bottom"
+                    FontSize="25"
+                    Foreground="White"
+                    Text="{Binding CommandResult}" />
+            </Grid>
+            
+            
+            <Grid Grid.Row="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <TextBlock
+                    Grid.Column="0"
+                    Grid.ColumnSpan="6"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Top"
+                    FontSize="30"
+                    Foreground="White"
+                    Text="데이터 수정" />
+                
+                <TextBlock
+                    Grid.Column="0"
+                    VerticalAlignment="Bottom"
+                    FontSize="25"
+                    Foreground="White"
+                    Text="발신" />
+                <TextBox
+                    Grid.Column="1"
+                    VerticalAlignment="Bottom"
+                    FontSize="25"
+                    Foreground="Black"
+                    Text="{Binding SetParameterCommand}" />
+
+                <Button
+                    Grid.Column="2"
+                    Height="50"
+                    VerticalAlignment="Bottom"
+                    Command="{Binding SetSendTorq}"
                     Content="Send" />
                 <TextBlock
                     Grid.Column="4"
