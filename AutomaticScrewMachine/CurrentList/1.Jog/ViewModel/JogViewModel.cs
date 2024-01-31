@@ -305,8 +305,8 @@ namespace AutomaticScrewMachine.CurrentList._1.Jog.ViewModel {
 
         private void ReversTorque () {
             DIOWrite((int)DO_Index.TORQUE_REVERSED, STATUS_Instance.OutportStatus((int)DO_Index.TORQUE_REVERSED) == SIGNAL_OFF ? 1u : 0);
-            Delay(100);
-            DIOWrite((int)DO_Index.TORQUE_DRIVER, STATUS_Instance.OutportStatus((int)DO_Index.TORQUE_DRIVER) == SIGNAL_OFF ? 1u : 0);
+            Delay(10);
+            //DIOWrite((int)DO_Index.TORQUE_DRIVER, STATUS_Instance.OutportStatus((int)DO_Index.TORQUE_DRIVER) == SIGNAL_OFF ? 1u : 0);
         }
 
         private void CommandMoveJIG (double intaval) {
@@ -511,7 +511,7 @@ namespace AutomaticScrewMachine.CurrentList._1.Jog.ViewModel {
                         //MoveCheckPositionXY = new RelayCommand(()=> MoveJIGPos(new double[2] { double.Parse(GetJogDataList[j][1]), double.Parse(GetJogDataList[j][2]) }))
                         
                         // 해당 부분이 누락된 업데이트
-                        MoveCheckPositionXY = new RelayCommand(()=> GetSelectedListPositionMove(PositionDataList[SelectedPositionIndex].X, PositionDataList[SelectedPositionIndex].Y))
+                        MoveCheckPositionXY = new RelayCommand(()=> GetSelectedListPositionMove(PositionDataList[SelectedPositionIndex].X, PositionDataList[SelectedPositionIndex].Y, PositionDataList[SelectedPositionIndex].Z))
                     };
 
                     PositionDataList.Add(posData);
@@ -519,9 +519,10 @@ namespace AutomaticScrewMachine.CurrentList._1.Jog.ViewModel {
             }
         }
 
-        private void GetSelectedListPositionMove (double x, double y) {
+        private void GetSelectedListPositionMove (double x, double y, double z) {
             double[] doubles = new double[2] {x,y };
             MoveMultiPos_XY(doubles);
+            MoveDownPos(doubles, z); // Thread가 물리나 ?
         }
 
         private SequenceData _selectedSequenceItem;
@@ -743,8 +744,9 @@ namespace AutomaticScrewMachine.CurrentList._1.Jog.ViewModel {
                 CAXM.AxmMoveStartPos((int)Servo_Index.SERVO_Z, downPos, MC_JogSpeed, MC_JogAcl, MC_JogDcl);
             }
 
-            while ((int)PositionValueZ != downPos) {
+            while ((int)PositionValueZ != (int)downPos) {
                 Delay(100);
+                Console.WriteLine("CHECKER2222222");
             }
 
         }
