@@ -667,8 +667,8 @@ namespace AutomaticScrewMachine.CurrentList._1.Jog.ViewModel {
                 MoveJIGPos(SeqXYHoldPos); // xy 지그 위치로 이동
 
                 MoveDownPos(SeqXYHoldPos, TorqReadyZposition); // 지그 구멍에 맞춰 체결할곳으로 하강
-                //Delay(700); // 해당 딜레이 => 조건이 충족하면 ? 하기 토크 작동되는 것으로 변경
-                            // ex) 위치가 해당위치가 맞고, INPORT_SCREW_DRIVER_VACUUM_SENSOR의 Status가, ON이면, 
+                //MoveDownPos(SeqXYHoldPos, 10000); // 24.01.31 사전 TEST 를 위한 Z축 수정 하여 Test 진행
+
                 TorqDriverWrite((int)DO_Index.TORQUE_DRIVER,i); // 토크 드라이버 작동 (메서드화 해야함. INPORT_TORQU_DRIVER_OK Status가 ON이 아니면 while Delay)
                  
                 MoveUpPos(10000);
