@@ -169,6 +169,7 @@
     <Compile Include="CurrentList\3.IO\View\IOMap.xaml.cs">
       <DependentUpon>IOMap.xaml</DependentUpon>
     </Compile>
+    <Compile Include="CurrentList\4.TorqControllerStatus\Model\TorqueModel.cs" />
     <Compile Include="CurrentList\4.TorqControllerStatus\ViewModel\TorqueIOViewModel.cs" />
     <Compile Include="CurrentList\4.TorqControllerStatus\View\TorqControllerStatus.xaml.cs">
       <DependentUpon>TorqControllerStatus.xaml</DependentUpon>

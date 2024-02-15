@@ -54,7 +54,14 @@ namespace AutomaticScrewMachine.Utiles {
             // UI 업데이트를 Dispatcher를 통해 수행 *Dispatcher ISSUE
             dispatcher = Dispatcher.CurrentDispatcher;
             dispatcher.Invoke(() => {
-                ReadData = receivedData;
+                if (receivedData.Equals("\u0006")) {
+                    ReadData = "SUCCES";
+                } else if(receivedData.Equals("\u001f")) {
+                    ReadData = "Fail";
+                } else {
+                    ReadData = receivedData;
+                }
+                
                 Console.WriteLine($"수신된 메시지: {receivedData}");
             });
         }
@@ -62,9 +69,16 @@ namespace AutomaticScrewMachine.Utiles {
             string inputString = inputData;
 
             // 입력된 문자열을 정수로 변환
-            if (int.TryParse(inputString, out int inputValue)) {
+            if (double.TryParse(inputString, out double inputValue)) {
                 // 3자리로 표현하고 앞을 0으로 채움
-                string formattedInput = command + inputValue.ToString("D4");
+                string formattedInput = "";
+                if (command.Equals("P")) {
+                    formattedInput = command + ((int)inputValue).ToString("D3");
+
+                } else {
+                    inputValue *= 10;
+                    formattedInput = command + "001"/*첫번째 param*/ + ((int)inputValue).ToString("D3") + "0" ;
+                }
 
                 int sum = 0;
 

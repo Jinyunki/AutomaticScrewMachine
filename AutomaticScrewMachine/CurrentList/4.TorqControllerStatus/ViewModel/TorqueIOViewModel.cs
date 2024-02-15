@@ -1,5 +1,6 @@
 ﻿using AutomaticScrewMachine.Bases;
 using AutomaticScrewMachine.CurrentList._0.ParentModel;
+using AutomaticScrewMachine.CurrentList._4.TorqControllerStatus.Model;
 using AutomaticScrewMachine.Utiles;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
@@ -12,37 +13,27 @@ using System.Windows.Input;
 using System.Windows.Threading;
 
 namespace AutomaticScrewMachine.CurrentList._4.TorqControllerStatus.ViewModel {
-    public class TorqueIOViewModel : ParentsData {
-        public ICommand SendTorq { get; set; }
-        private string _parameterCommand;
-        public string ParameterCommand {
-            get { return _parameterCommand; }
-            set {
-                _parameterCommand = value;
-                RaisePropertyChanged(nameof(ParameterCommand));
-            }
-        }
+    public class TorqueIOViewModel : TorqueModel {
         
-        private string _commandResult;
-        public string CommandResult {
-            get { return _commandResult; }
-            set {
-                _commandResult = value;
-                RaisePropertyChanged(nameof(CommandResult));
-            }
-        }
 
         public TorqueIOViewModel() {
             SerialPortAdapter.ConnectedSerial();
-            SendTorq = new RelayCommand(() => SnedTest(ParameterCommand));
-            //Console.WriteLine("TEST" + SerialPortAdapter.ReadData);
+            BtnReadParameter = new RelayCommand(() => SnedTest("P",ReadParameterCommand));
+            BtnUpdateParameter = new RelayCommand(() => SnedTest("S", UpdateParameterCommand));
         }
 
-        private void SnedTest (string sendString) {
+        private void SnedTest (string cmd, string sendString) {
             //SerialPortAdapter.SendData("S",sendString+"0030");
-            SerialPortAdapter.SendData("S001",sendString);
+            SerialPortAdapter.SendData(cmd, sendString);
             Delay(100);
-            CommandResult = SerialPortAdapter.ReadData;
+            if (cmd.Equals("P")) {
+                ReadParamResult = SerialPortAdapter.ReadData;
+                ReadUpdateResult = "";
+            } else {
+                ReadParamResult = "";
+                ReadUpdateResult = SerialPortAdapter.ReadData;
+            }
+            
         }
 
 

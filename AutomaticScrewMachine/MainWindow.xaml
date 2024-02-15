@@ -4,13 +4,13 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:IOVM="clr-namespace:AutomaticScrewMachine.CurrentList._3.IO.ViewModel"
     xmlns:IOView="clr-namespace:AutomaticScrewMachine.CurrentList._3.IO.View"
-    xmlns:LoginVM="clr-namespace:AutomaticScrewMachine.CurrentList._0.ParentModel.ViewModel"
-    xmlns:LoginView="clr-namespace:AutomaticScrewMachine.CurrentList._0.ParentModel.View"
-    xmlns:TorqVM="clr-namespace:AutomaticScrewMachine.CurrentList._4.TorqControllerStatus.ViewModel"
-    xmlns:TorqView="clr-namespace:AutomaticScrewMachine.CurrentList._4.TorqControllerStatus.View"
     xmlns:JogVM="clr-namespace:AutomaticScrewMachine.CurrentList._1.Jog.ViewModel"
     xmlns:JogView="clr-namespace:AutomaticScrewMachine.CurrentList._1.Jog.View"
+    xmlns:LoginVM="clr-namespace:AutomaticScrewMachine.CurrentList._0.ParentModel.ViewModel"
+    xmlns:LoginView="clr-namespace:AutomaticScrewMachine.CurrentList._0.ParentModel.View"
     xmlns:SideView="clr-namespace:AutomaticScrewMachine.CurrentList._2.SidBar.View"
+    xmlns:TorqVM="clr-namespace:AutomaticScrewMachine.CurrentList._4.TorqControllerStatus.ViewModel"
+    xmlns:TorqView="clr-namespace:AutomaticScrewMachine.CurrentList._4.TorqControllerStatus.View"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     Title="MainWindow"
@@ -40,11 +40,11 @@
             </DataTemplate>
 
             <DataTemplate DataType="{x:Type TorqVM:TorqueIOViewModel}">
-                <TorqView:TorqControllerStatus/>
+                <TorqView:TorqControllerStatus />
             </DataTemplate>
 
             <DataTemplate DataType="{x:Type LoginVM:LoginViewModel}">
-                <LoginView:LoginView/>
+                <LoginView:LoginView />
             </DataTemplate>
 
         </ResourceDictionary>

@@ -47,43 +47,44 @@
                     HorizontalAlignment="Center"
                     VerticalAlignment="Top"
                     FontSize="30"
-                    Foreground="White"
-                    Text="데이터 조회" />
-                
-                <TextBlock
-                    Grid.Column="0"
-                    VerticalAlignment="Bottom"
-                    FontSize="25"
-                    Foreground="White"
-                    Text="발신" />
+                    Foreground="Silver"
+                    Text="Read Parameter Value" />
+
                 <TextBox
                     Grid.Column="1"
+                    Height="50"
                     VerticalAlignment="Bottom"
-                    FontSize="25"
+                    VerticalContentAlignment="Center"
+                    Background="Gray"
+                    FontSize="20"
                     Foreground="Black"
-                    Text="{Binding ParameterCommand}" />
+                    Text="{Binding ReadParameterCommand}" />
 
                 <Button
                     Grid.Column="2"
                     Height="50"
                     VerticalAlignment="Bottom"
-                    Command="{Binding SendTorq}"
+                    Command="{Binding BtnReadParameter}"
                     Content="Send" />
                 <TextBlock
                     Grid.Column="4"
+                    Height="50"
+                    HorizontalAlignment="Center"
                     VerticalAlignment="Bottom"
-                    FontSize="25"
-                    Foreground="White"
-                    Text="수신" />
+                    FontSize="20"
+                    Foreground="Silver"
+                    Text="Result : " />
                 <TextBlock
                     Grid.Column="5"
+                    Height="50"
+                    HorizontalAlignment="Center"
                     VerticalAlignment="Bottom"
-                    FontSize="25"
-                    Foreground="White"
-                    Text="{Binding CommandResult}" />
+                    FontSize="20"
+                    Foreground="Silver"
+                    Text="{Binding ReadParamResult}" />
             </Grid>
-            
-            
+
+
             <Grid Grid.Row="2">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition />
@@ -99,51 +100,419 @@
                     HorizontalAlignment="Center"
                     VerticalAlignment="Top"
                     FontSize="30"
-                    Foreground="White"
-                    Text="데이터 수정" />
-                
-                <TextBlock
-                    Grid.Column="0"
-                    VerticalAlignment="Bottom"
-                    FontSize="25"
-                    Foreground="White"
-                    Text="발신" />
+                    Foreground="Silver"
+                    Text="Update Parameter Value" />
+
                 <TextBox
                     Grid.Column="1"
+                    Height="50"
                     VerticalAlignment="Bottom"
-                    FontSize="25"
+                    VerticalContentAlignment="Center"
+                    Background="Gray"
+                    FontSize="20"
                     Foreground="Black"
-                    Text="{Binding SetParameterCommand}" />
+                    Text="{Binding UpdateParameterCommand}" />
 
                 <Button
                     Grid.Column="2"
                     Height="50"
                     VerticalAlignment="Bottom"
-                    Command="{Binding SetSendTorq}"
+                    Command="{Binding BtnUpdateParameter}"
                     Content="Send" />
                 <TextBlock
                     Grid.Column="4"
+                    Height="50"
+                    HorizontalAlignment="Center"
                     VerticalAlignment="Bottom"
-                    FontSize="25"
-                    Foreground="White"
-                    Text="수신" />
+                    FontSize="20"
+                    Foreground="Silver"
+                    Text="Result : " />
                 <TextBlock
                     Grid.Column="5"
+                    Height="50"
+                    HorizontalAlignment="Center"
                     VerticalAlignment="Bottom"
-                    FontSize="25"
-                    Foreground="White"
-                    Text="{Binding CommandResult}" />
+                    FontSize="20"
+                    Foreground="Silver"
+                    Text="{Binding ReadUpdateResult}" />
             </Grid>
 
         </Grid>
 
         <Grid Grid.Column="1">
             <Grid.RowDefinitions>
-                <RowDefinition />
-                <RowDefinition />
-                <RowDefinition />
-                <RowDefinition />
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="9*" />
             </Grid.RowDefinitions>
+            <TextBlock
+                Grid.Row="0"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Top"
+                FontSize="30"
+                Foreground="Silver"
+                Text="Parameter Index Value" />
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*" />
+                    <ColumnDefinition Width="1*" />
+                    <ColumnDefinition Width="3*" />
+                </Grid.ColumnDefinitions>
+
+                <!--  Parameter Index Number  -->
+                <Grid Grid.Column="0" ShowGridLines="True">
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <TextBlock
+                        Grid.Row="0"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        FontSize="20"
+                        Foreground="Silver"
+                        Text="Param Num" />
+                    <TextBlock
+                        Grid.Row="1"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        FontSize="20"
+                        Foreground="Silver"
+                        Text="1~8" />
+                    <TextBlock
+                        Grid.Row="2"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        FontSize="20"
+                        Foreground="Silver"
+                        Text="11~18" />
+                    <TextBlock
+                        Grid.Row="3"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        FontSize="20"
+                        Foreground="Silver"
+                        Text="21~28" />
+                    <TextBlock
+                        Grid.Row="4"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        FontSize="20"
+                        Foreground="Silver"
+                        Text="31~38" />
+                    <TextBlock
+                        Grid.Row="5"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        FontSize="20"
+                        Foreground="Silver"
+                        Text="41~48" />
+                    <TextBlock
+                        Grid.Row="6"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        FontSize="20"
+                        Foreground="Silver"
+                        Text="51~58" />
+                    <TextBlock
+                        Grid.Row="7"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        FontSize="20"
+                        Foreground="Silver"
+                        Text="61~89" />
+                    <TextBlock
+                        Grid.Row="8"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        FontSize="20"
+                        Foreground="Silver"
+                        Text="130~137" />
+                    <TextBlock
+                        Grid.Row="9"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        FontSize="20"
+                        Foreground="Silver"
+                        Text="138~139" />
+                    <TextBlock
+                        Grid.Row="10"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        FontSize="20"
+                        Foreground="Silver"
+                        Text="140~179" />
+                    <TextBlock
+                        Grid.Row="11"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        FontSize="20"
+                        Foreground="Silver"
+                        Text="180~199" />
+                    <TextBlock
+                        Grid.Row="12"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        FontSize="20"
+                        Foreground="Silver"
+                        Text="200~207" />
+                    <TextBlock
+                        Grid.Row="13"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        FontSize="20"
+                        Foreground="Silver"
+                        Text="209" />
+                </Grid>
+
+
+                <!--  Parameter Index Contents  -->
+                <Grid Grid.Column="1" ShowGridLines="True">
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <TextBlock
+                        Grid.Row="0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        FontSize="20"
+                        Foreground="Silver"
+                        Text="Param Cont" />
+                    <TextBlock
+                        Grid.Row="1"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        FontSize="20"
+                        Foreground="Silver"
+                        Text="Torque" />
+                    <TextBlock
+                        Grid.Row="2"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        FontSize="20"
+                        Foreground="Silver"
+                        Text="Rotate Speed" />
+                    <TextBlock
+                        Grid.Row="3"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        FontSize="20"
+                        Foreground="Silver"
+                        Text="Min Rotate" />
+                    <TextBlock
+                        Grid.Row="4"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        FontSize="20"
+                        Foreground="Silver"
+                        Text="Max Rotate" />
+                    <TextBlock
+                        Grid.Row="5"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        FontSize="20"
+                        Foreground="Silver"
+                        Text="Soft start" />
+                    <TextBlock
+                        Grid.Row="6"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        FontSize="20"
+                        Foreground="Silver"
+                        Text="Rotate Cnt Set" />
+                    <TextBlock
+                        Grid.Row="7"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        FontSize="20"
+                        Foreground="Silver"
+                        Text="Etc" />
+                    <TextBlock
+                        Grid.Row="8"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        FontSize="20"
+                        Foreground="Silver"
+                        Text="Screw Cnt" />
+                    <TextBlock
+                        Grid.Row="9"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        FontSize="20"
+                        Foreground="Silver"
+                        Text="Set Model" />
+                    <TextBlock
+                        Grid.Row="10"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        FontSize="20"
+                        Foreground="Silver"
+                        Text="Model DataList" />
+                    <TextBlock
+                        Grid.Row="11"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        FontSize="20"
+                        Foreground="Silver"
+                        Text="Multi Sequence" />
+                    <TextBlock
+                        Grid.Row="12"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        FontSize="20"
+                        Foreground="Silver"
+                        Text="Error" />
+                    <TextBlock
+                        Grid.Row="13"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        FontSize="20"
+                        Foreground="Silver"
+                        Text="Version" />
+                </Grid>
+
+                <!--  Parameter Index Explan  -->
+                <Grid Grid.Column="2" ShowGridLines="True">
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <TextBlock
+                        Grid.Row="0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        FontSize="20"
+                        Foreground="Silver"
+                        Text="Param Explan" />
+                    <TextBlock
+                        Grid.Row="1"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        FontSize="20"
+                        Foreground="Silver"
+                        Text="1-8번까지 토크 설정 값을 저장" />
+                    <TextBlock
+                        Grid.Row="2"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        FontSize="20"
+                        Foreground="Silver"
+                        Text="1-8번용 회전속도를 저장" />
+                    <TextBlock
+                        Grid.Row="3"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        FontSize="20"
+                        Foreground="Silver"
+                        Text="1-8번용 체결 OK판정을 위한 min Turn Count Save" />
+                    <TextBlock
+                        Grid.Row="4"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        FontSize="20"
+                        Foreground="Silver"
+                        Text="1-8번용 Turn Count Save" />
+                    <TextBlock
+                        Grid.Row="5"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        FontSize="20"
+                        Foreground="Silver"
+                        Text="1-8번용 소프트 스타트(시작 시점 전 가속시간) 설정" />
+                    <TextBlock
+                        Grid.Row="6"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        FontSize="19"
+                        Foreground="Silver"
+                        Text="회전 Count 구간 속도 적용, 이후 토크 값에 따라 Auto" />
+                    <TextBlock
+                        Grid.Row="7"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        FontSize="20"
+                        Foreground="Silver"
+                        Text="기타의 파라미터" />
+                    <TextBlock
+                        Grid.Row="8"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        FontSize="20"
+                        Foreground="Silver"
+                        Text="스크류 카운터의 모델별 총 체결수량" />
+                    <TextBlock
+                        Grid.Row="9"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        FontSize="20"
+                        Foreground="Silver"
+                        Text="모델선택 설정과 자동순차체결" />
+                    <TextBlock
+                        Grid.Row="10"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        FontSize="20"
+                        Foreground="Silver"
+                        Text="모델 데이터 메모리" />
+                    <TextBlock
+                        Grid.Row="11"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        FontSize="20"
+                        Foreground="Silver"
+                        Text="멀티시퀀스 관련 메모리" />
+                    <TextBlock
+                        Grid.Row="12"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        FontSize="20"
+                        Foreground="Silver"
+                        Text="최근 에러정보" />
+                    <TextBlock
+                        Grid.Row="13"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        FontSize="20"
+                        Foreground="Silver"
+                        Text="펌웨어 버전" />
+                </Grid>
+            </Grid>
         </Grid>
     </Grid>
 </UserControl>

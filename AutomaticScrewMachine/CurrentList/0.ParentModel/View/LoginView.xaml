@@ -17,9 +17,12 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </UserControl.Resources>
-    
-    <Grid >
-        <Image Source="../../../Assets/LoginGUIBase.jpg" Stretch="UniformToFill" Opacity="0.2"/>
-        
+
+    <Grid>
+        <Image
+            Opacity="0.2"
+            Source="../../../Assets/LoginGUIBase.jpg"
+            Stretch="UniformToFill" />
+
     </Grid>
 </UserControl>
